@@ -1,0 +1,59 @@
+{
+  "name": "ts-generate-validator",
+  "version": "0.0.1",
+  "description": "Task to generate validation functions to check whether JSON data conforms to a schema described as typescript classes",
+  "main": "index.ts",
+  "scripts": {
+    "lint": "npm run eslint .",
+    "fix": "npm run lint-js -- --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SoftMediaLab/ts-generate-validator.git"
+  },
+  "keywords": [
+    "codegeneration",
+    "validation",
+    "typescript"
+  ],
+  "author": "SoftMediaLab",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SoftMediaLab/ts-generate-validator/issues"
+  },
+  "homepage": "https://github.com/SoftMediaLab/ts-generate-validator#readme",
+  "devDependencies": {
+    "@types/node": "14.14.30",
+    "@typescript-eslint/eslint-plugin": "4.15.2",
+    "@typescript-eslint/parser": "4.15.2",
+    "eslint": "7.20.0",
+    "eslint-config-standard": "16.0.2",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-promise": "4.3.1",
+    "husky": "5.1.1",
+    "lint-staged": "10.5.4",
+    "prettier": "2.2.1",
+    "typescript": "4.2.2"
+  },
+  "dependencies": {
+    "mkdirp": "1.0.4",
+    "nunjucks": "3.2.3",
+    "path": "0.12.7",
+    "ts-file-parser": "0.0.16"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix"
+    ],
+    "*.{js,json,md,ts}": [
+      "prettier --write"
+    ]
+  }
+}
