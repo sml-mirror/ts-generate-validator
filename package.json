@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Task to generate validation functions to check whether JSON data conforms to a schema described as typescript classes",
   "main": "dist/index.ts",
-  "bin": "dist/bin.ts",
+  "bin": "dist/bin.js",
   "scripts": {
     "lint": "npm run eslint .",
     "fix": "npm run lint-js -- --fix"

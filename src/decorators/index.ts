@@ -58,7 +58,7 @@ export const CustomValidation = (validator: CustomValidator, message: Message) =
  * Marks a property as ignored in a validation function - it will not be checked against type, and any other decorators applied will be ignored
  */
 // @ts-ignore
-export const IgnoreValidation = () => () => undefined;
+export const IgnoreValidation = () => undefined;
 
 /**
  * Checks if property matches the value passed in the first argument
