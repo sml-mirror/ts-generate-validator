@@ -1,5 +1,11 @@
 // Types
-export * from './src/codegen/model';
-export * from './src/config/model';
-export * from './src/localization/model';
-export * from './src/validators/model';
+export * from './codegen/model';
+export * from './config/model';
+export * from './localization/model';
+export * from './validators/model';
+
+// Decorators
+export * from './decorators';
+
+// Config
+export * from './config';

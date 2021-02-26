@@ -20,8 +20,8 @@ export type PartialCodegenConfig = Partial<CodegenConfig>;
 export interface ValidationConfig<C extends UserContext> {
   stopAtFirstError: boolean;
   emailRegExp: RegExp;
-  messages: MessageMap;
-  context: C;
+  messages?: MessageMap;
+  context?: C;
 }
 
 export type PartialValidationConfig<C extends UserContext> = Partial<
@@ -29,3 +29,5 @@ export type PartialValidationConfig<C extends UserContext> = Partial<
 >;
 
 export type GenerateValidatorConfig<C extends UserContext> = CodegenConfig & ValidationConfig<C>;
+
+export type PartialGenerateValidatorConfig<C extends UserContext> = PartialCodegenConfig & PartialValidationConfig<C>;
