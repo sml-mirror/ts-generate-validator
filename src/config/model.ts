@@ -1,0 +1,31 @@
+import { PartialMessageMap } from 'src/localization/model';
+import { MessageMap } from 'src/localization/model';
+
+export enum SeverityLevel {
+  silence = 0,
+  warning = 1,
+  error = 2,
+}
+
+export type UserContext = any;
+
+export interface CodegenConfig {
+  inputPath: string;
+  outputPath: string;
+  unknownPropertySeverityLevel: SeverityLevel;
+}
+
+export type PartialCodegenConfig = Partial<CodegenConfig>;
+
+export interface ValidationConfig<C extends UserContext> {
+  stopAtFirstError: boolean;
+  emailRegExp: RegExp;
+  messages: MessageMap;
+  context: C;
+}
+
+export type PartialValidationConfig<C extends UserContext> = Partial<
+  Omit<ValidationConfig<C>, 'messages'> & { messages: PartialMessageMap }
+>;
+
+export type GenerateValidatorConfig<C extends UserContext> = CodegenConfig & ValidationConfig<C>;
