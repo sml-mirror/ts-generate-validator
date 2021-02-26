@@ -1,4 +1,4 @@
-import { mergeDeep } from './../utils/deepValue';
+import { mergeDeep } from '../utils/deepValue';
 import { PartialValidationConfig, UserContext, GenerateValidatorConfig } from 'src/config/model';
 import { defaultConfig } from './default';
 
