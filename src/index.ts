@@ -6,3 +6,6 @@ export * from './validators/model';
 
 // Decorators
 export * from './decorators';
+
+// Config
+export * from './config';
