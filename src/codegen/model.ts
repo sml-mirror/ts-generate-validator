@@ -5,7 +5,7 @@ export type Data = Record<string, any>;
 
 export type GeneratedValidation = <D extends Data, C extends UserContext>(
   data: D,
-  config?: ValidationConfig<C>,
+  config?: ValidationConfig<C>
 ) => void | Promise<void>;
 
 export interface ValidationError<D extends Data> {

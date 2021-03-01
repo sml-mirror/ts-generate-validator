@@ -15,7 +15,7 @@ const getConfigFromFile = (): PartialGenerateValidatorConfig<UserContext> => {
     return <PartialGenerateValidatorConfig<UserContext>>JSON.parse(fs.readFileSync(configFileName, 'utf8'));
   } catch (err) {
     console.error(
-      `Error when reading config from file "${configFileName}. Make sure the file has correct syntax. Using default config..."`,
+      `Error when reading config from file "${configFileName}. Make sure the file has correct syntax. Using default config..."`
     );
     return {};
   }
@@ -26,10 +26,7 @@ export const getCodegenConfig = (): GenerateValidatorConfig<UserContext> => {
 
   if (configFromFile.hasOwnProperty('unknownPropertySeverityLevel')) {
     const possibleValues = getEnumValues(SeverityLevel);
-    if (
-      !Number.isInteger(configFromFile.unknownPropertySeverityLevel) ||
-      !possibleValues.includes(String(configFromFile.unknownPropertySeverityLevel))
-    ) {
+    if (!possibleValues.includes(String(configFromFile.unknownPropertySeverityLevel))) {
       delete configFromFile.unknownPropertySeverityLevel;
     }
   }

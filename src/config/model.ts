@@ -4,7 +4,7 @@ import { MessageMap } from 'src/localization/model';
 export enum SeverityLevel {
   silence = 0,
   warning = 1,
-  error = 2,
+  error = 2
 }
 
 export type UserContext = any;

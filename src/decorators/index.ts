@@ -1,7 +1,8 @@
 import { CustomValidator } from './../validators/model';
 import { Data } from 'src/codegen/model';
 import { Message } from 'src/localization/model';
-import { PartialValidationConfig, UserContext } from 'src/config/model';
+
+const emptyDecorator = (...args: any[]) => args[0];
 
 /*
  *********************
@@ -16,10 +17,7 @@ import { PartialValidationConfig, UserContext } from 'src/config/model';
  * @param config config that will only be applied to the current class validation
  */
 // @ts-ignore
-export const Validation = <C extends UserContext = UserContext>(config?: PartialValidationConfig<C>) => (
-  // @ts-ignore
-  constructor: Function,
-) => undefined;
+export const Validation = emptyDecorator;
 
 /**
  * Adds to several optional class properties listed in the first argument a validator that checks if at least one of the specified properties is complete
@@ -29,7 +27,7 @@ export const Validation = <C extends UserContext = UserContext>(config?: Partial
 // @ts-ignore
 export const RequiredOneOfValidation = <D extends Data = Data>(properties: (keyof D)[], message?: Message) => (
   // @ts-ignore
-  constructor: Function,
+  constructor: Function
 ) => undefined;
 
 /*
@@ -39,7 +37,6 @@ export const RequiredOneOfValidation = <D extends Data = Data>(properties: (keyo
  *
  *********************
  */
-const emptyPropertyDecorator = (...args: any[]) => args[0];
 
 /**
  * Common
@@ -50,7 +47,7 @@ const emptyPropertyDecorator = (...args: any[]) => args[0];
  * @param message error message
  */
 // @ts-ignore
-export const TypeValidation = (message: Message) => emptyPropertyDecorator;
+export const TypeValidation = (message: Message) => emptyDecorator;
 
 /**
  * Checks property value using a custom validation function
@@ -58,13 +55,13 @@ export const TypeValidation = (message: Message) => emptyPropertyDecorator;
  * @param message error message
  */
 // @ts-ignore
-export const CustomValidation = (validator: CustomValidator, message: Message) => emptyPropertyDecorator;
+export const CustomValidation = (validator: CustomValidator, message: Message) => emptyDecorator;
 
 /**
  * Marks a property as ignored in a validation function - it will not be checked against type, and any other decorators applied will be ignored
  */
 // @ts-ignore
-export const IgnoreValidation = emptyPropertyDecorator;
+export const IgnoreValidation = emptyDecorator;
 
 /**
  * Checks if property matches the value passed in the first argument
@@ -72,7 +69,7 @@ export const IgnoreValidation = emptyPropertyDecorator;
  * @param message error message
  */
 // @ts-ignore
-export const EqualValidation = (value: string | number | boolean, message?: Message) => emptyPropertyDecorator;
+export const EqualValidation = (value: string | number | boolean, message?: Message) => emptyDecorator;
 
 /**
  * Checks if property value is equal to another property value
@@ -80,7 +77,7 @@ export const EqualValidation = (value: string | number | boolean, message?: Mess
  * @param message error message
  */
 // @ts-ignore
-export const EqualToValidation = (propName: string, message?: Message) => emptyPropertyDecorator;
+export const EqualToValidation = (propName: string, message?: Message) => emptyDecorator;
 
 /**
  * Number
@@ -92,7 +89,7 @@ export const EqualToValidation = (propName: string, message?: Message) => emptyP
  * @param message error message
  */
 // @ts-ignore
-export const MinValidation = (trashold: number, message?: Message) => emptyPropertyDecorator;
+export const MinValidation = (trashold: number, message?: Message) => emptyDecorator;
 
 /**
  * Checks property against the maximum trashold value (inclusive)
@@ -100,35 +97,35 @@ export const MinValidation = (trashold: number, message?: Message) => emptyPrope
  * @param message error message
  */
 // @ts-ignore
-export const MaxValidation = (trashold: number, message?: Message) => emptyPropertyDecorator;
+export const MaxValidation = (trashold: number, message?: Message) => emptyDecorator;
 
 /**
  * Checks if property is negative number
  * @param message error message
  */
 // @ts-ignore
-export const NegativeValidation = (message?: Message) => emptyPropertyDecorator;
+export const NegativeValidation = (message?: Message) => emptyDecorator;
 
 /**
  * Checks if property is positive number
  * @param message error message
  */
 // @ts-ignore
-export const PositiveValidation = (message?: Message) => emptyPropertyDecorator;
+export const PositiveValidation = (message?: Message) => emptyDecorator;
 
 /**
  * Checks if property is integer
  * @param message error message
  */
 // @ts-ignore
-export const IntegerValidation = (message?: Message) => emptyPropertyDecorator;
+export const IntegerValidation = (message?: Message) => emptyDecorator;
 
 /**
  * Checks if property is float
  * @param message error message
  */
 // @ts-ignore
-export const FloatValidation = (message?: Message) => emptyPropertyDecorator;
+export const FloatValidation = (message?: Message) => emptyDecorator;
 
 /**
  * Checks if property value is less than another property value
@@ -136,7 +133,7 @@ export const FloatValidation = (message?: Message) => emptyPropertyDecorator;
  * @param message error message
  */
 // @ts-ignore
-export const LessThanValidation = (propName: string, message?: Message) => emptyPropertyDecorator;
+export const LessThanValidation = (propName: string, message?: Message) => emptyDecorator;
 
 /**
  * Checks if property value is more than another property value
@@ -144,7 +141,7 @@ export const LessThanValidation = (propName: string, message?: Message) => empty
  * @param message error message
  */
 // @ts-ignore
-export const MoreThanValidation = (propName: string, message?: Message) => emptyPropertyDecorator;
+export const MoreThanValidation = (propName: string, message?: Message) => emptyDecorator;
 
 /**
  * String
@@ -155,21 +152,21 @@ export const MoreThanValidation = (propName: string, message?: Message) => empty
  * @param message error message
  */
 // @ts-ignore
-export const TrimValidation = (message?: Message) => emptyPropertyDecorator;
+export const TrimValidation = (message?: Message) => emptyDecorator;
 
 /**
  * Сhecks for no capital letters in a string
  * @param message error message
  */
 // @ts-ignore
-export const LowercaseValidation = (message?: Message) => emptyPropertyDecorator;
+export const LowercaseValidation = (message?: Message) => emptyDecorator;
 
 /**
  * Сhecks for no lowercase letters in a string
  * @param message error message
  */
 // @ts-ignore
-export const UppercaseValidation = (message?: Message) => emptyPropertyDecorator;
+export const UppercaseValidation = (message?: Message) => emptyDecorator;
 
 /**
  * Checks the string length against the minimum trashold value (inclusive)
@@ -177,7 +174,7 @@ export const UppercaseValidation = (message?: Message) => emptyPropertyDecorator
  * @param message error message
  */
 // @ts-ignore
-export const MinLengthValidation = (trashold: number, message?: Message) => emptyPropertyDecorator;
+export const MinLengthValidation = (trashold: number, message?: Message) => emptyDecorator;
 
 /**
  * Checks the string length against the maximum trashold value (inclusive)
@@ -185,21 +182,21 @@ export const MinLengthValidation = (trashold: number, message?: Message) => empt
  * @param message error message
  */
 // @ts-ignore
-export const MaxLengthValidation = (trashold: number, message?: Message) => emptyPropertyDecorator;
+export const MaxLengthValidation = (trashold: number, message?: Message) => emptyDecorator;
 
 /**
  * Checks if string is correct email
  * @param message error message
  */
 // @ts-ignore
-export const EmailValidation = (message?: Message) => emptyPropertyDecorator;
+export const EmailValidation = (message?: Message) => emptyDecorator;
 
 /**
  * Checks if string is correct url
  * @param message error message
  */
 // @ts-ignore
-export const UrlValidation = (message?: Message) => emptyPropertyDecorator;
+export const UrlValidation = (message?: Message) => emptyDecorator;
 
 /**
  * Checks the string against the regular expression passed in the first argument
@@ -207,4 +204,4 @@ export const UrlValidation = (message?: Message) => emptyPropertyDecorator;
  * @param message error message
  */
 // @ts-ignore
-export const MatchValidation = (regexp: RegExp, message?: Message) => emptyPropertyDecorator;
+export const MatchValidation = (regexp: RegExp, message?: Message) => emptyDecorator;

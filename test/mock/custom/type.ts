@@ -8,15 +8,15 @@ interface SomeNonPrimitiveSctructure {
 
 enum SomeEnum {
   A = 'a',
-  B = 'b',
+  B = 'b'
 }
 
-@Validation()
+@Validation
 export class ClassWithNonPrimitiveProperty {
   public someProperty?: SomeNonPrimitiveSctructure;
 }
 
-@Validation()
+@Validation
 export class ClassWithEnumProperty {
   public someProperty?: SomeEnum;
 }

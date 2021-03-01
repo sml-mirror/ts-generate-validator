@@ -16,10 +16,10 @@ import {
   TrimValidation,
   UppercaseValidation,
   UrlValidation,
-  Validation,
+  Validation
 } from '../../../src/decorators/index';
 
-@Validation()
+@Validation
 @RequiredOneOfValidation(['email, phone'])
 export class User {
   @MinLengthValidation(2)

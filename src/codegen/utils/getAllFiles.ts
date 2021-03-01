@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 
-export const getAllFiles = (path: string) => {
-  let tsRegExp = /.+\.ts$/;
+export const getAllFiles = (path: string): string[] => {
+  const tsRegExp = /.+\.ts$/;
   const returnFiles: string[] = [];
 
   const files = fs.readdirSync(path);
@@ -11,7 +11,7 @@ export const getAllFiles = (path: string) => {
       const subFiles = getAllFiles(endPath);
       returnFiles.push(...subFiles);
     } else {
-      let matches = tsRegExp.exec(endPath);
+      const matches = tsRegExp.exec(endPath);
       if (matches && matches.length > 0) {
         returnFiles.push(matches[0]);
       }

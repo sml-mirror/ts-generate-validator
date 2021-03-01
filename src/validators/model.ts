@@ -4,7 +4,7 @@ import { Data } from 'src/codegen/model';
 export enum ValidationType {
   number = 'number',
   string = 'string',
-  boolean = 'boolean',
+  boolean = 'boolean'
 }
 
 export enum NumberValidator {
@@ -19,7 +19,7 @@ export enum NumberValidator {
   float = 'float',
   lessThan = 'lessThan',
   moreThan = 'moreThan',
-  equalTo = 'equalTo',
+  equalTo = 'equalTo'
 }
 
 export enum StringValidator {
@@ -34,14 +34,14 @@ export enum StringValidator {
   url = 'url',
   match = 'match',
   equal = 'equal',
-  equalTo = 'equalTo',
+  equalTo = 'equalTo'
 }
 
 export enum BooleanValidator {
   type = 'type',
   custom = 'custom',
   equal = 'equal',
-  equalTo = 'equalTo',
+  equalTo = 'equalTo'
 }
 
 export interface BaseValidatorPayload<D extends Data, P extends keyof D> {
@@ -57,5 +57,5 @@ export interface CustomValidatorPayload<D extends Data, P extends keyof D, C ext
 }
 
 export type CustomValidator = <D extends Data = Data, P extends keyof D = keyof D, C extends UserContext = UserContext>(
-  payload: CustomValidatorPayload<D, P, C>,
-) => ReturnType<BaseValidator<D, P>>;
+  payload: CustomValidatorPayload<D, P, C>
+) => ReturnType<BaseValidator<D, P>> | Promise<ReturnType<BaseValidator<D, P>>>;

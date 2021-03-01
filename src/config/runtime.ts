@@ -4,7 +4,7 @@ import { defaultConfig } from './default';
 
 let globalConfig = defaultConfig;
 
-export const changeConfig = <C extends UserContext = UserContext>(config: PartialValidationConfig<C>) => {
+export const changeConfig = <C extends UserContext = UserContext>(config: PartialValidationConfig<C>): void => {
   globalConfig = mergeDeep({}, globalConfig, config) as GenerateValidatorConfig<C>;
 };
 
