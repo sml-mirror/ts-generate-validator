@@ -2,7 +2,7 @@ import { GenerateValidatorConfig, SeverityLevel, UserContext } from './model';
 
 export const defaultConfig: GenerateValidatorConfig<UserContext> = {
   // Codegeneration config
-  inputPath: '.',
+  inputPath: 'src',
   outputPath: 'generated/validators',
   unknownPropertySeverityLevel: SeverityLevel.warning,
 

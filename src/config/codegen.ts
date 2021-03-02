@@ -5,7 +5,7 @@ import { mergeDeep } from './../utils/deepValue';
 import * as fs from 'fs';
 import { GenerateValidatorConfig, UserContext } from 'src/config/model';
 
-const configFileName = 'ts-generate-validator-config.json';
+export const configFileName = 'ts-generate-validator-config.json';
 
 const getConfigFromFile = (): PartialGenerateValidatorConfig<UserContext> => {
   if (!fs.existsSync(configFileName)) {
