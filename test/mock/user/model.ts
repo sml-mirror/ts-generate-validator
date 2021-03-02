@@ -64,5 +64,5 @@ export class User {
   @FloatValidation()
   public insuranceRatio: number = 1.0;
 
-  public userType: UserType = UserType.GUEST;
+  public userType?: UserType;
 }

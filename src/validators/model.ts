@@ -4,7 +4,10 @@ import { Data } from 'src/codegen/model';
 export enum ValidationType {
   number = 'number',
   string = 'string',
-  boolean = 'boolean'
+  boolean = 'boolean',
+  enum = 'enum',
+  custom = 'custom',
+  unknown = 'unknown'
 }
 
 export enum NumberValidator {
