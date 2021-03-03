@@ -1,0 +1,362 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`codegen/raw/common parse metadata: parseMetadata 1`] = `
+Array [
+  Object {
+    "classes": Array [
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "type custom message",
+                ],
+                "name": "TypeValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+        ],
+        "name": "TypeValidatorWithCustomMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "type custom message",
+                ],
+                "name": "TypeValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": true,
+            "type": Object {
+              "name": "CustomValidatorFailed",
+              "referencePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/common/model",
+              "validationType": "notSupported",
+            },
+          },
+        ],
+        "name": "TypeValidatorOnWrongPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "() => false",
+                  "custom validator message",
+                ],
+                "name": "CustomValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": true,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "CustomValidatorFailed",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "() => true",
+                  "custom validator message",
+                ],
+                "name": "CustomValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": true,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "CutomValidatorSuccess",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "async () => new Promise((resolve) => setTimeout(() => resolve(true), 300))",
+                  "custom validator message",
+                ],
+                "name": "CustomValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": true,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "CutomValidatorSuccessAsync",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [],
+                "name": "IgnoreValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": true,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "IgnoreValidationForNonPrimitiveProperty",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [],
+                "name": "IgnoreValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "IgnoreValidationForPrimitiveProperty",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  10,
+                ],
+                "name": "MaxValidation",
+              },
+              Object {
+                "arguments": Array [],
+                "name": "IgnoreValidation",
+              },
+              Object {
+                "arguments": Array [
+                  2,
+                ],
+                "name": "MinValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "IgnoreValidationForPrimitivePropertyWithOtherDecorators",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "abcdef",
+                ],
+                "name": "EqualValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+        ],
+        "name": "EqualValidatorWithDefaultMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  245,
+                  "equal custom message",
+                ],
+                "name": "EqualValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "EqualValidatorWithCustomMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  true,
+                ],
+                "name": "EqualValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "boolean",
+              "validationType": "boolean",
+            },
+          },
+        ],
+        "name": "EqualValidatorForBoolean",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "someOtherProperty",
+                ],
+                "name": "EqualToValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "someProperty",
+                ],
+                "name": "EqualToValidation",
+              },
+            ],
+            "name": "someOtherProperty",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+        ],
+        "name": "EqualToValidatorWithDefaultMessage",
+      },
+    ],
+    "name": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/common/model",
+  },
+]
+`;

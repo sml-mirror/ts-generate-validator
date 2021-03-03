@@ -25,7 +25,7 @@ export interface InputFileMetadata {
   classes: ClassMetadata[];
 }
 
-export interface PossibleEnumTypeEntry {
+export interface CustomTypeEntry {
   fileIndex: number;
   classIndex: number;
   fieldIndex: number;

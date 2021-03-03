@@ -28,10 +28,16 @@ const testConfigs: PartialGenerateValidatorConfig<UserContext>[] = [
 
 describe('configuration', () => {
   const prevRootDir = process.cwd();
-  const testRootDir = process.cwd() + '/test';
-  process.chdir(testRootDir);
 
-  console.log(process.cwd());
+  beforeAll(() => {
+    const testRootDir = process.cwd() + '/test';
+    process.chdir(testRootDir);
+  });
+
+  afterAll(() => {
+    process.chdir(prevRootDir);
+  });
+
   // TODO: fix
   // test('getCodegenConfig - file not exists', () => {
   //   expect(getCodegenConfig()).toEqual(defaultConfig);
@@ -49,6 +55,4 @@ describe('configuration', () => {
       deleteConfigFile();
     });
   });
-
-  process.chdir(prevRootDir);
 });

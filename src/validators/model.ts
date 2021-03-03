@@ -7,7 +7,8 @@ export enum ValidationType {
   boolean = 'boolean',
   enum = 'enum',
   custom = 'custom',
-  unknown = 'unknown'
+  unknown = 'unknown',
+  notSupported = 'notSupported'
 }
 
 export enum NumberValidator {
