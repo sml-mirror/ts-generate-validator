@@ -1,5 +1,5 @@
-import { BooleanValidator } from 'src/validators/model';
-import { ValidationType, NumberValidator, StringValidator } from 'src/validators/model';
+import { BooleanValidator } from '../validators/model';
+import { ValidationType, NumberValidator, StringValidator } from '../validators/model';
 
 export type Message = string;
 

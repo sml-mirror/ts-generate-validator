@@ -1,8 +1,8 @@
+import { primitiveValidationTypes } from './../../validators/model';
 import { ValidationType } from '../../validators/model';
 
 export const getValidationTypeByTypeName = (typeName: string): ValidationType => {
-  const primitiveTypes = [ValidationType.boolean, ValidationType.number, ValidationType.string] as string[];
-  if (primitiveTypes.includes(typeName)) {
+  if (primitiveValidationTypes.includes(typeName as any)) {
     return <ValidationType>typeName;
   }
 

@@ -9,3 +9,6 @@ export * from './decorators';
 
 // Config
 export * from './config/runtime';
+
+// Validators
+export * from './validators';

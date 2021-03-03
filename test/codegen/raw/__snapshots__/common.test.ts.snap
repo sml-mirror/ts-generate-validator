@@ -71,7 +71,9 @@ Array [
             "decorators": Array [
               Object {
                 "arguments": Array [
-                  "() => false",
+                  "() => {
+    throw new Error('Failed!');
+  }",
                   "custom validator message",
                 ],
                 "name": "CustomValidation",
@@ -99,7 +101,7 @@ Array [
             "decorators": Array [
               Object {
                 "arguments": Array [
-                  "() => true",
+                  "() => undefined",
                   "custom validator message",
                 ],
                 "name": "CustomValidation",
@@ -127,7 +129,7 @@ Array [
             "decorators": Array [
               Object {
                 "arguments": Array [
-                  "async () => new Promise((resolve) => setTimeout(() => resolve(true), 300))",
+                  "async () => new Promise((resolve) => setTimeout(() => resolve(), 300))",
                   "custom validator message",
                 ],
                 "name": "CustomValidation",

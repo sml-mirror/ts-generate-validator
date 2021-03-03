@@ -8,4 +8,4 @@ export const changeConfig = <C extends UserContext = UserContext>(config: Partia
   globalConfig = mergeDeep({}, globalConfig, config) as GenerateValidatorConfig<C>;
 };
 
-export const getConfig = (): Readonly<typeof globalConfig> => globalConfig;
+export const getConfig = <C extends UserContext = UserContext>(): Readonly<GenerateValidatorConfig<C>> => globalConfig;
