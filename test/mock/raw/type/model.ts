@@ -1,6 +1,6 @@
-import { Validation } from './../../../src/decorators/index';
+import { Validation } from '../../../../src/decorators/index';
 
-interface SomeNonPrimitiveSctructure {
+interface SomeNonPrimitiveStructure {
   a: string;
   b: number;
   c: boolean;
@@ -8,15 +8,15 @@ interface SomeNonPrimitiveSctructure {
 
 enum SomeEnum {
   A = 'a',
-  B = 'b',
+  B = 'b'
 }
 
-@Validation()
+@Validation
 export class ClassWithNonPrimitiveProperty {
-  public someProperty?: SomeNonPrimitiveSctructure;
+  public someProperty?: SomeNonPrimitiveStructure;
 }
 
-@Validation()
+@Validation
 export class ClassWithEnumProperty {
   public someProperty?: SomeEnum;
 }

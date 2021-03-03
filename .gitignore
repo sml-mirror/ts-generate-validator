@@ -6,3 +6,6 @@ package-lock.json
 
 # VS Code settings
 .vscode/
+
+# Macos metadata
+**/.DS_Store

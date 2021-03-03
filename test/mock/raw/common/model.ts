@@ -6,19 +6,19 @@ import {
   IgnoreValidation,
   TypeValidation,
   MinValidation,
-  MaxValidation,
+  MaxValidation
 } from 'src/decorators/index';
 
 /**
  * Type
  */
-@Validation()
+@Validation
 export class TypeValidatorWithCustomMessage {
   @TypeValidation('type custom message')
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
-@Validation()
+@Validation
 export class TypeValidatorOnWrongPropertyType {
   @TypeValidation('type custom message')
   public someProperty?: CustomValidatorFailed;
@@ -27,78 +27,87 @@ export class TypeValidatorOnWrongPropertyType {
 /**
  * Custom
  */
-@Validation()
+@Validation
 export class CustomValidatorFailed {
   @CustomValidation(() => false, 'custom validator message')
   public someProperty?: number;
 }
 
-@Validation()
+@Validation
 export class CutomValidatorSuccess {
   @CustomValidation(() => true, 'custom validator message')
+  public someProperty?: number;
+}
+
+@Validation
+export class CutomValidatorSuccessAsync {
+  @CustomValidation(
+    async () => new Promise((resolve) => setTimeout(() => resolve(true), 300)),
+    'custom validator message'
+  )
   public someProperty?: number;
 }
 
 /**
  * Ignore
  */
-@Validation()
+@Validation
 export class IgnoreValidationForNonPrimitiveProperty {
   @IgnoreValidation
   public someProperty?: number;
 }
 
-@Validation()
+@Validation
 export class IgnoreValidationForPrimitiveProperty {
   @IgnoreValidation
-  public someProperty: number = 0;
+  public someProperty = 0;
 }
 
-@Validation()
+@Validation
 export class IgnoreValidationForPrimitivePropertyWithOtherDecorators {
   @MaxValidation(10)
   @IgnoreValidation
   @MinValidation(2)
-  public someProperty: number = 0;
+  public someProperty = 0;
 }
 
 /**
  * Equal
  */
-@Validation()
+@Validation
 export class EqualValidatorWithDefaultMessage {
   @EqualValidation('abcdef')
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
-@Validation()
+@Validation
 export class EqualValidatorWithCustomMessage {
   @EqualValidation(245, 'equal custom message')
-  public someProperty: number = 0;
+  public someProperty = 0;
 }
 
-@Validation()
+@Validation
 export class EqualValidatorForBoolean {
   @EqualValidation(true)
-  public someProperty: boolean = false;
+  public someProperty = false;
 }
 
 /**
  * EqualTo
  */
-@Validation()
+@Validation
 export class EqualToValidatorWithDefaultMessage {
   @EqualToValidation('someOtherProperty')
-  public someProperty: string = '';
+  public someProperty = '';
 
   @EqualToValidation('someProperty')
-  public someOtherProperty: string = '';
+  public someOtherProperty = '';
 }
 
 export class EqualToValidatorWithCustomMessage {
   @EqualToValidation('someOtherProperty', 'equialTo custom message')
-  public someProperty: string = '';
+  public someProperty = '';
 
   @EqualToValidation('someProperty', 'equialTo custom message')
-  public someOtherProperty: string = '';
+  public someOtherProperty = '';
 }

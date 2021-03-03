@@ -16,10 +16,10 @@ import {
   TrimValidation,
   UppercaseValidation,
   UrlValidation,
-  Validation,
+  Validation
 } from '../../../src/decorators/index';
 
-@Validation()
+@Validation
 @RequiredOneOfValidation(['email, phone'])
 export class User {
   @MinLengthValidation(2)
@@ -64,5 +64,5 @@ export class User {
   @FloatValidation()
   public insuranceRatio: number = 1.0;
 
-  public userType: UserType = UserType.GUEST;
+  public userType?: UserType;
 }

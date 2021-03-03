@@ -7,173 +7,173 @@ import {
   TrimValidation,
   MinLengthValidation,
   MaxLengthValidation,
-  MatchValidation,
+  MatchValidation
 } from 'src/decorators/index';
 
 /**
  * Trim
  */
-@Validation()
+@Validation
 export class TrimValidatorWithDefaultMessage {
   @TrimValidation()
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
-@Validation()
+@Validation
 export class TrimValidatorOnWrongPropertyType {
   @TrimValidation()
-  public someProperty: boolean = false;
+  public someProperty = false;
 }
 
-@Validation()
+@Validation
 export class TrimValidatorWithCustomMessage {
   @TrimValidation('trim custom message')
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
 /**
  * Lowercase
  */
-@Validation()
+@Validation
 export class LowercaseValidatorWithDefaultMessage {
   @LowercaseValidation()
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
-@Validation()
+@Validation
 export class LowercaseValidatorOnWrongPropertyType {
   @LowercaseValidation()
-  public someProperty: boolean = false;
+  public someProperty = false;
 }
 
-@Validation()
+@Validation
 export class LowercaseValidatorWithCustomMessage {
   @LowercaseValidation('lowercase custom message')
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
 /**
  * Uppercase
  */
-@Validation()
+@Validation
 export class UppercaseValidatorWithDefaultMessage {
   @UppercaseValidation()
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
-@Validation()
+@Validation
 export class UppercaseValidatorOnWrongPropertyType {
   @UppercaseValidation()
-  public someProperty: boolean = false;
+  public someProperty = false;
 }
 
-@Validation()
+@Validation
 export class UppercaseValidatorWithCustomMessage {
   @UppercaseValidation('uppercase custom message')
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
 /**
  * MinLength
  */
-@Validation()
+@Validation
 export class MinLengthValidatorWithDefaultMessage {
   @MinLengthValidation(5)
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
-@Validation()
+@Validation
 export class MinLengthValidatorOnWrongPropertyType {
   @MinLengthValidation(5)
-  public someProperty: boolean = false;
+  public someProperty = false;
 }
 
-@Validation()
+@Validation
 export class MinLengthValidatorWithCustomMessage {
   @MinLengthValidation(5, 'minLength custom message')
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
 /**
  * MaxLength
  */
-@Validation()
+@Validation
 export class MaxLengthValidatorWithDefaultMessage {
   @MaxLengthValidation(25)
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
-@Validation()
+@Validation
 export class MaxLengthValidatorOnWrongPropertyType {
   @MaxLengthValidation(25)
-  public someProperty: boolean = false;
+  public someProperty = false;
 }
 
-@Validation()
+@Validation
 export class MaxLengthValidatorWithCustomMessage {
   @MaxLengthValidation(25, 'maxLength custom message')
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
 /**
  * Email
  */
-@Validation()
+@Validation
 export class EmailValidatorWithDefaultMessage {
   @EmailValidation()
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
-@Validation()
+@Validation
 export class EmailValidatorOnWrongPropertyType {
   @EmailValidation()
-  public someProperty: boolean = false;
+  public someProperty = false;
 }
 
-@Validation()
+@Validation
 export class EmailValidatorWithCustomMessage {
   @EmailValidation('email custom message')
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
 /**
  * Url
  */
-@Validation()
+@Validation
 export class UrlValidatorWithDefaultMessage {
   @UrlValidation()
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
-@Validation()
+@Validation
 export class UrlValidatorOnWrongPropertyType {
   @UrlValidation()
-  public someProperty: boolean = false;
+  public someProperty = false;
 }
 
-@Validation()
+@Validation
 export class UrlValidatorWithCustomMessage {
   @UrlValidation('url custom message')
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
 /**
  * Match
  */
-@Validation()
+@Validation
 export class MatchValidatorWithDefaultMessage {
   @MatchValidation(/^matchString$/)
-  public someProperty: string = '';
+  public someProperty = '';
 }
 
-@Validation()
+@Validation
 export class MatchValidatorOnWrongPropertyType {
   @MatchValidation(/^matchString$/)
-  public someProperty: number = 0;
+  public someProperty = 0;
 }
 
-@Validation()
+@Validation
 export class MatchValidatorWithCustomMessage {
   @MatchValidation(/^matchString$/, 'match custom message')
-  public someProperty: string = '';
+  public someProperty = '';
 }

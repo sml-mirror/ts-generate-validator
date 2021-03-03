@@ -1,0 +1,614 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`codegen/raw/number parse metadata: parseMetadata 1`] = `
+Array [
+  Object {
+    "classes": Array [
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  10,
+                ],
+                "name": "MinValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "MinValidatorWithDefaultMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  10,
+                ],
+                "name": "MinValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+        ],
+        "name": "MinValidatorOnWrongPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  10,
+                  "min custom message",
+                ],
+                "name": "MinValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "MinValidatorWithCustomMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  10,
+                ],
+                "name": "MaxValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "MaxValidatorWithDefaultMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  10,
+                ],
+                "name": "MaxValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+        ],
+        "name": "MaxValidatorOnWrongPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  10,
+                  "max custom message",
+                ],
+                "name": "MaxValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "MaxValidatorWithCustomMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [],
+                "name": "NegativeValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "NegativeValidatorWithDefaultMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [],
+                "name": "NegativeValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+        ],
+        "name": "NegativeValidatorOnWrongPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "negative custom message",
+                ],
+                "name": "NegativeValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "NegativeValidatorWithCustomMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [],
+                "name": "PositiveValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "PositiveValidatorWithDefaultMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [],
+                "name": "PositiveValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+        ],
+        "name": "PositiveValidatorOnWrongPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "positive custom message",
+                ],
+                "name": "PositiveValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "PositiveValidatorWithCustomMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [],
+                "name": "IntegerValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "IntegerValidatorWithDefaultMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [],
+                "name": "IntegerValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+        ],
+        "name": "IntegerValidatorOnWrongPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "integer custom message",
+                ],
+                "name": "IntegerValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "IntegerValidatorWithCustomMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [],
+                "name": "FloatValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "FloatValidatorWithDefaultMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [],
+                "name": "FloatValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+        ],
+        "name": "FloatValidatorOnWrongPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "float custom message",
+                ],
+                "name": "FloatValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "FloatValidatorWithCustomMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "someOtherProperty",
+                ],
+                "name": "LessThanValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "someProperty",
+                ],
+                "name": "MoreThanValidation",
+              },
+            ],
+            "name": "someOtherProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "LessThanMoreThanValidatorWithDefaultMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "someOtherProperty",
+                ],
+                "name": "LessThanValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "someProperty",
+                ],
+                "name": "MoreThanValidation",
+              },
+            ],
+            "name": "someOtherProperty",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+        ],
+        "name": "LessThanMoreThanValidatorOnWrongPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "someOtherProperty",
+                  "lessThan custom message",
+                ],
+                "name": "LessThanValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "someProperty",
+                  "moreThan custom message",
+                ],
+                "name": "MoreThanValidation",
+              },
+            ],
+            "name": "someOtherProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "LessThanValidatorWithCustomMessage",
+      },
+    ],
+    "name": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/number/model",
+  },
+]
+`;

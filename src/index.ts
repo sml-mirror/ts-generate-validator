@@ -8,4 +8,4 @@ export * from './validators/model';
 export * from './decorators';
 
 // Config
-export * from './config';
+export * from './config/runtime';
