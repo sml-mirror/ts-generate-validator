@@ -18,10 +18,3 @@ export const createValidators = (): void => {
     )
   );
 };
-
-// "type": {
-//   "validationType": "unknown",
-//   "modulePath": "mock/user/model.ts",
-//   "name": "UserType"
-// },
-// "decorators": []

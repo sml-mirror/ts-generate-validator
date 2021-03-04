@@ -29,22 +29,21 @@ export class TypeValidatorOnWrongPropertyType {
  */
 @Validation
 export class CustomValidatorFailed {
-  @CustomValidation(() => false, 'custom validator message')
+  @CustomValidation(() => {
+    throw new Error('Failed!');
+  }, 'custom validator message')
   public someProperty?: number;
 }
 
 @Validation
 export class CutomValidatorSuccess {
-  @CustomValidation(() => true, 'custom validator message')
+  @CustomValidation(() => undefined, 'custom validator message')
   public someProperty?: number;
 }
 
 @Validation
 export class CutomValidatorSuccessAsync {
-  @CustomValidation(
-    async () => new Promise((resolve) => setTimeout(() => resolve(true), 300)),
-    'custom validator message'
-  )
+  @CustomValidation(async () => new Promise((resolve) => setTimeout(() => resolve(), 300)), 'custom validator message')
   public someProperty?: number;
 }
 
