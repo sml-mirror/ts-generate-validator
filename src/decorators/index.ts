@@ -65,7 +65,7 @@ export const IgnoreValidation = emptyDecorator;
 
 /**
  * Checks if property matches the value passed in the first argument
- * @param trashold maximum allowed property value
+ * @param threshold maximum allowed property value
  * @param message error message
  */
 // @ts-ignore
@@ -84,20 +84,20 @@ export const EqualToValidation = (propName: string, message?: Message) => emptyD
  */
 
 /**
- * Checks property against the minimum trashold value (inclusive)
- * @param trashold minimum allowed property value
+ * Checks property against the minimum threshold value (inclusive)
+ * @param threshold minimum allowed property value
  * @param message error message
  */
 // @ts-ignore
-export const MinValidation = (trashold: number, message?: Message) => emptyDecorator;
+export const MinValidation = (threshold: number, message?: Message) => emptyDecorator;
 
 /**
- * Checks property against the maximum trashold value (inclusive)
- * @param trashold maximum allowed property value
+ * Checks property against the maximum threshold value (inclusive)
+ * @param threshold maximum allowed property value
  * @param message error message
  */
 // @ts-ignore
-export const MaxValidation = (trashold: number, message?: Message) => emptyDecorator;
+export const MaxValidation = (threshold: number, message?: Message) => emptyDecorator;
 
 /**
  * Checks if property is negative number
@@ -169,20 +169,20 @@ export const LowercaseValidation = (message?: Message) => emptyDecorator;
 export const UppercaseValidation = (message?: Message) => emptyDecorator;
 
 /**
- * Checks the string length against the minimum trashold value (inclusive)
- * @param trashold minimum allowed string length
+ * Checks the string length against the minimum threshold value (inclusive)
+ * @param threshold minimum allowed string length
  * @param message error message
  */
 // @ts-ignore
-export const MinLengthValidation = (trashold: number, message?: Message) => emptyDecorator;
+export const MinLengthValidation = (threshold: number, message?: Message) => emptyDecorator;
 
 /**
- * Checks the string length against the maximum trashold value (inclusive)
- * @param trashold maximum allowed string length
+ * Checks the string length against the maximum threshold value (inclusive)
+ * @param threshold maximum allowed string length
  * @param message error message
  */
 // @ts-ignore
-export const MaxLengthValidation = (trashold: number, message?: Message) => emptyDecorator;
+export const MaxLengthValidation = (threshold: number, message?: Message) => emptyDecorator;
 
 /**
  * Checks if string is correct email

@@ -104,52 +104,32 @@ export type EqualValidator<
   C extends UserContext = UserContext
 > = BaseValidator<EqualValidatorPayload<D>, D, P, C>;
 
-export type EqualToValidatorPayload<D extends Data> = {
+export type DependOnValidatorPayload<D extends Data> = {
   targetPropertyName: keyof D;
 };
 
-export type EqualToValidator<
+export type DependOnValidator<
   D extends Data = Data,
   P extends keyof D = keyof D,
   C extends UserContext = UserContext
-> = BaseValidator<EqualToValidatorPayload<D>, D, P, C>;
+> = BaseValidator<DependOnValidatorPayload<D>, D, P, C>;
 
-export type MinValidatorPayload = {
-  trashold: number;
+export type ThresholdValidatorPayload = {
+  threshold: number;
 };
 
-export type MinValidator<
+export type ThresholdValidator<
   D extends Data = Data,
   P extends keyof D = keyof D,
   C extends UserContext = UserContext
-> = BaseValidator<MinValidatorPayload, D, P, C>;
+> = BaseValidator<ThresholdValidatorPayload, D, P, C>;
 
-export type MaxValidatorPayload = {
-  trashold: number;
+export type MatchValidatorPayload = {
+  regexp: RegExp;
 };
 
-export type MaxValidator<
+export type MatchValidator<
   D extends Data = Data,
   P extends keyof D = keyof D,
   C extends UserContext = UserContext
-> = BaseValidator<MinValidatorPayload, D, P, C>;
-
-export type LessThanValidatorPayload<D extends Data> = {
-  targetPropertyName: keyof D;
-};
-
-export type LessThanValidator<
-  D extends Data = Data,
-  P extends keyof D = keyof D,
-  C extends UserContext = UserContext
-> = BaseValidator<EqualToValidatorPayload<D>, D, P, C>;
-
-export type MoreThanValidatorPayload<D extends Data> = {
-  targetPropertyName: keyof D;
-};
-
-export type MoreThanValidator<
-  D extends Data = Data,
-  P extends keyof D = keyof D,
-  C extends UserContext = UserContext
-> = BaseValidator<EqualToValidatorPayload<D>, D, P, C>;
+> = BaseValidator<MatchValidatorPayload, D, P, C>;
