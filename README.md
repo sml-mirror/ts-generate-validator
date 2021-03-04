@@ -175,9 +175,9 @@ const map: MessagesMap = {
 
 - **number**
 
-  - `@MinValidation(trashold: number, message?: Message)` - добавляет валидатор, который проверяет число на соответствие минимальному значению `trashold`(включительно).
+  - `@MinValidation(threshold: number, message?: Message)` - добавляет валидатор, который проверяет число на соответствие минимальному значению `threshold`(включительно).
 
-  - `@MaxValidation(trashold: number, message?: Message)` - добавляет валидатор, который проверяет число на соответствие максимальному значению `trashold`(включительно).
+  - `@MaxValidation(threshold: number, message?: Message)` - добавляет валидатор, который проверяет число на соответствие максимальному значению `threshold`(включительно).
 
   - `@EqualValidation(value: number, message?: Message)` - добавляет валидатор, который проверяет соответствие числа значению, переданному в первом аргументе.
 
@@ -196,15 +196,16 @@ const map: MessagesMap = {
   - `@EqualToValidation(propName: string, message?: Message)` - добавляет валидатор, который проверяет соответствие числа значению, содержащемуся в свойстве `propName`.
 
 - **string**
+
   - `@TrimValidation(message?: Message)` - добавляет валидатор, который проверяет отсутствие пробелов в начале и конце строки.
 
   - `@LowercaseValidation(message?: Message)` - добавляет валидатор, который проверяет отсутствие заглавных букв в строке.
 
   - `@UppercaseValidation(message?: Message)` - добавляет валидатор, который проверяет отсутствие строчных букв в строке.
 
-  - `@MinLengthValidation(trashold: number, message?: Message)` - добавляет валидатор, который проверяет длину строки на соответствие максимальному значению `trashold`(включительно).
+  - `@MinLengthValidation(threshold: number, message?: Message)` - добавляет валидатор, который проверяет длину строки на соответствие максимальному значению `threshold`(включительно).
 
-  - `@maxLength(trashold: number, message?: Message)` - добавляет валидатор, который проверяет длину строки на соответствие максимальному значению `trashold`(включительно).
+  - `@maxLength(threshold: number, message?: Message)` - добавляет валидатор, который проверяет длину строки на соответствие максимальному значению `threshold`(включительно).
 
   - `@EmailValidation(message?: Message)` - добавляет валидатор, который проверяет - является ли строка корректным email адресом.
 

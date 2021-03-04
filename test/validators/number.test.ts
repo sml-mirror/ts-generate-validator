@@ -35,7 +35,7 @@ describe('number validators', () => {
       jest.fn(() => {
         minValidator({
           property: testData[propertyName],
-          trashold: 30,
+          threshold: 30,
           config,
           data: testData,
           propertyName
@@ -47,7 +47,7 @@ describe('number validators', () => {
       jest.fn(() => {
         minValidator({
           property: testData[propertyName],
-          trashold: 24,
+          threshold: 24,
           config,
           data: testData,
           propertyName
@@ -59,7 +59,7 @@ describe('number validators', () => {
       jest.fn(() => {
         minValidator({
           property: testData[propertyName],
-          trashold: 22,
+          threshold: 22,
           config,
           data: testData,
           propertyName
@@ -73,7 +73,7 @@ describe('number validators', () => {
       jest.fn(() => {
         maxValidator({
           property: testData[propertyName],
-          trashold: 22,
+          threshold: 22,
           config,
           data: testData,
           propertyName
@@ -85,7 +85,7 @@ describe('number validators', () => {
       jest.fn(() => {
         maxValidator({
           property: testData[propertyName],
-          trashold: 24,
+          threshold: 24,
           config,
           data: testData,
           propertyName
@@ -97,7 +97,7 @@ describe('number validators', () => {
       jest.fn(() => {
         maxValidator({
           property: testData[propertyName],
-          trashold: 25,
+          threshold: 25,
           config,
           data: testData,
           propertyName

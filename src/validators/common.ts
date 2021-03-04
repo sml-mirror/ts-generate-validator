@@ -1,4 +1,4 @@
-import { TypeValidator, primitiveValidationTypes, EqualValidator, EqualToValidator } from './model';
+import { TypeValidator, primitiveValidationTypes, EqualValidator, DependOnValidator } from './model';
 
 export const typeValidator: TypeValidator = ({ property, type, customMessage }) => {
   const propertyType = typeof property;
@@ -29,7 +29,7 @@ export const equalValidator: EqualValidator = ({ property, value, customMessage 
   }
 };
 
-export const equalToValidator: EqualToValidator = ({ property, targetPropertyName, data, customMessage }) => {
+export const equalToValidator: DependOnValidator = ({ property, targetPropertyName, data, customMessage }) => {
   if (property !== data[targetPropertyName]) {
     const defaultMessage = `Must be equal to a property "${targetPropertyName}" (expected: "${data[targetPropertyName]}", received: "${property}")`;
     throw new Error(customMessage ?? defaultMessage);
