@@ -15,6 +15,11 @@ export const typeValidator: TypeValidator = ({ property, type, customMessage }) 
     const defaultMessage = `Must be a "${type}", but received a "${propertyType}"`;
     throw new Error(customMessage ?? defaultMessage);
   }
+
+  if (type === 'number' && isNaN(property)) {
+    const defaultMessage = `Must be a "${type}", but received a "NaN" (Not a number)`;
+    throw new Error(customMessage ?? defaultMessage);
+  }
 };
 
 export const equalValidator: EqualValidator = ({ property, value, customMessage }) => {
