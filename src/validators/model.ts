@@ -68,7 +68,9 @@ export type ValidatorPayload<
 > = BaseValidatorPayload<D, P, C> & EP;
 
 export type BaseValidator<
-  EP extends Record<string, any> = Record<string, never>,
+  // Reason for eslint disable: Record<string, never> behavior is not equal to {} behavior
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  EP extends {} = {},
   D extends Data = Data,
   P extends keyof D = keyof D,
   C extends UserContext = UserContext
@@ -107,6 +109,46 @@ export type EqualToValidatorPayload<D extends Data> = {
 };
 
 export type EqualToValidator<
+  D extends Data = Data,
+  P extends keyof D = keyof D,
+  C extends UserContext = UserContext
+> = BaseValidator<EqualToValidatorPayload<D>, D, P, C>;
+
+export type MinValidatorPayload = {
+  trashold: number;
+};
+
+export type MinValidator<
+  D extends Data = Data,
+  P extends keyof D = keyof D,
+  C extends UserContext = UserContext
+> = BaseValidator<MinValidatorPayload, D, P, C>;
+
+export type MaxValidatorPayload = {
+  trashold: number;
+};
+
+export type MaxValidator<
+  D extends Data = Data,
+  P extends keyof D = keyof D,
+  C extends UserContext = UserContext
+> = BaseValidator<MinValidatorPayload, D, P, C>;
+
+export type LessThanValidatorPayload<D extends Data> = {
+  targetPropertyName: keyof D;
+};
+
+export type LessThanValidator<
+  D extends Data = Data,
+  P extends keyof D = keyof D,
+  C extends UserContext = UserContext
+> = BaseValidator<EqualToValidatorPayload<D>, D, P, C>;
+
+export type MoreThanValidatorPayload<D extends Data> = {
+  targetPropertyName: keyof D;
+};
+
+export type MoreThanValidator<
   D extends Data = Data,
   P extends keyof D = keyof D,
   C extends UserContext = UserContext
