@@ -1,5 +1,5 @@
 import { equalValidator, equalToValidator } from './../../src/validators/common';
-import { typeValidator, ValidationType } from '../../src';
+import { requiredOneOfValidator, typeValidator, ValidationType } from '../../src';
 import { getConfig } from './../../src/config/runtime';
 
 const testData = {
@@ -20,6 +20,45 @@ describe('common validators', () => {
   const propertyName = 'a';
   const equalPropertyName = 'e';
   const notEqualPropertyName = 'b';
+
+  // requiredOneOfValidator
+  test('requiredOneOfValidator validator', () => {
+    expect(
+      jest.fn(() => {
+        requiredOneOfValidator({
+          property: testData.c,
+          fields: ['c', 'd', 'm', 'l', 'z'],
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        requiredOneOfValidator({
+          property: testData.c,
+          fields: ['c', 'c', 'd', 'd'],
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        requiredOneOfValidator({
+          property: testData.a,
+          fields: ['a', 'b', 'e'],
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).not.toThrowError();
+  });
 
   test('type validator', () => {
     expect(

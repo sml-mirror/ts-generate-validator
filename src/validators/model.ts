@@ -7,7 +7,6 @@ export enum ValidationType {
   string = 'string',
   boolean = 'boolean',
   enum = 'enum',
-  custom = 'custom',
   unknown = 'unknown',
   notSupported = 'notSupported'
 }
@@ -15,24 +14,25 @@ export enum ValidationType {
 export const primitiveValidationTypes = [ValidationType.boolean, ValidationType.number, ValidationType.string] as const;
 export type PrimitiveValidationType = typeof primitiveValidationTypes[number];
 
-export enum NumberValidator {
+export enum CommonValidator {
   type = 'type',
   custom = 'custom',
+  equal = 'equal',
+  equalTo = 'equalTo'
+}
+
+export enum NumberValidator {
   min = 'min',
   max = 'max',
-  equal = 'equal',
   negative = 'negative',
   positive = 'positive',
   integer = 'integer',
   float = 'float',
   lessThan = 'lessThan',
-  moreThan = 'moreThan',
-  equalTo = 'equalTo'
+  moreThan = 'moreThan'
 }
 
 export enum StringValidator {
-  type = 'type',
-  custom = 'custom',
   trim = 'trim',
   lowercase = 'lowercase',
   uppercase = 'uppercase',
@@ -40,17 +40,10 @@ export enum StringValidator {
   maxLength = 'maxLength',
   email = 'email',
   url = 'url',
-  match = 'match',
-  equal = 'equal',
-  equalTo = 'equalTo'
+  match = 'match'
 }
 
-export enum BooleanValidator {
-  type = 'type',
-  custom = 'custom',
-  equal = 'equal',
-  equalTo = 'equalTo'
-}
+export type BooleanValidator = CommonValidator;
 
 export interface BaseValidatorPayload<D extends Data, P extends keyof D, C extends UserContext> {
   property: D[P];
@@ -76,6 +69,14 @@ export type BaseValidator<
   C extends UserContext = UserContext
 > = (payload: ValidatorPayload<EP, D, P, C>) => void;
 
+export type RequiredOneOfValidatorPayload<D extends Data> = { fields: (keyof D)[] };
+
+export type RequiredOneOfValidator<
+  D extends Data = Data,
+  P extends keyof D = keyof D,
+  C extends UserContext = UserContext
+> = BaseValidator<RequiredOneOfValidatorPayload<D>, D, P, C>;
+
 export type CustomValidatorPayload<C extends UserContext> = { context: C };
 
 export type CustomValidator = <D extends Data = Data, P extends keyof D = keyof D, C extends UserContext = UserContext>(
@@ -84,8 +85,11 @@ export type CustomValidator = <D extends Data = Data, P extends keyof D = keyof 
   | ReturnType<BaseValidator<CustomValidatorPayload<C>, D, P, C>>
   | Promise<ReturnType<BaseValidator<CustomValidatorPayload<C>, D, P, C>>>;
 
+export type EnumDescription = Record<string, any>;
+
 export type TypeValidatorPayload = {
   type: ValidationType;
+  typeDescription?: EnumDescription;
 };
 
 export type TypeValidator<
