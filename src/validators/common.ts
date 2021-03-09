@@ -11,7 +11,7 @@ import {
 } from './model';
 
 export const requiredOneOfValidator: RequiredOneOfValidator = ({ data, fields, customMessage }) => {
-  if (!fields.find((field) => Boolean(data[field] === undefined || data[field] === null))) {
+  if (!fields.find((field) => Boolean(data[field] !== undefined && data[field] !== null))) {
     const defaultMessage = `At least one of the fields must be filled, but all fields are empty`;
     throw new Error(customMessage ?? defaultMessage);
   }

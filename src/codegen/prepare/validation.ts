@@ -7,6 +7,7 @@ import { PreparedValidationItem, PreparedValidatorPayloadItem } from './model';
 import { PreparedValidation } from './model';
 import { ClassMetadata } from './../parse/model';
 import { UserContext, GenerateValidatorConfig } from './../../config/model';
+import pkg from '../../../package.json';
 
 export const buildValidationFromClassMetadata = <C extends UserContext = UserContext>({
   cls,
@@ -84,7 +85,7 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
     if (typeMetadata.validationType === ValidationType.enum) {
       if (typeMetadata.referencePath && typeMetadata.name) {
         addImport(typeMetadata.referencePath, typeMetadata.name);
-        addImport(process.env.npm_package_name as string, 'getEnumValues');
+        addImport(pkg.name, 'getEnumValues');
         validatorPayload.push({ property: 'typeDescription', value: typeMetadata.name });
       } else {
         throw new IssueError(
@@ -93,7 +94,7 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
       }
     }
 
-    addImport(process.env.npm_package_name as string, typeValidator.name);
+    addImport(pkg.name, typeValidator.name);
     items.push({
       propertyName: fieldName,
       validatorName: typeValidator.name,
@@ -102,6 +103,11 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
 
     // Other validations
     decorators.forEach(({ name: decoratorName, arguments: args }) => {
+      // Skip TypeValidation decorator
+      if (decoratorName === TypeValidation.name) {
+        return;
+      }
+
       if (!decoratorNameToValidationItemData[decoratorName]) {
         throw new IssueError(`Validation data for "${decoratorName}" property decorator not found`);
       }
@@ -123,7 +129,7 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
         async = true;
       }
 
-      addImport(process.env.npm_package_name as string, validatorName);
+      addImport(pkg.name, validatorName);
       items.push({
         propertyName: fieldName,
         validatorName,

@@ -20,7 +20,7 @@ import {
   moreThanValidator
 } from './../../validators/number';
 import { equalValidator, equalToValidator } from './../../validators/common';
-import { customValidator } from 'src/validators';
+import { customValidator } from '../../validators';
 import {
   CustomValidation,
   EqualValidation,

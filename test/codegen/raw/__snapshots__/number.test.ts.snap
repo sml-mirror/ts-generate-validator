@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`codegen/raw/number parse metadata: parseMetadata 1`] = `
+exports[`codegen/raw/number parse & prepare: parseMetadata 1`] = `
 Array [
   Object {
     "classes": Array [

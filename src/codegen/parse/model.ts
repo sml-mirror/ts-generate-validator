@@ -2,12 +2,7 @@ import { ValidationType } from '../../validators/model';
 import { Decorator } from 'ts-file-parser';
 
 export interface ClassFieldTypeMetadata {
-  validationType:
-    | ValidationType.boolean
-    | ValidationType.number
-    | ValidationType.string
-    | ValidationType.enum
-    | ValidationType.notSupported;
+  validationType: ValidationType;
   referencePath?: string;
   name?: string;
 }

@@ -1,4 +1,5 @@
 import { SeverityLevel } from '../../config/model';
+import pkg from '../../../package.json';
 
 export const handleError = (message: string, severityLevel: SeverityLevel): void => {
   if (severityLevel === SeverityLevel.silence) {
@@ -24,7 +25,7 @@ export class ErrorInFile extends Error {
 
 export class IssueError extends Error {
   constructor(message: string) {
-    const errMessage = `${message}\n\nIt seems like "${process.env.npm_package_name}" issue. Please, report this to ${process.env.npm_package_bugs_url}.`;
+    const errMessage = `${message}\n\nIt seems like "${pkg.name}" issue. Please, report this to ${pkg.bugs.url}.`;
     super(errMessage);
     // Set the prototype explicitly
     // https://stackoverflow.com/a/41429145/3151214

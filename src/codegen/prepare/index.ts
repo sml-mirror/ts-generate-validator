@@ -21,6 +21,9 @@ export const prepareDataForRender = (
     const importMap = buildBaseImportMap();
     const handleImportAdd = (targetPath: string, clause: string): void => {
       const importPath = targetPath.indexOf('/') > -1 ? path.relative(filePath, targetPath) : targetPath;
+      if (!importMap[importPath]) {
+        importMap[importPath] = {};
+      }
       importMap[importPath][clause] = true;
     };
 

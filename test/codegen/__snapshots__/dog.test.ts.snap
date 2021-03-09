@@ -1,6 +1,135 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`codegen/dog parse metadata 1`] = `
+exports[`codegen/dog parse & prepare: data for render 1`] = `
+Array [
+  Object {
+    "fileName": ".Users.alex-shul.Desktop.projects.ts-generate-validator.test.mock.dog.model",
+    "filePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/dog/generated/validators",
+    "imports": Array [
+      Object {
+        "clauses": Array [
+          "GeneratedValidation",
+          "typeValidator",
+          "minLengthValidator",
+          "maxLengthValidator",
+          "minValidator",
+          "maxValidator",
+          "integerValidator",
+          "lessThanValidator",
+        ],
+        "path": "ts-generate-validator",
+      },
+      Object {
+        "clauses": Array [
+          "Dog",
+        ],
+        "path": "../../model",
+      },
+    ],
+    "validationArgs": Array [
+      "data",
+      "config",
+    ],
+    "validations": Array [
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "name",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "name",
+            "validatorName": "minLengthValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "threshold",
+                "value": "5",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "name",
+            "validatorName": "maxLengthValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "threshold",
+                "value": "20",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "age",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "age",
+            "validatorName": "minValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "threshold",
+                "value": "2",
+              },
+              Object {
+                "property": "customMessage",
+                "value": "only dogs over 2 years old are accepted",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "age",
+            "validatorName": "maxValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "threshold",
+                "value": "16",
+              },
+              Object {
+                "property": "customMessage",
+                "value": "dogs can't live that long",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "age",
+            "validatorName": "integerValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customMessage",
+                "value": "age must be an integer value",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "ownedYears",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "ownedYears",
+            "validatorName": "lessThanValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "targetPropertyName",
+                "value": "age",
+              },
+              Object {
+                "property": "customMessage",
+                "value": "dog can't be owned by anyone longer than his age",
+              },
+            ],
+          },
+        ],
+        "name": "dogValidator",
+      },
+    ],
+  },
+]
+`;
+
+exports[`codegen/dog parse & prepare: parsed metadata 1`] = `
 Array [
   Object {
     "classes": Array [

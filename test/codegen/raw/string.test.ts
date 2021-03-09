@@ -1,3 +1,4 @@
+import { prepareDataForRender } from './../../../src/codegen/prepare/index';
 import { ValidationType } from '../../../src/validators/model';
 import { parseInputFiles } from '../../../src/codegen/parse/index';
 import * as path from 'path';
@@ -21,7 +22,7 @@ describe('codegen/raw/string', () => {
     process.chdir(prevRootDir);
   });
 
-  test('parse metadata', () => {
+  test('parse & prepare', () => {
     const config = getCodegenConfig();
     const inputFiles = getAllFiles(path.resolve(config.inputPath));
     const inputFilesMetadata = parseInputFiles(inputFiles);
@@ -93,5 +94,10 @@ describe('codegen/raw/string', () => {
         });
       }
     });
+
+    // TODO: make separate tests for input files metadata
+
+    // const dataForRender = prepareDataForRender(inputFilesMetadata, config);
+    // expect(dataForRender).toMatchSnapshot('data for render');
   });
 });

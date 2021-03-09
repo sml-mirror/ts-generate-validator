@@ -1,6 +1,254 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`codegen/raw/common parse metadata: parseMetadata 1`] = `
+exports[`codegen/raw/common parse & prepare: data for render 1`] = `
+Array [
+  Object {
+    "fileName": ".Users.alex-shul.Desktop.projects.ts-generate-validator.test.mock.raw.common.model",
+    "filePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/common/generated/validators",
+    "imports": Array [
+      Object {
+        "clauses": Array [
+          "GeneratedValidation",
+          "typeValidator",
+          "customValidator",
+          "equalValidator",
+          "equalToValidator",
+        ],
+        "path": "ts-generate-validator",
+      },
+      Object {
+        "clauses": Array [
+          "TypeValidatorWithCustomMessage",
+          "TypeValidatorOnWrongPropertyType",
+          "CustomValidatorFailed",
+          "CutomValidatorSuccess",
+          "CutomValidatorSuccessAsync",
+          "IgnoreValidationForNonPrimitiveProperty",
+          "IgnoreValidationForPrimitiveProperty",
+          "IgnoreValidationForPrimitivePropertyWithOtherDecorators",
+          "EqualValidatorWithDefaultMessage",
+          "EqualValidatorWithCustomMessage",
+          "EqualValidatorForBoolean",
+          "EqualToValidatorWithDefaultMessage",
+        ],
+        "path": "../../model",
+      },
+    ],
+    "validationArgs": Array [
+      "data",
+      "config",
+    ],
+    "validations": Array [
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customMessage",
+                "value": "type custom message",
+              },
+            ],
+          },
+        ],
+        "name": "typeValidatorWithCustomMessageValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [],
+        "name": "typeValidatorOnWrongPropertyTypeValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "customValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customValidationFunction",
+                "value": "() => {
+    throw new Error('Failed!');
+  }",
+              },
+            ],
+          },
+        ],
+        "name": "customValidatorFailedValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "customValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customValidationFunction",
+                "value": "() => undefined",
+              },
+            ],
+          },
+        ],
+        "name": "cutomValidatorSuccessValidator",
+      },
+      Object {
+        "async": true,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "customValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customValidationFunction",
+                "value": "async () => new Promise((resolve) => setTimeout(() => resolve(), 300))",
+              },
+            ],
+          },
+        ],
+        "name": "cutomValidatorSuccessAsyncValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [],
+        "name": "ignoreValidationForNonPrimitivePropertyValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [],
+        "name": "ignoreValidationForPrimitivePropertyValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [],
+        "name": "ignoreValidationForPrimitivePropertyWithOtherDecoratorsValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "equalValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "value",
+                "value": "abcdef",
+              },
+            ],
+          },
+        ],
+        "name": "equalValidatorWithDefaultMessageValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "equalValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "value",
+                "value": "245",
+              },
+              Object {
+                "property": "customMessage",
+                "value": "equal custom message",
+              },
+            ],
+          },
+        ],
+        "name": "equalValidatorWithCustomMessageValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "equalValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "value",
+                "value": "true",
+              },
+            ],
+          },
+        ],
+        "name": "equalValidatorForBooleanValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "equalToValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "targetPropertyName",
+                "value": "someOtherProperty",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "someOtherProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "someOtherProperty",
+            "validatorName": "equalToValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "targetPropertyName",
+                "value": "someProperty",
+              },
+            ],
+          },
+        ],
+        "name": "equalToValidatorWithDefaultMessageValidator",
+      },
+    ],
+  },
+]
+`;
+
+exports[`codegen/raw/common parse & prepare: parsed metadata 1`] = `
 Array [
   Object {
     "classes": Array [
@@ -74,7 +322,6 @@ Array [
                   "() => {
     throw new Error('Failed!');
   }",
-                  "custom validator message",
                 ],
                 "name": "CustomValidation",
               },
@@ -102,7 +349,6 @@ Array [
               Object {
                 "arguments": Array [
                   "() => undefined",
-                  "custom validator message",
                 ],
                 "name": "CustomValidation",
               },
@@ -130,7 +376,6 @@ Array [
               Object {
                 "arguments": Array [
                   "async () => new Promise((resolve) => setTimeout(() => resolve(), 300))",
-                  "custom validator message",
                 ],
                 "name": "CustomValidation",
               },
