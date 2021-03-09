@@ -12,13 +12,13 @@ export const handleError = (message: string, severityLevel: SeverityLevel): void
   }
 };
 
-export class FileError extends Error {
+export class ErrorInFile extends Error {
   constructor(message: string, fileName: string) {
     const errMessage = `${message}\n\nThe above error was occured in ${fileName}.`;
     super(errMessage);
     // Set the prototype explicitly
     // https://stackoverflow.com/a/41429145/3151214
-    Object.setPrototypeOf(this, FileError.prototype);
+    Object.setPrototypeOf(this, ErrorInFile.prototype);
   }
 }
 

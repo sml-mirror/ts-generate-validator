@@ -77,13 +77,20 @@ export type RequiredOneOfValidator<
   C extends UserContext = UserContext
 > = BaseValidator<RequiredOneOfValidatorPayload<D>, D, P, C>;
 
-export type CustomValidatorPayload<C extends UserContext> = { context: C };
+export type CustomValidationFunction = <D extends Data, P extends keyof D, C extends UserContext>(
+  payload: Omit<BaseValidatorPayload<D, P, C>, 'customMessage'> & { context: C }
+) => ReturnType<BaseValidator> | Promise<ReturnType<BaseValidator>>;
 
-export type CustomValidator = <D extends Data = Data, P extends keyof D = keyof D, C extends UserContext = UserContext>(
-  payload: ValidatorPayload<CustomValidatorPayload<C>, D, P, C>
-) =>
-  | ReturnType<BaseValidator<CustomValidatorPayload<C>, D, P, C>>
-  | Promise<ReturnType<BaseValidator<CustomValidatorPayload<C>, D, P, C>>>;
+export type CustomValidatorPayload<C extends UserContext> = {
+  context: C;
+  customValidationFunction: CustomValidationFunction;
+};
+
+export type CustomValidator<
+  D extends Data = Data,
+  P extends keyof D = keyof D,
+  C extends UserContext = UserContext
+> = BaseValidator<CustomValidatorPayload<C>, D, P, C>;
 
 export type EnumDescription = Record<string, any>;
 

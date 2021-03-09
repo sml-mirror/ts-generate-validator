@@ -1,4 +1,5 @@
-import { handleError, FileError, IssueError } from './../utils/error';
+import { decoratorNameToValidationItemData } from './validationItem';
+import { handleError, ErrorInFile, IssueError } from './../utils/error';
 import { ValidationType } from './../../validators/model';
 import { requiredOneOfValidator, typeValidator } from './../../validators/common';
 import { RequiredOneOfValidation, CustomValidation, IgnoreValidation, TypeValidation } from './../../decorators/index';
@@ -20,7 +21,6 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
 }): PreparedValidation | undefined => {
   const name = getValidationName(cls.name);
   const items: PreparedValidationItem[] = [];
-  // eslint-disable-next-line prefer-const
   let async = false;
 
   cls.decorators.forEach(({ name, arguments: args }) => {
@@ -30,7 +30,7 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
 
       fields.forEach((requiredFieldName) => {
         if (!cls.fields.find(({ name: clsFieldName }) => clsFieldName === requiredFieldName)) {
-          throw new FileError(
+          throw new ErrorInFile(
             `Class "${cls.name}" has wrong field list in "${RequiredOneOfValidation.name}" decorator. Field "${requiredFieldName}" not exists in class declaration.`,
             clsFileName
           );
@@ -84,6 +84,7 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
     if (typeMetadata.validationType === ValidationType.enum) {
       if (typeMetadata.referencePath && typeMetadata.name) {
         addImport(typeMetadata.referencePath, typeMetadata.name);
+        addImport(process.env.npm_package_name as string, 'getEnumValues');
         validatorPayload.push({ property: 'typeDescription', value: typeMetadata.name });
       } else {
         throw new IssueError(
@@ -92,13 +93,46 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
       }
     }
 
+    addImport(process.env.npm_package_name as string, typeValidator.name);
     items.push({
       propertyName: fieldName,
       validatorName: typeValidator.name,
       validatorPayload
     });
 
-    // TODO: other decorators applying
+    // Other validations
+    decorators.forEach(({ name: decoratorName, arguments: args }) => {
+      if (!decoratorNameToValidationItemData[decoratorName]) {
+        throw new IssueError(`Validation data for "${decoratorName}" property decorator not found`);
+      }
+
+      const { validatorName, validatorArgumentNames, allowedValidationTypes } = decoratorNameToValidationItemData[
+        decoratorName
+      ];
+
+      if (!allowedValidationTypes.includes(typeMetadata.validationType)) {
+        throw new ErrorInFile(
+          `Decorator "${validatorName}" can't be used on "${cls.name}.${fieldName}" of type "${
+            typeMetadata.validationType
+          }" (allowed types: ${allowedValidationTypes.map((v) => `"${v}"`).join(', ')})`,
+          clsFileName
+        );
+      }
+
+      if (decoratorName === CustomValidation.name && args[0].toString().match(/^\s*async/)) {
+        async = true;
+      }
+
+      addImport(process.env.npm_package_name as string, validatorName);
+      items.push({
+        propertyName: fieldName,
+        validatorName,
+        validatorPayload: args.map((arg, index) => ({
+          property: validatorArgumentNames[index],
+          value: arg.toString()
+        }))
+      });
+    });
   });
 
   return {

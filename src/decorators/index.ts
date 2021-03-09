@@ -1,4 +1,4 @@
-import { CustomValidator } from './../validators/model';
+import { CustomValidationFunction } from './../validators/model';
 import { Data } from 'src/codegen/model';
 import { Message } from 'src/localization/model';
 
@@ -55,7 +55,7 @@ export const TypeValidation = (message: Message) => emptyDecorator;
  * @param message error message
  */
 // @ts-ignore
-export const CustomValidation = (validator: CustomValidator, message: Message) => emptyDecorator;
+export const CustomValidation = (validator: CustomValidationFunction) => emptyDecorator;
 
 /**
  * Marks a property as ignored in a validation function - it will not be checked against type, and any other decorators applied will be ignored

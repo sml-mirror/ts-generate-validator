@@ -2,6 +2,7 @@ import { IssueError } from './../codegen/utils/error';
 import { getEnumValues } from './../utils/enum';
 import {
   TypeValidator,
+  CustomValidator,
   primitiveValidationTypes,
   EqualValidator,
   DependOnValidator,
@@ -10,7 +11,7 @@ import {
 } from './model';
 
 export const requiredOneOfValidator: RequiredOneOfValidator = ({ data, fields, customMessage }) => {
-  if (!fields.find((field) => Boolean(data[field]))) {
+  if (!fields.find((field) => Boolean(data[field] === undefined || data[field] === null))) {
     const defaultMessage = `At least one of the fields must be filled, but all fields are empty`;
     throw new Error(customMessage ?? defaultMessage);
   }
@@ -51,6 +52,10 @@ export const typeValidator: TypeValidator = ({ property, type, typeDescription, 
     const defaultMessage = `Must be a "${type}", but received a "NaN" (Not a number)`;
     throw new Error(customMessage ?? defaultMessage);
   }
+};
+
+export const customValidator: CustomValidator = ({ customValidationFunction, ...rest }) => {
+  customValidationFunction({ ...rest });
 };
 
 export const equalValidator: EqualValidator = ({ property, value, customMessage }) => {
