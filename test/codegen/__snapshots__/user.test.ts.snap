@@ -1,6 +1,290 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`codegen/user parse metadata 1`] = `
+exports[`codegen/user parse & prepare: data for render 1`] = `
+Array [
+  Object {
+    "fileName": ".Users.alex-shul.Desktop.projects.ts-generate-validator.test.mock.user.model",
+    "filePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/user/generated/validators",
+    "imports": Array [
+      Object {
+        "clauses": Array [
+          "GeneratedValidation",
+          "typeValidator",
+          "minLengthValidator",
+          "maxLengthValidator",
+          "trimValidator",
+          "minValidator",
+          "maxValidator",
+          "integerValidator",
+          "lessThanValidator",
+          "positiveValidator",
+          "equalValidator",
+          "emailValidator",
+          "matchValidator",
+          "urlValidator",
+          "lowercaseValidator",
+          "uppercaseValidator",
+          "floatValidator",
+        ],
+        "path": "ts-generate-validator",
+      },
+      Object {
+        "clauses": Array [
+          "User",
+        ],
+        "path": "../../model",
+      },
+    ],
+    "validationArgs": Array [
+      "data",
+      "config",
+    ],
+    "validations": Array [
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "email, phone",
+            "validatorName": "requiredOneOfValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "fields",
+                "value": "['email', 'phone']",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "name",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "name",
+            "validatorName": "minLengthValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "threshold",
+                "value": "2",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "name",
+            "validatorName": "maxLengthValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "threshold",
+                "value": "50",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "name",
+            "validatorName": "trimValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "surname",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "surname",
+            "validatorName": "minLengthValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "threshold",
+                "value": "2",
+              },
+              Object {
+                "property": "customMessage",
+                "value": "surname length must be more then 2 letters",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "surname",
+            "validatorName": "maxLengthValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "threshold",
+                "value": "50",
+              },
+              Object {
+                "property": "customMessage",
+                "value": "surname length must be less then 50 letters",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "surname",
+            "validatorName": "trimValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customMessage",
+                "value": "there should be no spaces at the beginning and at the end of surname",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "age",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "age",
+            "validatorName": "minValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "threshold",
+                "value": "18",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "age",
+            "validatorName": "maxValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "threshold",
+                "value": "60",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "age",
+            "validatorName": "integerValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "workExperience",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "workExperience",
+            "validatorName": "lessThanValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "targetPropertyName",
+                "value": "age",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "workExperience",
+            "validatorName": "positiveValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "isActive",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "isActive",
+            "validatorName": "equalValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "value",
+                "value": "true",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "email",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "email",
+            "validatorName": "emailValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "phone",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "phone",
+            "validatorName": "matchValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "regexp",
+                "value": "/^\\\\d{10}$/",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "website",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "website",
+            "validatorName": "urlValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "nickname",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "nickname",
+            "validatorName": "lowercaseValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "nickname",
+            "validatorName": "minLengthValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "threshold",
+                "value": "5",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "nickname",
+            "validatorName": "maxLengthValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "threshold",
+                "value": "20",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "cardHolderName",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "cardHolderName",
+            "validatorName": "uppercaseValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "insuranceRatio",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "insuranceRatio",
+            "validatorName": "floatValidator",
+            "validatorPayload": Array [],
+          },
+        ],
+        "name": "userValidator",
+      },
+    ],
+  },
+]
+`;
+
+exports[`codegen/user parse & prepare: parsed metadata 1`] = `
 Array [
   Object {
     "classes": Array [
@@ -13,7 +297,8 @@ Array [
           Object {
             "arguments": Array [
               Array [
-                "email, phone",
+                "email",
+                "phone",
               ],
             ],
             "name": "RequiredOneOfValidation",

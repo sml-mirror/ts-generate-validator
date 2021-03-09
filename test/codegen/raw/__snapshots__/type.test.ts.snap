@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`codegen/raw/type parse & prepare: data for render 1`] = `
+Array [
+  Object {
+    "fileName": ".Users.alex-shul.Desktop.projects.ts-generate-validator.test.mock.raw.type.model",
+    "filePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/type/generated/validators",
+    "imports": Array [
+      Object {
+        "clauses": Array [
+          "GeneratedValidation",
+          "getEnumValues",
+          "typeValidator",
+        ],
+        "path": "ts-generate-validator",
+      },
+      Object {
+        "clauses": Array [
+          "ClassWithNonPrimitiveProperty",
+          "SomeEnum",
+          "ClassWithEnumProperty",
+        ],
+        "path": "../../model",
+      },
+    ],
+    "validationArgs": Array [
+      "data",
+      "config",
+    ],
+    "validations": Array [
+      Object {
+        "async": false,
+        "items": Array [],
+        "name": "classWithNonPrimitivePropertyValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "typeDescription",
+                "value": "SomeEnum",
+              },
+            ],
+          },
+        ],
+        "name": "classWithEnumPropertyValidator",
+      },
+    ],
+  },
+]
+`;

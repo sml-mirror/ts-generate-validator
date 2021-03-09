@@ -31,19 +31,19 @@ export class TypeValidatorOnWrongPropertyType {
 export class CustomValidatorFailed {
   @CustomValidation(() => {
     throw new Error('Failed!');
-  }, 'custom validator message')
+  })
   public someProperty?: number;
 }
 
 @Validation
 export class CutomValidatorSuccess {
-  @CustomValidation(() => undefined, 'custom validator message')
+  @CustomValidation(() => undefined)
   public someProperty?: number;
 }
 
 @Validation
 export class CutomValidatorSuccessAsync {
-  @CustomValidation(async () => new Promise((resolve) => setTimeout(() => resolve(), 300)), 'custom validator message')
+  @CustomValidation(async () => new Promise((resolve) => setTimeout(() => resolve(), 300)))
   public someProperty?: number;
 }
 

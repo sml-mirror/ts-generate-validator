@@ -1,17 +1,17 @@
-import { BooleanValidator } from '../validators/model';
+import { BooleanValidator, CommonValidator } from '../validators/model';
 import { ValidationType, NumberValidator, StringValidator } from '../validators/model';
 
 export type Message = string;
 
 export type MessageMap = {
   [ValidationType.number]: {
-    [key in NumberValidator]: Message;
+    [key in NumberValidator | CommonValidator]: Message;
   };
   [ValidationType.string]: {
-    [key in StringValidator]: Message;
+    [key in StringValidator | CommonValidator]: Message;
   };
   [ValidationType.boolean]: {
-    [key in BooleanValidator]: Message;
+    [key in BooleanValidator | CommonValidator]: Message;
   };
 };
 

@@ -20,7 +20,7 @@ import {
 } from '../../../src/decorators/index';
 
 @Validation
-@RequiredOneOfValidation(['email, phone'])
+@RequiredOneOfValidation(['email', 'phone'])
 export class User {
   @MinLengthValidation(2)
   @MaxLengthValidation(50)

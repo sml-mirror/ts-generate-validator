@@ -1,7 +1,39 @@
-import { TypeValidator, primitiveValidationTypes, EqualValidator, DependOnValidator } from './model';
+import { IssueError } from './../codegen/utils/error';
+import { getEnumValues } from './../utils/enum';
+import {
+  TypeValidator,
+  CustomValidator,
+  primitiveValidationTypes,
+  EqualValidator,
+  DependOnValidator,
+  ValidationType,
+  RequiredOneOfValidator
+} from './model';
 
-export const typeValidator: TypeValidator = ({ property, type, customMessage }) => {
+export const requiredOneOfValidator: RequiredOneOfValidator = ({ data, fields, customMessage }) => {
+  if (!fields.find((field) => Boolean(data[field] !== undefined && data[field] !== null))) {
+    const defaultMessage = `At least one of the fields must be filled, but all fields are empty`;
+    throw new Error(customMessage ?? defaultMessage);
+  }
+};
+
+export const typeValidator: TypeValidator = ({ property, type, typeDescription, customMessage }) => {
   const propertyType = typeof property;
+
+  if (type === ValidationType.enum) {
+    if (!typeDescription) {
+      throw new IssueError(`Type description for "${type}" type not provided.`);
+    }
+
+    const possibleValues = getEnumValues(typeDescription);
+    if (!possibleValues.includes(property)) {
+      const defaultMessage = `Must be a "${type}" member. Received value is "${property}" (expected one of: ${possibleValues.join(
+        ', '
+      )}`;
+      throw new Error(customMessage ?? defaultMessage);
+    }
+    return;
+  }
 
   if (!primitiveValidationTypes.includes(type as any)) {
     throw new Error(
@@ -20,6 +52,10 @@ export const typeValidator: TypeValidator = ({ property, type, customMessage }) 
     const defaultMessage = `Must be a "${type}", but received a "NaN" (Not a number)`;
     throw new Error(customMessage ?? defaultMessage);
   }
+};
+
+export const customValidator: CustomValidator = ({ customValidationFunction, ...rest }) => {
+  customValidationFunction({ ...rest });
 };
 
 export const equalValidator: EqualValidator = ({ property, value, customMessage }) => {
