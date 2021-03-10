@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import mkdirp from 'mkdirp';
-import prettier from 'prettier';
+import * as mkdirp from 'mkdirp';
+import * as prettier from 'prettier';
 import { render, configure } from 'nunjucks';
 import { getAllFiles } from './utils/getAllFiles';
 import { getCodegenConfig } from './../config/codegen';
@@ -14,7 +14,7 @@ export const createValidators = async (): Promise<void> => {
   const inputFilesMetadata = parseInputFiles(inputFiles);
   const dataForRender = prepareDataForRender(inputFilesMetadata, config);
 
-  const viewsFolder = path.resolve(__dirname, 'view/');
+  const viewsFolder = path.resolve('src/codegen/view');
   configure(viewsFolder, { autoescape: false, trimBlocks: false });
 
   const prettierConfig = (await prettier.resolveConfig(process.cwd())) ?? {};

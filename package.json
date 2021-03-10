@@ -2,12 +2,13 @@
   "name": "ts-generate-validator",
   "version": "0.0.1",
   "description": "Task to generate validation functions to check whether JSON data conforms to a schema described as typescript classes",
-  "main": "dist/index.ts",
-  "bin": "dist/bin.js",
+  "main": "src/index.ts",
+  "bin": "dist/src/bin.js",
   "scripts": {
     "lint": "eslint . --ext .ts",
     "fix": "npm run lint -- --fix",
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc --resolveJsonModule --outDir dist src/bin.ts"
   },
   "repository": {
     "type": "git",

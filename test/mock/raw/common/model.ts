@@ -7,7 +7,7 @@ import {
   TypeValidation,
   MinValidation,
   MaxValidation
-} from 'src/decorators/index';
+} from '../../../../src/decorators';
 
 /**
  * Type

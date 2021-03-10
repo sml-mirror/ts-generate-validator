@@ -8,7 +8,7 @@ import { PreparedValidationItem, PreparedValidatorPayloadItem } from './model';
 import { PreparedValidation } from './model';
 import { ClassMetadata } from './../parse/model';
 import { UserContext, GenerateValidatorConfig } from './../../config/model';
-import pkg from '../../../package.json';
+import * as pkg from '../../../package.json';
 
 export const buildValidationFromClassMetadata = <C extends UserContext = UserContext>({
   cls,

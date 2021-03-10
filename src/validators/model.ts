@@ -1,6 +1,6 @@
-import { Message } from 'src/localization/model';
-import { UserContext, GenerateValidatorConfig } from 'src/config/model';
-import { Data } from 'src/codegen/model';
+import { Message } from '../localization/model';
+import { UserContext, GenerateValidatorConfig } from '../config/model';
+import { Data } from '../codegen/model';
 
 export enum ValidationType {
   number = 'number',

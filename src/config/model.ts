@@ -1,5 +1,5 @@
-import { PartialMessageMap } from 'src/localization/model';
-import { MessageMap } from 'src/localization/model';
+import { PartialMessageMap } from '../localization/model';
+import { MessageMap } from '../localization/model';
 
 export enum SeverityLevel {
   silence = 0,

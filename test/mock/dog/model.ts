@@ -7,7 +7,7 @@ import {
   LessThanValidation
 } from './../../../src/decorators/index';
 import { User } from 'test/mock/user/model';
-import { Validation } from 'src/decorators';
+import { Validation } from '../../../src/decorators';
 
 @Validation
 export class Dog {

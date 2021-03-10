@@ -3,7 +3,7 @@ import { PartialGenerateValidatorConfig, SeverityLevel } from './model';
 import { defaultConfig } from './default';
 import { mergeDeep } from './../utils/deepValue';
 import * as fs from 'fs';
-import { GenerateValidatorConfig, UserContext } from 'src/config/model';
+import { GenerateValidatorConfig, UserContext } from '../config/model';
 
 export const configFileName = 'ts-generate-validator-config.json';
 

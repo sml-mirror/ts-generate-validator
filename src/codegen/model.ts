@@ -1,5 +1,5 @@
-import { Message } from 'src/localization/model';
-import { UserContext, ValidationConfig } from 'src/config/model';
+import { Message } from '../localization/model';
+import { UserContext, ValidationConfig } from '../config/model';
 
 export type Data = Record<string, any>;
 
