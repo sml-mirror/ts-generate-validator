@@ -1,3 +1,4 @@
+import { escapeString } from './../utils/string';
 import { decoratorNameToValidationItemData } from './validationItem';
 import { handleError, ErrorInFile, IssueError } from './../utils/error';
 import { ValidationType } from './../../validators/model';
@@ -29,6 +30,10 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
       const fields = <Parameters<typeof RequiredOneOfValidation>[0]>args[0];
       const customMessage = <Parameters<typeof RequiredOneOfValidation>[1]>args[1];
 
+      if (!fields.length) {
+        return;
+      }
+
       fields.forEach((requiredFieldName) => {
         if (!cls.fields.find(({ name: clsFieldName }) => clsFieldName === requiredFieldName)) {
           throw new ErrorInFile(
@@ -39,15 +44,16 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
       });
 
       const validatorPayload: PreparedValidatorPayloadItem[] = [
-        { property: 'fields', value: `[${fields.map((f) => `'${f}'`).join(', ')}]` }
+        { property: 'fields', value: `[${fields.map((f) => `'${f}'`).join(', ')}]`, type: 'array' }
       ];
 
       if (customMessage) {
-        validatorPayload.push({ property: 'customMessage', value: customMessage });
+        validatorPayload.push({ property: 'customMessage', value: escapeString(customMessage), type: 'string' });
       }
 
+      addImport(pkg.name, requiredOneOfValidator.name);
       items.push({
-        propertyName: fields.join(', '),
+        propertyName: fields[0],
         validatorName: requiredOneOfValidator.name,
         validatorPayload
       });
@@ -80,13 +86,20 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
 
     const validatorPayload: PreparedValidatorPayloadItem[] = [];
     if (customMessageForTypeValidator) {
-      validatorPayload.push({ property: 'customMessage', value: customMessageForTypeValidator });
+      validatorPayload.push({
+        property: 'customMessage',
+        value: escapeString(customMessageForTypeValidator),
+        type: 'string'
+      });
     }
     if (typeMetadata.validationType === ValidationType.enum) {
       if (typeMetadata.referencePath && typeMetadata.name) {
         addImport(typeMetadata.referencePath, typeMetadata.name);
-        addImport(pkg.name, 'getEnumValues');
-        validatorPayload.push({ property: 'typeDescription', value: typeMetadata.name });
+        validatorPayload.push({
+          property: 'typeDescription',
+          value: typeMetadata.name,
+          type: 'object'
+        });
       } else {
         throw new IssueError(
           `Failed to create validation for "${cls.name}.${fieldName}". Enum validation type requires "referencePath" and "name" filled in metadata, but some of them is empty.`
@@ -133,16 +146,36 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
       items.push({
         propertyName: fieldName,
         validatorName,
-        validatorPayload: args.map((arg, index) => ({
-          property: validatorArgumentNames[index],
-          value: arg.toString()
-        }))
+        validatorPayload: args.map((arg, index) => {
+          const property = validatorArgumentNames[index];
+          let type = '';
+          let value = arg.toString();
+
+          if (property === 'value') {
+            type = typeMetadata.validationType;
+          }
+
+          if (['customMessage', 'targetPropertyName'].includes(property)) {
+            type = 'string';
+          }
+
+          if (type === 'string') {
+            value = escapeString(value);
+          }
+
+          return {
+            property,
+            value,
+            type
+          };
+        })
       });
     });
   });
 
   return {
     name,
+    modelClassName: cls.name,
     items,
     async
   };

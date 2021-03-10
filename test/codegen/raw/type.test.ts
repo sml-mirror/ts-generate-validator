@@ -1,3 +1,6 @@
+import { readAllOutputFiles } from './../../utils/output';
+import { removeGeneratedValidators } from '../../utils/output';
+import { createValidators } from './../../../src/codegen/index';
 import { prepareDataForRender } from './../../../src/codegen/prepare/index';
 import { ValidationType } from '../../../src/validators/model';
 import { parseInputFiles } from '../../../src/codegen/parse/index';
@@ -62,5 +65,15 @@ describe('codegen/raw/type', () => {
 
     const dataForRender = prepareDataForRender(inputFilesMetadata, config);
     expect(dataForRender).toMatchSnapshot('data for render');
+  });
+
+  test('create validators', async () => {
+    await createValidators();
+
+    readAllOutputFiles(({ file, content }) => {
+      expect(content).toMatchSnapshot(`generated validators at "${file}"`);
+    });
+
+    removeGeneratedValidators();
   });
 });

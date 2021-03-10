@@ -15,3 +15,4 @@ export * from './validators';
 
 // Utils
 export { getEnumValues, getEnumKeys } from './utils/enum';
+export { mergeDeep } from './utils/deepValue';

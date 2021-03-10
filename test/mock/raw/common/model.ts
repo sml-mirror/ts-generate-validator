@@ -43,7 +43,7 @@ export class CutomValidatorSuccess {
 
 @Validation
 export class CutomValidatorSuccessAsync {
-  @CustomValidation(async () => new Promise((resolve) => setTimeout(() => resolve(), 300)))
+  @CustomValidation(async (): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), 300)))
   public someProperty?: number;
 }
 

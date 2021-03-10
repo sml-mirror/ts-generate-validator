@@ -1,35 +1,129 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`codegen/dog create validators: generated validators at "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/dog/generated/validators/model.ts" 1`] = `
+"import {
+  GeneratedValidation,
+  GeneratedValidationPayload,
+  UserContext,
+  getConfig,
+  mergeDeep,
+  typeValidator,
+  minLengthValidator,
+  maxLengthValidator,
+  minValidator,
+  maxValidator,
+  integerValidator,
+  lessThanValidator
+} from 'ts-generate-validator';
+
+import { Dog } from '../../model';
+
+export const dogValidator: GeneratedValidation = (payload: GeneratedValidationPayload<typeof Dog, UserContext>) => {
+  const config = mergeDeep({}, getConfig(), payload.config);
+
+  typeValidator({
+    property: payload.data.name,
+    propertyName: 'name',
+    data: payload.data,
+    config
+  });
+
+  minLengthValidator({
+    property: payload.data.name,
+    propertyName: 'name',
+    data: payload.data,
+    config,
+
+    threshold: 5
+  });
+
+  maxLengthValidator({
+    property: payload.data.name,
+    propertyName: 'name',
+    data: payload.data,
+    config,
+
+    threshold: 20
+  });
+
+  typeValidator({
+    property: payload.data.age,
+    propertyName: 'age',
+    data: payload.data,
+    config
+  });
+
+  minValidator({
+    property: payload.data.age,
+    propertyName: 'age',
+    data: payload.data,
+    config,
+
+    threshold: 2,
+
+    customMessage: 'only dogs over 2 years old are accepted'
+  });
+
+  maxValidator({
+    property: payload.data.age,
+    propertyName: 'age',
+    data: payload.data,
+    config,
+
+    threshold: 16,
+
+    customMessage: \\"dogs can't live that long\\"
+  });
+
+  integerValidator({
+    property: payload.data.age,
+    propertyName: 'age',
+    data: payload.data,
+    config,
+
+    customMessage: 'age must be an integer value'
+  });
+
+  typeValidator({
+    property: payload.data.ownedYears,
+    propertyName: 'ownedYears',
+    data: payload.data,
+    config
+  });
+
+  lessThanValidator({
+    property: payload.data.ownedYears,
+    propertyName: 'ownedYears',
+    data: payload.data,
+    config,
+
+    targetPropertyName: 'age',
+
+    customMessage: \\"dog can't be owned by anyone longer than his age\\"
+  });
+};
+"
+`;
+
 exports[`codegen/dog parse & prepare: data for render 1`] = `
 Array [
   Object {
-    "fileName": ".Users.alex-shul.Desktop.projects.ts-generate-validator.test.mock.dog.model",
+    "fileName": "model",
     "filePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/dog/generated/validators",
     "imports": Array [
       Object {
-        "clauses": Array [
-          "GeneratedValidation",
-          "typeValidator",
-          "minLengthValidator",
-          "maxLengthValidator",
-          "minValidator",
-          "maxValidator",
-          "integerValidator",
-          "lessThanValidator",
-        ],
+        "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, getConfig, mergeDeep, typeValidator, minLengthValidator, maxLengthValidator, minValidator, maxValidator, integerValidator, lessThanValidator",
         "path": "ts-generate-validator",
       },
       Object {
-        "clauses": Array [
-          "Dog",
-        ],
+        "clauses": "Dog",
         "path": "../../model",
       },
     ],
-    "validationArgs": Array [
-      "data",
-      "config",
-    ],
+    "validationArgs": Object {
+      "config": "config",
+      "data": "data",
+    },
     "validations": Array [
       Object {
         "async": false,
@@ -45,6 +139,7 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "threshold",
+                "type": "",
                 "value": "5",
               },
             ],
@@ -55,6 +150,7 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "threshold",
+                "type": "",
                 "value": "20",
               },
             ],
@@ -70,10 +166,12 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "threshold",
+                "type": "",
                 "value": "2",
               },
               Object {
                 "property": "customMessage",
+                "type": "string",
                 "value": "only dogs over 2 years old are accepted",
               },
             ],
@@ -84,11 +182,13 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "threshold",
+                "type": "",
                 "value": "16",
               },
               Object {
                 "property": "customMessage",
-                "value": "dogs can't live that long",
+                "type": "string",
+                "value": "dogs can\\\\'t live that long",
               },
             ],
           },
@@ -98,6 +198,7 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "customMessage",
+                "type": "string",
                 "value": "age must be an integer value",
               },
             ],
@@ -113,15 +214,18 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "targetPropertyName",
+                "type": "string",
                 "value": "age",
               },
               Object {
                 "property": "customMessage",
-                "value": "dog can't be owned by anyone longer than his age",
+                "type": "string",
+                "value": "dog can\\\\'t be owned by anyone longer than his age",
               },
             ],
           },
         ],
+        "modelClassName": "Dog",
         "name": "dogValidator",
       },
     ],
