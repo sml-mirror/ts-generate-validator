@@ -4,8 +4,8 @@ import { PreparedDataItem, PreparedValidation, PreparedImportMap, PreparedImport
 import * as path from 'path';
 import { GeneratedValidationParameter } from '../model';
 import { InputFileMetadata } from '../parse/model';
-import { UserContext, GenerateValidatorConfig } from 'src/config/model';
-import pkg from '../../../package.json';
+import { UserContext, GenerateValidatorConfig } from '../../config/model';
+import * as pkg from '../../../package.json';
 
 export const prepareDataForRender = <C extends UserContext = UserContext>(
   inputFilesMetadata: InputFileMetadata[],

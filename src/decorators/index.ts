@@ -1,6 +1,6 @@
 import { CustomValidationFunction } from './../validators/model';
-import { Data } from 'src/codegen/model';
-import { Message } from 'src/localization/model';
+import { Data } from '../codegen/model';
+import { Message } from '../localization/model';
 
 const emptyDecorator = (...args: any[]) => args[0];
 

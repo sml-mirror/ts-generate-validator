@@ -8,7 +8,7 @@ import {
   MinLengthValidation,
   MaxLengthValidation,
   MatchValidation
-} from 'src/decorators/index';
+} from '../../../../src/decorators';
 
 /**
  * Trim

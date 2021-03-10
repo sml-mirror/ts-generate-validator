@@ -8,7 +8,7 @@ import {
   MoreThanValidation,
   MinValidation,
   MaxValidation
-} from 'src/decorators/index';
+} from '../../../../src/decorators';
 
 /**
  * Min

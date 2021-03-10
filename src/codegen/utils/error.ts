@@ -1,5 +1,5 @@
 import { SeverityLevel } from '../../config/model';
-import pkg from '../../../package.json';
+import * as pkg from '../../../package.json';
 
 export const handleError = (message: string, severityLevel: SeverityLevel): void => {
   if (severityLevel === SeverityLevel.silence) {

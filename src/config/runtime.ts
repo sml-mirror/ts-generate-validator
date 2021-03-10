@@ -1,5 +1,5 @@
 import { mergeDeep } from '../utils/deepValue';
-import { PartialValidationConfig, UserContext, GenerateValidatorConfig } from 'src/config/model';
+import { PartialValidationConfig, UserContext, GenerateValidatorConfig } from '../config/model';
 import { defaultConfig } from './default';
 
 let globalConfig = defaultConfig;
