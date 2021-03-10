@@ -10,7 +10,7 @@ export const parseInputFiles = (files: string[]): InputFileMetadata[] => {
   const customTypeEntries: CustomTypeEntry[] = [];
   const enumDictionary: EnumDictionary = {};
 
-  files.forEach((file, fileIndex) => {
+  files.forEach((file) => {
     const content = fs.readFileSync(file, 'utf-8');
     const structure = parseStruct(content, {}, file);
 
@@ -19,7 +19,7 @@ export const parseInputFiles = (files: string[]): InputFileMetadata[] => {
     }
 
     if (structure.classes.length) {
-      const classesMetadata = buildClassesMetadata(fileIndex, structure.classes, structure._imports);
+      const classesMetadata = buildClassesMetadata(metadata.length, structure.classes, structure._imports);
       if (classesMetadata.classesForValidation.length) {
         customTypeEntries.push(...classesMetadata.customTypeEntries);
         metadata.push({

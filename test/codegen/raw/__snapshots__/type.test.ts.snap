@@ -1,36 +1,65 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`codegen/raw/type create validators: generated validators at "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/type/generated/validators/subfolder_#1.subfolder_#2.model.ts" 1`] = `
+"import {
+  GeneratedValidation,
+  GeneratedValidationPayload,
+  UserContext,
+  getConfig,
+  mergeDeep,
+  typeValidator
+} from 'ts-generate-validator';
+
+import { ClassWithNonPrimitiveProperty, SomeEnum, ClassWithEnumProperty } from '../../subfolder #1/subfolder #2/model';
+
+export const classWithNonPrimitivePropertyValidator: GeneratedValidation = (
+  payload: GeneratedValidationPayload<typeof ClassWithNonPrimitiveProperty, UserContext>
+) => {
+  // eslint-disable-next-line
+  const config = mergeDeep({}, getConfig(), payload.config);
+};
+
+export const classWithEnumPropertyValidator: GeneratedValidation = (
+  payload: GeneratedValidationPayload<typeof ClassWithEnumProperty, UserContext>
+) => {
+  const config = mergeDeep({}, getConfig(), payload.config);
+
+  typeValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config,
+
+    typeDescription: SomeEnum
+  });
+};
+"
+`;
+
 exports[`codegen/raw/type parse & prepare: data for render 1`] = `
 Array [
   Object {
-    "fileName": ".Users.alex-shul.Desktop.projects.ts-generate-validator.test.mock.raw.type.model",
+    "fileName": "subfolder_#1.subfolder_#2.model",
     "filePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/type/generated/validators",
     "imports": Array [
       Object {
-        "clauses": Array [
-          "GeneratedValidation",
-          "getEnumValues",
-          "typeValidator",
-        ],
+        "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, getConfig, mergeDeep, typeValidator",
         "path": "ts-generate-validator",
       },
       Object {
-        "clauses": Array [
-          "ClassWithNonPrimitiveProperty",
-          "SomeEnum",
-          "ClassWithEnumProperty",
-        ],
-        "path": "../../model",
+        "clauses": "ClassWithNonPrimitiveProperty, SomeEnum, ClassWithEnumProperty",
+        "path": "../../subfolder #1/subfolder #2/model",
       },
     ],
-    "validationArgs": Array [
-      "data",
-      "config",
-    ],
+    "validationArgs": Object {
+      "config": "config",
+      "data": "data",
+    },
     "validations": Array [
       Object {
         "async": false,
         "items": Array [],
+        "modelClassName": "ClassWithNonPrimitiveProperty",
         "name": "classWithNonPrimitivePropertyValidator",
       },
       Object {
@@ -42,11 +71,13 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "typeDescription",
+                "type": "object",
                 "value": "SomeEnum",
               },
             ],
           },
         ],
+        "modelClassName": "ClassWithEnumProperty",
         "name": "classWithEnumPropertyValidator",
       },
     ],

@@ -1,3 +1,4 @@
+import { GeneratedValidation } from './../model';
 import { buildValidationFromClassMetadata } from './validation';
 import { PreparedDataItem, PreparedValidation, PreparedImportMap, PreparedImport } from './model';
 import * as path from 'path';
@@ -6,11 +7,11 @@ import { InputFileMetadata } from '../parse/model';
 import { UserContext, GenerateValidatorConfig } from 'src/config/model';
 import pkg from '../../../package.json';
 
-export const prepareDataForRender = (
+export const prepareDataForRender = <C extends UserContext = UserContext>(
   inputFilesMetadata: InputFileMetadata[],
-  config: GenerateValidatorConfig<UserContext>
+  config: GenerateValidatorConfig<C>
 ): PreparedDataItem[] => {
-  const validationArgs = [GeneratedValidationParameter.data, GeneratedValidationParameter.config];
+  const validationArgs = GeneratedValidationParameter;
 
   return inputFilesMetadata.map((metadata) => {
     const { name, classes } = metadata;
@@ -54,20 +55,30 @@ export const prepareDataForRender = (
 };
 
 const buildOutputFileName = (inputFileName: string): string => {
-  return inputFileName.replace(/\/+/g, '.');
+  return path.relative(process.cwd(), inputFileName).replace(/\s/g, '_').replace(/\/+/g, '.');
 };
 
 const buildBaseImportMap = (): PreparedImportMap => {
   const map: PreparedImportMap = {};
   map[pkg.name] = {
-    GeneratedValidation: true
+    GeneratedValidation: true,
+    GeneratedValidationPayload: true,
+    UserContext: true,
+    getConfig: true,
+    mergeDeep: true
   };
   return map;
 };
 
 const buildImportsFromMap = (map: PreparedImportMap): PreparedImport[] => {
   return Object.keys(map).map((path) => ({
-    clauses: Object.keys(map[path]).filter((clause) => map[path][clause]),
+    clauses: Object.keys(map[path])
+      .filter((clause) => map[path][clause])
+      .join(', '),
     path
   }));
+};
+
+export const test: GeneratedValidation = async (payload) => {
+  console.log(payload);
 };

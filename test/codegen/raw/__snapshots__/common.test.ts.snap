@@ -1,43 +1,271 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`codegen/raw/common create validators: generated validators at "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/common/generated/validators/model.ts" 1`] = `
+"import {
+  GeneratedValidation,
+  GeneratedValidationPayload,
+  UserContext,
+  getConfig,
+  mergeDeep,
+  typeValidator,
+  customValidator,
+  equalValidator,
+  equalToValidator
+} from 'ts-generate-validator';
+
+import {
+  TypeValidatorWithCustomMessage,
+  TypeValidatorOnWrongPropertyType,
+  CustomValidatorFailed,
+  CutomValidatorSuccess,
+  CutomValidatorSuccessAsync,
+  IgnoreValidationForNonPrimitiveProperty,
+  IgnoreValidationForPrimitiveProperty,
+  IgnoreValidationForPrimitivePropertyWithOtherDecorators,
+  EqualValidatorWithDefaultMessage,
+  EqualValidatorWithCustomMessage,
+  EqualValidatorForBoolean,
+  EqualToValidatorWithDefaultMessage
+} from '../../model';
+
+export const typeValidatorWithCustomMessageValidator: GeneratedValidation = (
+  payload: GeneratedValidationPayload<typeof TypeValidatorWithCustomMessage, UserContext>
+) => {
+  const config = mergeDeep({}, getConfig(), payload.config);
+
+  typeValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config,
+
+    customMessage: 'type custom message'
+  });
+};
+
+export const typeValidatorOnWrongPropertyTypeValidator: GeneratedValidation = (
+  payload: GeneratedValidationPayload<typeof TypeValidatorOnWrongPropertyType, UserContext>
+) => {
+  // eslint-disable-next-line
+  const config = mergeDeep({}, getConfig(), payload.config);
+};
+
+export const customValidatorFailedValidator: GeneratedValidation = (
+  payload: GeneratedValidationPayload<typeof CustomValidatorFailed, UserContext>
+) => {
+  const config = mergeDeep({}, getConfig(), payload.config);
+
+  typeValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config
+  });
+
+  customValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config,
+
+    customValidationFunction: () => {
+      throw new Error('Failed!');
+    }
+  });
+};
+
+export const cutomValidatorSuccessValidator: GeneratedValidation = (
+  payload: GeneratedValidationPayload<typeof CutomValidatorSuccess, UserContext>
+) => {
+  const config = mergeDeep({}, getConfig(), payload.config);
+
+  typeValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config
+  });
+
+  customValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config,
+
+    customValidationFunction: () => undefined
+  });
+};
+
+export const cutomValidatorSuccessAsyncValidator: GeneratedValidation = async (
+  payload: GeneratedValidationPayload<typeof CutomValidatorSuccessAsync, UserContext>
+) => {
+  const config = mergeDeep({}, getConfig(), payload.config);
+
+  typeValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config
+  });
+
+  customValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config,
+
+    customValidationFunction: async (): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), 300))
+  });
+};
+
+export const ignoreValidationForNonPrimitivePropertyValidator: GeneratedValidation = (
+  payload: GeneratedValidationPayload<typeof IgnoreValidationForNonPrimitiveProperty, UserContext>
+) => {
+  // eslint-disable-next-line
+  const config = mergeDeep({}, getConfig(), payload.config);
+};
+
+export const ignoreValidationForPrimitivePropertyValidator: GeneratedValidation = (
+  payload: GeneratedValidationPayload<typeof IgnoreValidationForPrimitiveProperty, UserContext>
+) => {
+  // eslint-disable-next-line
+  const config = mergeDeep({}, getConfig(), payload.config);
+};
+
+export const ignoreValidationForPrimitivePropertyWithOtherDecoratorsValidator: GeneratedValidation = (
+  payload: GeneratedValidationPayload<typeof IgnoreValidationForPrimitivePropertyWithOtherDecorators, UserContext>
+) => {
+  // eslint-disable-next-line
+  const config = mergeDeep({}, getConfig(), payload.config);
+};
+
+export const equalValidatorWithDefaultMessageValidator: GeneratedValidation = (
+  payload: GeneratedValidationPayload<typeof EqualValidatorWithDefaultMessage, UserContext>
+) => {
+  const config = mergeDeep({}, getConfig(), payload.config);
+
+  typeValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config
+  });
+
+  equalValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config,
+
+    value: 'abcdef'
+  });
+};
+
+export const equalValidatorWithCustomMessageValidator: GeneratedValidation = (
+  payload: GeneratedValidationPayload<typeof EqualValidatorWithCustomMessage, UserContext>
+) => {
+  const config = mergeDeep({}, getConfig(), payload.config);
+
+  typeValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config
+  });
+
+  equalValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config,
+
+    value: 245,
+
+    customMessage: 'equal custom message'
+  });
+};
+
+export const equalValidatorForBooleanValidator: GeneratedValidation = (
+  payload: GeneratedValidationPayload<typeof EqualValidatorForBoolean, UserContext>
+) => {
+  const config = mergeDeep({}, getConfig(), payload.config);
+
+  typeValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config
+  });
+
+  equalValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config,
+
+    value: true
+  });
+};
+
+export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = (
+  payload: GeneratedValidationPayload<typeof EqualToValidatorWithDefaultMessage, UserContext>
+) => {
+  const config = mergeDeep({}, getConfig(), payload.config);
+
+  typeValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config
+  });
+
+  equalToValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config,
+
+    targetPropertyName: 'someOtherProperty'
+  });
+
+  typeValidator({
+    property: payload.data.someOtherProperty,
+    propertyName: 'someOtherProperty',
+    data: payload.data,
+    config
+  });
+
+  equalToValidator({
+    property: payload.data.someOtherProperty,
+    propertyName: 'someOtherProperty',
+    data: payload.data,
+    config,
+
+    targetPropertyName: 'someProperty'
+  });
+};
+"
+`;
+
 exports[`codegen/raw/common parse & prepare: data for render 1`] = `
 Array [
   Object {
-    "fileName": ".Users.alex-shul.Desktop.projects.ts-generate-validator.test.mock.raw.common.model",
+    "fileName": "model",
     "filePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/common/generated/validators",
     "imports": Array [
       Object {
-        "clauses": Array [
-          "GeneratedValidation",
-          "typeValidator",
-          "customValidator",
-          "equalValidator",
-          "equalToValidator",
-        ],
+        "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, getConfig, mergeDeep, typeValidator, customValidator, equalValidator, equalToValidator",
         "path": "ts-generate-validator",
       },
       Object {
-        "clauses": Array [
-          "TypeValidatorWithCustomMessage",
-          "TypeValidatorOnWrongPropertyType",
-          "CustomValidatorFailed",
-          "CutomValidatorSuccess",
-          "CutomValidatorSuccessAsync",
-          "IgnoreValidationForNonPrimitiveProperty",
-          "IgnoreValidationForPrimitiveProperty",
-          "IgnoreValidationForPrimitivePropertyWithOtherDecorators",
-          "EqualValidatorWithDefaultMessage",
-          "EqualValidatorWithCustomMessage",
-          "EqualValidatorForBoolean",
-          "EqualToValidatorWithDefaultMessage",
-        ],
+        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnWrongPropertyType, CustomValidatorFailed, CutomValidatorSuccess, CutomValidatorSuccessAsync, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
         "path": "../../model",
       },
     ],
-    "validationArgs": Array [
-      "data",
-      "config",
-    ],
+    "validationArgs": Object {
+      "config": "config",
+      "data": "data",
+    },
     "validations": Array [
       Object {
         "async": false,
@@ -48,16 +276,19 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "customMessage",
+                "type": "string",
                 "value": "type custom message",
               },
             ],
           },
         ],
+        "modelClassName": "TypeValidatorWithCustomMessage",
         "name": "typeValidatorWithCustomMessageValidator",
       },
       Object {
         "async": false,
         "items": Array [],
+        "modelClassName": "TypeValidatorOnWrongPropertyType",
         "name": "typeValidatorOnWrongPropertyTypeValidator",
       },
       Object {
@@ -74,6 +305,7 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "customValidationFunction",
+                "type": "",
                 "value": "() => {
     throw new Error('Failed!');
   }",
@@ -81,6 +313,7 @@ Array [
             ],
           },
         ],
+        "modelClassName": "CustomValidatorFailed",
         "name": "customValidatorFailedValidator",
       },
       Object {
@@ -97,11 +330,13 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "customValidationFunction",
+                "type": "",
                 "value": "() => undefined",
               },
             ],
           },
         ],
+        "modelClassName": "CutomValidatorSuccess",
         "name": "cutomValidatorSuccessValidator",
       },
       Object {
@@ -118,26 +353,31 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "customValidationFunction",
-                "value": "async () => new Promise((resolve) => setTimeout(() => resolve(), 300))",
+                "type": "",
+                "value": "async (): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), 300))",
               },
             ],
           },
         ],
+        "modelClassName": "CutomValidatorSuccessAsync",
         "name": "cutomValidatorSuccessAsyncValidator",
       },
       Object {
         "async": false,
         "items": Array [],
+        "modelClassName": "IgnoreValidationForNonPrimitiveProperty",
         "name": "ignoreValidationForNonPrimitivePropertyValidator",
       },
       Object {
         "async": false,
         "items": Array [],
+        "modelClassName": "IgnoreValidationForPrimitiveProperty",
         "name": "ignoreValidationForPrimitivePropertyValidator",
       },
       Object {
         "async": false,
         "items": Array [],
+        "modelClassName": "IgnoreValidationForPrimitivePropertyWithOtherDecorators",
         "name": "ignoreValidationForPrimitivePropertyWithOtherDecoratorsValidator",
       },
       Object {
@@ -154,11 +394,13 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "value",
+                "type": "string",
                 "value": "abcdef",
               },
             ],
           },
         ],
+        "modelClassName": "EqualValidatorWithDefaultMessage",
         "name": "equalValidatorWithDefaultMessageValidator",
       },
       Object {
@@ -175,15 +417,18 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "value",
+                "type": "number",
                 "value": "245",
               },
               Object {
                 "property": "customMessage",
+                "type": "string",
                 "value": "equal custom message",
               },
             ],
           },
         ],
+        "modelClassName": "EqualValidatorWithCustomMessage",
         "name": "equalValidatorWithCustomMessageValidator",
       },
       Object {
@@ -200,11 +445,13 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "value",
+                "type": "boolean",
                 "value": "true",
               },
             ],
           },
         ],
+        "modelClassName": "EqualValidatorForBoolean",
         "name": "equalValidatorForBooleanValidator",
       },
       Object {
@@ -221,6 +468,7 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "targetPropertyName",
+                "type": "string",
                 "value": "someOtherProperty",
               },
             ],
@@ -236,11 +484,13 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "targetPropertyName",
+                "type": "string",
                 "value": "someProperty",
               },
             ],
           },
         ],
+        "modelClassName": "EqualToValidatorWithDefaultMessage",
         "name": "equalToValidatorWithDefaultMessageValidator",
       },
     ],
@@ -375,7 +625,7 @@ Array [
             "decorators": Array [
               Object {
                 "arguments": Array [
-                  "async () => new Promise((resolve) => setTimeout(() => resolve(), 300))",
+                  "async (): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), 300))",
                 ],
                 "name": "CustomValidation",
               },

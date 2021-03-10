@@ -1,26 +1,39 @@
-import { prepareDataForRender } from './prepare';
 import * as path from 'path';
-import { parseInputFiles } from './parse';
+import * as fs from 'fs';
+import mkdirp from 'mkdirp';
+import prettier from 'prettier';
+import { render, configure } from 'nunjucks';
 import { getAllFiles } from './utils/getAllFiles';
 import { getCodegenConfig } from './../config/codegen';
+import { prepareDataForRender } from './prepare';
+import { parseInputFiles } from './parse';
 
-export const createValidators = (): void => {
+export const createValidators = async (): Promise<void> => {
   const config = getCodegenConfig();
   const inputFiles = getAllFiles(path.resolve(config.inputPath));
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const inputFilesMetadata = parseInputFiles(inputFiles);
-
-  // // TODO: remove
-  // console.log(
-  //   JSON.stringify(
-  //     inputFilesMetadata.filter((m) => m.name === path.resolve('mock/user/model.ts')),
-  //     null,
-  //     2
-  //   )
-  // );
-
   const dataForRender = prepareDataForRender(inputFilesMetadata, config);
 
-  // TODO: remove
-  console.log(JSON.stringify(dataForRender, null, 2));
+  const viewsFolder = path.resolve(__dirname, 'view/');
+  configure(viewsFolder, { autoescape: false, trimBlocks: false });
+
+  const prettierConfig = (await prettier.resolveConfig(process.cwd())) ?? {};
+  prettierConfig.parser = 'typescript';
+
+  dataForRender.forEach((dataItem) => {
+    if (!dataItem.validations.length) {
+      return;
+    }
+
+    let content = render('validationsTemplate.njk', dataItem);
+    if (!content || !content.trim()) {
+      return;
+    }
+
+    content = prettier.format(content, prettierConfig);
+
+    const { filePath, fileName } = dataItem;
+    mkdirp.sync(filePath);
+    fs.writeFileSync(`${filePath}/${fileName}.ts`, content, 'utf-8');
+  });
 };

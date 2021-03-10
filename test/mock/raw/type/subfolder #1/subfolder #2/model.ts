@@ -1,12 +1,12 @@
-import { Validation } from '../../../../src/decorators/index';
+import { Validation } from '../../../../../../src/decorators/index';
 
-interface SomeNonPrimitiveStructure {
+export interface SomeNonPrimitiveStructure {
   a: string;
   b: number;
   c: boolean;
 }
 
-enum SomeEnum {
+export enum SomeEnum {
   A = 'a',
   B = 'b'
 }

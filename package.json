@@ -25,8 +25,10 @@
   },
   "homepage": "https://github.com/SoftMediaLab/ts-generate-validator#readme",
   "devDependencies": {
+    "@types/mkdirp": "1.0.1",
     "@types/jest": "26.0.20",
     "@types/node": "14.14.30",
+    "@types/nunjucks": "3.1.4",
     "@typescript-eslint/eslint-plugin": "4.15.2",
     "@typescript-eslint/parser": "4.15.2",
     "eslint": "7.20.0",
@@ -41,12 +43,12 @@
     "husky": "5.1.1",
     "jest": "26.6.3",
     "lint-staged": "10.5.4",
-    "prettier": "2.2.1",
     "ts-jest": "26.5.2",
     "ts-node": "9.1.1",
     "typescript": "4.2.2"
   },
   "dependencies": {
+    "prettier": "2.2.1",
     "mkdirp": "1.0.4",
     "nunjucks": "3.2.3",
     "path": "0.12.7",
