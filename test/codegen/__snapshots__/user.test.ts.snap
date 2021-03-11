@@ -5,6 +5,7 @@ exports[`codegen/user create validators: generated validators at "/Users/alex-sh
   GeneratedValidation,
   GeneratedValidationPayload,
   UserContext,
+  initConfig,
   getConfig,
   mergeDeep,
   requiredOneOfValidator,
@@ -27,6 +28,10 @@ exports[`codegen/user create validators: generated validators at "/Users/alex-sh
 } from 'ts-generate-validator';
 
 import { User } from '../../model';
+
+import * as configFromFile from '../../ts-generate-validator-config.json';
+
+initConfig(configFromFile);
 
 export const userValidator: GeneratedValidation = (payload: GeneratedValidationPayload<typeof User, UserContext>) => {
   const config = mergeDeep({}, getConfig(), payload.config);
@@ -291,11 +296,12 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
 exports[`codegen/user parse & prepare: data for render 1`] = `
 Array [
   Object {
+    "configFilePath": "../../ts-generate-validator-config.json",
     "fileName": "model",
     "filePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/user/generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, getConfig, mergeDeep, requiredOneOfValidator, typeValidator, minLengthValidator, maxLengthValidator, trimValidator, minValidator, maxValidator, integerValidator, lessThanValidator, positiveValidator, equalValidator, emailValidator, matchValidator, urlValidator, lowercaseValidator, uppercaseValidator, floatValidator",
+        "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, initConfig, getConfig, mergeDeep, requiredOneOfValidator, typeValidator, minLengthValidator, maxLengthValidator, trimValidator, minValidator, maxValidator, integerValidator, lessThanValidator, positiveValidator, equalValidator, emailValidator, matchValidator, urlValidator, lowercaseValidator, uppercaseValidator, floatValidator",
         "path": "ts-generate-validator",
       },
       Object {

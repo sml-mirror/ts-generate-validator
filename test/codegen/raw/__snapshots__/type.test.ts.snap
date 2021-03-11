@@ -5,12 +5,17 @@ exports[`codegen/raw/type create validators: generated validators at "/Users/ale
   GeneratedValidation,
   GeneratedValidationPayload,
   UserContext,
+  initConfig,
   getConfig,
   mergeDeep,
   typeValidator
 } from 'ts-generate-validator';
 
 import { ClassWithNonPrimitiveProperty, SomeEnum, ClassWithEnumProperty } from '../../subfolder #1/subfolder #2/model';
+
+import * as configFromFile from '../../ts-generate-validator-config.json';
+
+initConfig(configFromFile);
 
 export const classWithNonPrimitivePropertyValidator: GeneratedValidation = (
   payload: GeneratedValidationPayload<typeof ClassWithNonPrimitiveProperty, UserContext>
@@ -39,11 +44,12 @@ export const classWithEnumPropertyValidator: GeneratedValidation = (
 exports[`codegen/raw/type parse & prepare: data for render 1`] = `
 Array [
   Object {
+    "configFilePath": "../../ts-generate-validator-config.json",
     "fileName": "subfolder_#1.subfolder_#2.model",
     "filePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/type/generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, getConfig, mergeDeep, typeValidator",
+        "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, initConfig, getConfig, mergeDeep, typeValidator",
         "path": "ts-generate-validator",
       },
       Object {

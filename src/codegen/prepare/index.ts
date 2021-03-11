@@ -1,4 +1,4 @@
-import { GeneratedValidation } from './../model';
+import { configFileExists, configFileName } from './../../config/codegen';
 import { buildValidationFromClassMetadata } from './validation';
 import { PreparedDataItem, PreparedValidation, PreparedImportMap, PreparedImport } from './model';
 import * as path from 'path';
@@ -11,6 +11,7 @@ export const prepareDataForRender = <C extends UserContext = UserContext>(
   inputFilesMetadata: InputFileMetadata[],
   config: GenerateValidatorConfig<C>
 ): PreparedDataItem[] => {
+  const isConfigFileExists = configFileExists();
   const validationArgs = GeneratedValidationParameter;
 
   return inputFilesMetadata.map((metadata) => {
@@ -27,6 +28,8 @@ export const prepareDataForRender = <C extends UserContext = UserContext>(
       }
       importMap[importPath][clause] = true;
     };
+
+    const configFilePath = isConfigFileExists ? path.relative(filePath, path.resolve(configFileName)) : undefined;
 
     const validations: PreparedValidation[] = [];
     classes.forEach((cls) => {
@@ -49,7 +52,8 @@ export const prepareDataForRender = <C extends UserContext = UserContext>(
       fileName,
       imports,
       validationArgs,
-      validations
+      validations,
+      configFilePath
     };
   });
 };
@@ -64,6 +68,7 @@ const buildBaseImportMap = (): PreparedImportMap => {
     GeneratedValidation: true,
     GeneratedValidationPayload: true,
     UserContext: true,
+    initConfig: true,
     getConfig: true,
     mergeDeep: true
   };

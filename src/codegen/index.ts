@@ -14,7 +14,7 @@ export const createValidators = async (): Promise<void> => {
   const inputFilesMetadata = parseInputFiles(inputFiles);
   const dataForRender = prepareDataForRender(inputFilesMetadata, config);
 
-  const viewsFolder = path.resolve('src/codegen/view');
+  const viewsFolder = path.resolve(__dirname, 'view/');
   configure(viewsFolder, { autoescape: false, trimBlocks: false });
 
   const prettierConfig = (await prettier.resolveConfig(process.cwd())) ?? {};

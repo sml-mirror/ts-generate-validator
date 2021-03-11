@@ -8,7 +8,8 @@
     "lint": "eslint . --ext .ts",
     "fix": "npm run lint -- --fix",
     "test": "jest",
-    "build": "tsc --resolveJsonModule --outDir dist src/bin.ts"
+    "build": "tsc --resolveJsonModule --outDir dist src/bin.ts && cp -r ./src/codegen/view ./dist/src/codegen/",
+    "bin": "node dist/src/bin.js"
   },
   "repository": {
     "type": "git",
