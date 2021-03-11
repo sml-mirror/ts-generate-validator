@@ -16,7 +16,12 @@ export const mergeDeep = (target: Record<string, any>, ...sources: Record<string
         if (!target[key]) {
           Object.assign(target, { [key]: {} });
         }
-        mergeDeep(target[key], source[key]);
+        if (source[key] instanceof RegExp) {
+          const re = source[key] as RegExp;
+          Object.assign(target, { [key]: new RegExp(re.source, re.flags) });
+        } else {
+          mergeDeep(target[key], source[key]);
+        }
       } else {
         Object.assign(target, { [key]: source[key] });
       }

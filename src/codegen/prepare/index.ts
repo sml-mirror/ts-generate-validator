@@ -78,7 +78,3 @@ const buildImportsFromMap = (map: PreparedImportMap): PreparedImport[] => {
     path
   }));
 };
-
-export const test: GeneratedValidation = async (payload) => {
-  console.log(payload);
-};
