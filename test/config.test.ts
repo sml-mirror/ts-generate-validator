@@ -38,10 +38,9 @@ describe('configuration', () => {
     process.chdir(prevRootDir);
   });
 
-  // TODO: fix
-  // test('getCodegenConfig - file not exists', () => {
-  //   expect(getCodegenConfig()).toEqual(defaultConfig);
-  // });
+  test('getCodegenConfig - file not exists', () => {
+    expect(getCodegenConfig()).toEqual(defaultConfig);
+  });
 
   testConfigs.forEach((config, index) => {
     test(`getCodegenConfig - config #${index}`, () => {
