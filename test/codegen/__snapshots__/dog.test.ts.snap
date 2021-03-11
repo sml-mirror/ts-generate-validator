@@ -19,10 +19,6 @@ exports[`codegen/dog create validators: generated validators at "/Users/alex-shu
 
 import { Dog } from '../../model';
 
-import * as configFromFile from '../../ts-generate-validator-config.json';
-
-initConfig(configFromFile);
-
 export const dogValidator: GeneratedValidation = (payload: GeneratedValidationPayload<typeof Dog, UserContext>) => {
   const config = mergeDeep({}, getConfig(), payload.config);
 
@@ -113,7 +109,7 @@ export const dogValidator: GeneratedValidation = (payload: GeneratedValidationPa
 exports[`codegen/dog parse & prepare: data for render 1`] = `
 Array [
   Object {
-    "configFilePath": "../../ts-generate-validator-config.json",
+    "configFilePath": undefined,
     "fileName": "model",
     "filePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/dog/generated/validators",
     "imports": Array [

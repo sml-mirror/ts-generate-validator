@@ -29,10 +29,6 @@ exports[`codegen/user create validators: generated validators at "/Users/alex-sh
 
 import { User } from '../../model';
 
-import * as configFromFile from '../../ts-generate-validator-config.json';
-
-initConfig(configFromFile);
-
 export const userValidator: GeneratedValidation = (payload: GeneratedValidationPayload<typeof User, UserContext>) => {
   const config = mergeDeep({}, getConfig(), payload.config);
 
@@ -296,7 +292,7 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
 exports[`codegen/user parse & prepare: data for render 1`] = `
 Array [
   Object {
-    "configFilePath": "../../ts-generate-validator-config.json",
+    "configFilePath": undefined,
     "fileName": "model",
     "filePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/user/generated/validators",
     "imports": Array [
