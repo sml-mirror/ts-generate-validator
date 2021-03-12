@@ -20,7 +20,7 @@ export const prepareDataForRender = <C extends UserContext = UserContext>(
     const filePath = path.resolve(config.outputPath);
     const fileName = buildOutputFileName(name);
 
-    const importMap = buildBaseImportMap();
+    const importMap = buildBaseImportMap({ isConfigFileExists });
     const handleImportAdd = (targetPath: string, clause: string): void => {
       const importPath = targetPath.indexOf('/') > -1 ? path.relative(filePath, targetPath) : targetPath;
       if (!importMap[importPath]) {
@@ -62,13 +62,13 @@ const buildOutputFileName = (inputFileName: string): string => {
   return path.relative(process.cwd(), inputFileName).replace(/\s/g, '_').replace(/\/+/g, '.');
 };
 
-const buildBaseImportMap = (): PreparedImportMap => {
+const buildBaseImportMap = ({ isConfigFileExists }: { isConfigFileExists: boolean }): PreparedImportMap => {
   const map: PreparedImportMap = {};
   map[pkg.name] = {
     GeneratedValidation: true,
     GeneratedValidationPayload: true,
     UserContext: true,
-    initConfig: true,
+    initConfig: isConfigFileExists,
     getConfig: true,
     mergeDeep: true
   };

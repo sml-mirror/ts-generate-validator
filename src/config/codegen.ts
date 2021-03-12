@@ -8,7 +8,7 @@ import { GenerateValidatorConfig, UserContext } from '../config/model';
 export const configFileName = 'ts-generate-validator-config.json';
 
 export const configFileExists = (): boolean => {
-  return Boolean(Object.keys(getConfigFromFile).length);
+  return Boolean(Object.keys(getConfigFromFile()).length);
 };
 
 const getConfigFromFile = (): PartialGenerateValidatorConfig<UserContext> => {
