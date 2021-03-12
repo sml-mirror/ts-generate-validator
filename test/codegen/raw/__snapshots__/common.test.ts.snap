@@ -5,6 +5,7 @@ exports[`codegen/raw/common create validators: generated validators at "/Users/a
   GeneratedValidation,
   GeneratedValidationPayload,
   UserContext,
+  initConfig,
   getConfig,
   mergeDeep,
   typeValidator,
@@ -27,6 +28,10 @@ import {
   EqualValidatorForBoolean,
   EqualToValidatorWithDefaultMessage
 } from '../../model';
+
+import * as configFromFile from '../../ts-generate-validator-config.json';
+
+initConfig(configFromFile);
 
 export const typeValidatorWithCustomMessageValidator: GeneratedValidation = (
   payload: GeneratedValidationPayload<typeof TypeValidatorWithCustomMessage, UserContext>
@@ -250,11 +255,12 @@ export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = 
 exports[`codegen/raw/common parse & prepare: data for render 1`] = `
 Array [
   Object {
+    "configFilePath": "../../ts-generate-validator-config.json",
     "fileName": "model",
     "filePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/common/generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, getConfig, mergeDeep, typeValidator, customValidator, equalValidator, equalToValidator",
+        "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, initConfig, getConfig, mergeDeep, typeValidator, customValidator, equalValidator, equalToValidator",
         "path": "ts-generate-validator",
       },
       Object {

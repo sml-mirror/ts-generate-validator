@@ -1,6 +1,11 @@
 {% for import in imports %}
 import { {{ import.clauses }} } from '{{ import.path }}';
 {% endfor %}
+{% if configFilePath %}
+import * as configFromFile from '{{ configFilePath }}';
+
+initConfig(configFromFile);
+{% endif %}
 
 {% for validation in validations %}
 export const {{ validation.name }}: GeneratedValidation = {% if validation.async %}async {% endif %}(

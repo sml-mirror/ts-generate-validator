@@ -1,4 +1,4 @@
-import { GeneratedValidation } from './../model';
+import { configFileExists, configFileName } from './../../config/codegen';
 import { buildValidationFromClassMetadata } from './validation';
 import { PreparedDataItem, PreparedValidation, PreparedImportMap, PreparedImport } from './model';
 import * as path from 'path';
@@ -11,6 +11,7 @@ export const prepareDataForRender = <C extends UserContext = UserContext>(
   inputFilesMetadata: InputFileMetadata[],
   config: GenerateValidatorConfig<C>
 ): PreparedDataItem[] => {
+  const isConfigFileExists = configFileExists();
   const validationArgs = GeneratedValidationParameter;
 
   return inputFilesMetadata.map((metadata) => {
@@ -19,7 +20,7 @@ export const prepareDataForRender = <C extends UserContext = UserContext>(
     const filePath = path.resolve(config.outputPath);
     const fileName = buildOutputFileName(name);
 
-    const importMap = buildBaseImportMap();
+    const importMap = buildBaseImportMap({ isConfigFileExists });
     const handleImportAdd = (targetPath: string, clause: string): void => {
       const importPath = targetPath.indexOf('/') > -1 ? path.relative(filePath, targetPath) : targetPath;
       if (!importMap[importPath]) {
@@ -27,6 +28,8 @@ export const prepareDataForRender = <C extends UserContext = UserContext>(
       }
       importMap[importPath][clause] = true;
     };
+
+    const configFilePath = isConfigFileExists ? path.relative(filePath, path.resolve(configFileName)) : undefined;
 
     const validations: PreparedValidation[] = [];
     classes.forEach((cls) => {
@@ -49,7 +52,8 @@ export const prepareDataForRender = <C extends UserContext = UserContext>(
       fileName,
       imports,
       validationArgs,
-      validations
+      validations,
+      configFilePath
     };
   });
 };
@@ -58,12 +62,13 @@ const buildOutputFileName = (inputFileName: string): string => {
   return path.relative(process.cwd(), inputFileName).replace(/\s/g, '_').replace(/\/+/g, '.');
 };
 
-const buildBaseImportMap = (): PreparedImportMap => {
+const buildBaseImportMap = ({ isConfigFileExists }: { isConfigFileExists: boolean }): PreparedImportMap => {
   const map: PreparedImportMap = {};
   map[pkg.name] = {
     GeneratedValidation: true,
     GeneratedValidationPayload: true,
     UserContext: true,
+    initConfig: isConfigFileExists,
     getConfig: true,
     mergeDeep: true
   };
