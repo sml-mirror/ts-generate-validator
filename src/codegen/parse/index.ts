@@ -67,13 +67,6 @@ export const resolveCustomTypes = ({
     }
 
     const nestedClass = metadata.find(({ name: fileName, classes }) => {
-      // console.log(
-      //   'search for nested class',
-      //   referencePath,
-      //   typeName,
-      //   fileName,
-      //   classes.map((c) => c.name)
-      // );
       if (fileName !== referencePath) {
         return false;
       }
@@ -104,40 +97,36 @@ export const validateNestedClasses = ({
       return;
     }
 
-    try {
-      const checkNestedClasses = (className: string, classPath: string) => {
-        if (className === baseClassName && classPath === baseClassPath) {
-          const fieldName = metadata[fileIndex].classes[classIndex].fields[fieldIndex].name;
-          throw new ErrorInFile(
-            `Class "${baseClassName}" has circular dependency in field "${fieldName}" with type "${fieldTypeMetadata.name}". Сircular dependencies are not allowed because they lead to infinite validation. Change field type or add "@${IgnoreValidation.name}" decorator.`,
-            baseClassPath
-          );
-        }
-
-        const fileMetadata = metadata.find(({ name: filePath }) => filePath === classPath);
-        if (!fileMetadata) {
-          throw new IssueError(
-            `Referenced file metadata not found for nested class "${className}" (referenced file path: "${classPath}").`
-          );
-        }
-
-        const classMetadata = fileMetadata.classes.find(({ name }) => name === className);
-        if (!classMetadata) {
-          throw new IssueError(`Metadata not found for nested class "${className}" in file metadata "${classPath}").`);
-        }
-
-        classMetadata.fields.forEach(({ type: { name, validationType, referencePath } }) => {
-          if (validationType === ValidationType.nested && name && referencePath) {
-            checkNestedClasses(name, referencePath);
-          }
-        });
-      };
-      if (fieldTypeMetadata.name && fieldTypeMetadata.referencePath) {
-        checkNestedClasses(fieldTypeMetadata.name, fieldTypeMetadata.referencePath);
+    const checkNestedClasses = (className: string, classPath: string) => {
+      if (className === baseClassName && classPath === baseClassPath) {
+        const fieldName = metadata[fileIndex].classes[classIndex].fields[fieldIndex].name;
+        throw new ErrorInFile(
+          `Class "${baseClassName}" has circular dependency in field "${fieldName}" with type "${fieldTypeMetadata.name}". Сircular dependencies are not allowed because they lead to infinite validation. Change field type or add "@${IgnoreValidation.name}" decorator.`,
+          baseClassPath
+        );
       }
-    } catch (err) {
-      console.error(err.message);
-      fieldTypeMetadata.validationType = ValidationType.notSupported;
+
+      const fileMetadata = metadata.find(({ name: filePath }) => filePath === classPath);
+      if (!fileMetadata) {
+        throw new IssueError(
+          `Referenced file metadata not found for nested class "${className}" (referenced file path: "${classPath}").`
+        );
+      }
+
+      const classMetadata = fileMetadata.classes.find(({ name }) => name === className);
+      if (!classMetadata) {
+        throw new IssueError(`Metadata not found for nested class "${className}" in file metadata "${classPath}").`);
+      }
+
+      classMetadata.fields.forEach(({ type: { name, validationType, referencePath } }) => {
+        if (validationType === ValidationType.nested && name && referencePath) {
+          checkNestedClasses(name, referencePath);
+        }
+      });
+    };
+
+    if (fieldTypeMetadata.name && fieldTypeMetadata.referencePath) {
+      checkNestedClasses(fieldTypeMetadata.name, fieldTypeMetadata.referencePath);
     }
   });
 };
