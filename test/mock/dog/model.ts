@@ -6,7 +6,7 @@ import {
   IntegerValidation,
   LessThanValidation
 } from './../../../src/decorators/index';
-import { User } from 'test/mock/user/model';
+import { User } from './nestedModel/model';
 import { Validation } from '../../../src/decorators';
 
 @Validation
@@ -23,5 +23,5 @@ export class Dog {
   @LessThanValidation('age', "dog can't be owned by anyone longer than his age")
   public ownedYears = 0;
 
-  public owner?: typeof User;
+  public owner?: User;
 }

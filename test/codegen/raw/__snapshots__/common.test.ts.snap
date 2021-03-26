@@ -29,6 +29,8 @@ import {
   EqualToValidatorWithDefaultMessage
 } from '../../model';
 
+import { customValidatorFailedValidator } from './model';
+
 import * as configFromFile from '../../ts-generate-validator-config.json';
 
 initConfig(configFromFile);
@@ -44,15 +46,29 @@ export const typeValidatorWithCustomMessageValidator: GeneratedValidation = (
     data: payload.data,
     config,
 
-    customMessage: 'type custom message'
+    customMessage: 'type custom message',
+
+    type: 'string'
   });
 };
 
 export const typeValidatorOnWrongPropertyTypeValidator: GeneratedValidation = (
   payload: GeneratedValidationPayload<typeof TypeValidatorOnWrongPropertyType, UserContext>
 ) => {
-  // eslint-disable-next-line
   const config = mergeDeep({}, getConfig(), payload.config);
+
+  typeValidator({
+    property: payload.data.someProperty,
+    propertyName: 'someProperty',
+    data: payload.data,
+    config,
+
+    customMessage: 'type custom message',
+
+    typeDescription: customValidatorFailedValidator,
+
+    type: 'nested'
+  });
 };
 
 export const customValidatorFailedValidator: GeneratedValidation = (
@@ -64,7 +80,9 @@ export const customValidatorFailedValidator: GeneratedValidation = (
     property: payload.data.someProperty,
     propertyName: 'someProperty',
     data: payload.data,
-    config
+    config,
+
+    type: 'number'
   });
 
   customValidator({
@@ -88,7 +106,9 @@ export const cutomValidatorSuccessValidator: GeneratedValidation = (
     property: payload.data.someProperty,
     propertyName: 'someProperty',
     data: payload.data,
-    config
+    config,
+
+    type: 'number'
   });
 
   customValidator({
@@ -110,7 +130,9 @@ export const cutomValidatorSuccessAsyncValidator: GeneratedValidation = async (
     property: payload.data.someProperty,
     propertyName: 'someProperty',
     data: payload.data,
-    config
+    config,
+
+    type: 'number'
   });
 
   customValidator({
@@ -153,7 +175,9 @@ export const equalValidatorWithDefaultMessageValidator: GeneratedValidation = (
     property: payload.data.someProperty,
     propertyName: 'someProperty',
     data: payload.data,
-    config
+    config,
+
+    type: 'string'
   });
 
   equalValidator({
@@ -175,7 +199,9 @@ export const equalValidatorWithCustomMessageValidator: GeneratedValidation = (
     property: payload.data.someProperty,
     propertyName: 'someProperty',
     data: payload.data,
-    config
+    config,
+
+    type: 'number'
   });
 
   equalValidator({
@@ -199,7 +225,9 @@ export const equalValidatorForBooleanValidator: GeneratedValidation = (
     property: payload.data.someProperty,
     propertyName: 'someProperty',
     data: payload.data,
-    config
+    config,
+
+    type: 'boolean'
   });
 
   equalValidator({
@@ -221,7 +249,9 @@ export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = 
     property: payload.data.someProperty,
     propertyName: 'someProperty',
     data: payload.data,
-    config
+    config,
+
+    type: 'string'
   });
 
   equalToValidator({
@@ -237,7 +267,9 @@ export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = 
     property: payload.data.someOtherProperty,
     propertyName: 'someOtherProperty',
     data: payload.data,
-    config
+    config,
+
+    type: 'string'
   });
 
   equalToValidator({
@@ -267,6 +299,10 @@ Array [
         "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnWrongPropertyType, CustomValidatorFailed, CutomValidatorSuccess, CutomValidatorSuccessAsync, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
         "path": "../../model",
       },
+      Object {
+        "clauses": "customValidatorFailedValidator",
+        "path": "./model",
+      },
     ],
     "validationArgs": Object {
       "config": "config",
@@ -285,6 +321,11 @@ Array [
                 "type": "string",
                 "value": "type custom message",
               },
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "string",
+              },
             ],
           },
         ],
@@ -293,7 +334,29 @@ Array [
       },
       Object {
         "async": false,
-        "items": Array [],
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customMessage",
+                "type": "string",
+                "value": "type custom message",
+              },
+              Object {
+                "property": "typeDescription",
+                "type": "object",
+                "value": "customValidatorFailedValidator",
+              },
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "nested",
+              },
+            ],
+          },
+        ],
         "modelClassName": "TypeValidatorOnWrongPropertyType",
         "name": "typeValidatorOnWrongPropertyTypeValidator",
       },
@@ -303,7 +366,13 @@ Array [
           Object {
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "number",
+              },
+            ],
           },
           Object {
             "propertyName": "someProperty",
@@ -328,7 +397,13 @@ Array [
           Object {
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "number",
+              },
+            ],
           },
           Object {
             "propertyName": "someProperty",
@@ -351,7 +426,13 @@ Array [
           Object {
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "number",
+              },
+            ],
           },
           Object {
             "propertyName": "someProperty",
@@ -392,7 +473,13 @@ Array [
           Object {
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "string",
+              },
+            ],
           },
           Object {
             "propertyName": "someProperty",
@@ -415,7 +502,13 @@ Array [
           Object {
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "number",
+              },
+            ],
           },
           Object {
             "propertyName": "someProperty",
@@ -443,7 +536,13 @@ Array [
           Object {
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "boolean",
+              },
+            ],
           },
           Object {
             "propertyName": "someProperty",
@@ -466,7 +565,13 @@ Array [
           Object {
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "string",
+              },
+            ],
           },
           Object {
             "propertyName": "someProperty",
@@ -482,7 +587,13 @@ Array [
           Object {
             "propertyName": "someOtherProperty",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "string",
+              },
+            ],
           },
           Object {
             "propertyName": "someOtherProperty",
@@ -557,7 +668,7 @@ Array [
             "type": Object {
               "name": "CustomValidatorFailed",
               "referencePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/common/model",
-              "validationType": "notSupported",
+              "validationType": "nested",
             },
           },
         ],

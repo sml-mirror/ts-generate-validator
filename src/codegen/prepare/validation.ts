@@ -1,3 +1,4 @@
+import { buildOutputFileName, buildOutputFilePath } from './index';
 import { escapeString } from './../utils/string';
 import { decoratorNameToValidationItemData } from './validationItem';
 import { handleError, ErrorInFile, IssueError } from './../utils/error';
@@ -92,12 +93,23 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
         type: 'string'
       });
     }
-    if (typeMetadata.validationType === ValidationType.enum) {
+    if (typeMetadata.validationType === ValidationType.enum || typeMetadata.validationType === ValidationType.nested) {
       if (typeMetadata.referencePath && typeMetadata.name) {
-        addImport(typeMetadata.referencePath, typeMetadata.name);
+        const refPath = typeMetadata.referencePath;
+        const importPath =
+          typeMetadata.validationType === ValidationType.nested
+            ? `${buildOutputFilePath({ inputFileName: refPath, config })}/${buildOutputFileName(refPath)}`
+            : refPath;
+        const typeDescription =
+          typeMetadata.validationType === ValidationType.nested
+            ? getValidationName(typeMetadata.name)
+            : typeMetadata.name;
+
+        addImport(importPath, typeDescription);
+
         validatorPayload.push({
           property: 'typeDescription',
-          value: typeMetadata.name,
+          value: typeDescription,
           type: 'object'
         });
       } else {
@@ -107,7 +119,14 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
       }
     }
 
+    validatorPayload.push({
+      property: 'type',
+      value: typeMetadata.validationType,
+      type: 'string'
+    });
+
     addImport(pkg.name, typeValidator.name);
+
     items.push({
       propertyName: fieldName,
       validatorName: typeValidator.name,
@@ -119,6 +138,14 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
       // Skip TypeValidation decorator
       if (decoratorName === TypeValidation.name) {
         return;
+      }
+
+      // Other validations for nested types not allowed
+      if (typeMetadata.validationType === ValidationType.nested) {
+        throw new ErrorInFile(
+          `Decorator "@${decoratorName}" can't be used on "${cls.name}.${fieldName}" of type "${typeMetadata.validationType}". Additional validations for nested types not allowed.`,
+          clsFileName
+        );
       }
 
       if (!decoratorNameToValidationItemData[decoratorName]) {

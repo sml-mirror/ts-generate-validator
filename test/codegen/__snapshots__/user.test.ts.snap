@@ -27,6 +27,8 @@ exports[`codegen/user create validators: generated validators at "/Users/alex-sh
   floatValidator
 } from 'ts-generate-validator';
 
+import { UserType } from '../../type/model';
+
 import { User } from '../../model';
 
 import * as configFromFile from '../../ts-generate-validator-config.json';
@@ -49,7 +51,9 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
     property: payload.data.name,
     propertyName: 'name',
     data: payload.data,
-    config
+    config,
+
+    type: 'string'
   });
 
   minLengthValidator({
@@ -81,7 +85,9 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
     property: payload.data.surname,
     propertyName: 'surname',
     data: payload.data,
-    config
+    config,
+
+    type: 'string'
   });
 
   minLengthValidator({
@@ -119,7 +125,9 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
     property: payload.data.age,
     propertyName: 'age',
     data: payload.data,
-    config
+    config,
+
+    type: 'number'
   });
 
   minValidator({
@@ -151,7 +159,9 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
     property: payload.data.workExperience,
     propertyName: 'workExperience',
     data: payload.data,
-    config
+    config,
+
+    type: 'number'
   });
 
   lessThanValidator({
@@ -174,7 +184,9 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
     property: payload.data.isActive,
     propertyName: 'isActive',
     data: payload.data,
-    config
+    config,
+
+    type: 'boolean'
   });
 
   equalValidator({
@@ -190,7 +202,9 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
     property: payload.data.email,
     propertyName: 'email',
     data: payload.data,
-    config
+    config,
+
+    type: 'string'
   });
 
   emailValidator({
@@ -204,7 +218,9 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
     property: payload.data.phone,
     propertyName: 'phone',
     data: payload.data,
-    config
+    config,
+
+    type: 'string'
   });
 
   matchValidator({
@@ -220,7 +236,9 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
     property: payload.data.website,
     propertyName: 'website',
     data: payload.data,
-    config
+    config,
+
+    type: 'string'
   });
 
   urlValidator({
@@ -234,7 +252,9 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
     property: payload.data.nickname,
     propertyName: 'nickname',
     data: payload.data,
-    config
+    config,
+
+    type: 'string'
   });
 
   lowercaseValidator({
@@ -266,7 +286,9 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
     property: payload.data.cardHolderName,
     propertyName: 'cardHolderName',
     data: payload.data,
-    config
+    config,
+
+    type: 'string'
   });
 
   uppercaseValidator({
@@ -280,7 +302,9 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
     property: payload.data.insuranceRatio,
     propertyName: 'insuranceRatio',
     data: payload.data,
-    config
+    config,
+
+    type: 'number'
   });
 
   floatValidator({
@@ -288,6 +312,17 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
     propertyName: 'insuranceRatio',
     data: payload.data,
     config
+  });
+
+  typeValidator({
+    property: payload.data.userType,
+    propertyName: 'userType',
+    data: payload.data,
+    config,
+
+    typeDescription: UserType,
+
+    type: 'enum'
   });
 };
 "
@@ -303,6 +338,10 @@ Array [
       Object {
         "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, initConfig, getConfig, mergeDeep, requiredOneOfValidator, typeValidator, minLengthValidator, maxLengthValidator, trimValidator, minValidator, maxValidator, integerValidator, lessThanValidator, positiveValidator, equalValidator, emailValidator, matchValidator, urlValidator, lowercaseValidator, uppercaseValidator, floatValidator",
         "path": "ts-generate-validator",
+      },
+      Object {
+        "clauses": "UserType",
+        "path": "../../type/model",
       },
       Object {
         "clauses": "User",
@@ -331,7 +370,13 @@ Array [
           Object {
             "propertyName": "name",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "string",
+              },
+            ],
           },
           Object {
             "propertyName": "name",
@@ -363,7 +408,13 @@ Array [
           Object {
             "propertyName": "surname",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "string",
+              },
+            ],
           },
           Object {
             "propertyName": "surname",
@@ -411,7 +462,13 @@ Array [
           Object {
             "propertyName": "age",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "number",
+              },
+            ],
           },
           Object {
             "propertyName": "age",
@@ -443,7 +500,13 @@ Array [
           Object {
             "propertyName": "workExperience",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "number",
+              },
+            ],
           },
           Object {
             "propertyName": "workExperience",
@@ -464,7 +527,13 @@ Array [
           Object {
             "propertyName": "isActive",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "boolean",
+              },
+            ],
           },
           Object {
             "propertyName": "isActive",
@@ -480,7 +549,13 @@ Array [
           Object {
             "propertyName": "email",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "string",
+              },
+            ],
           },
           Object {
             "propertyName": "email",
@@ -490,7 +565,13 @@ Array [
           Object {
             "propertyName": "phone",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "string",
+              },
+            ],
           },
           Object {
             "propertyName": "phone",
@@ -506,7 +587,13 @@ Array [
           Object {
             "propertyName": "website",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "string",
+              },
+            ],
           },
           Object {
             "propertyName": "website",
@@ -516,7 +603,13 @@ Array [
           Object {
             "propertyName": "nickname",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "string",
+              },
+            ],
           },
           Object {
             "propertyName": "nickname",
@@ -548,7 +641,13 @@ Array [
           Object {
             "propertyName": "cardHolderName",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "string",
+              },
+            ],
           },
           Object {
             "propertyName": "cardHolderName",
@@ -558,12 +657,34 @@ Array [
           Object {
             "propertyName": "insuranceRatio",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "number",
+              },
+            ],
           },
           Object {
             "propertyName": "insuranceRatio",
             "validatorName": "floatValidator",
             "validatorPayload": Array [],
+          },
+          Object {
+            "propertyName": "userType",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "typeDescription",
+                "type": "object",
+                "value": "UserType",
+              },
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "enum",
+              },
+            ],
           },
         ],
         "modelClassName": "User",
@@ -817,8 +938,8 @@ Array [
             "optional": true,
             "type": Object {
               "name": "UserType",
-              "referencePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/user/model",
-              "validationType": "notSupported",
+              "referencePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/user/type/model",
+              "validationType": "enum",
             },
           },
         ],

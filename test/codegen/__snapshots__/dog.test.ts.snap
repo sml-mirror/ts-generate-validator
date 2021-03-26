@@ -17,6 +17,8 @@ exports[`codegen/dog create validators: generated validators at "/Users/alex-shu
   lessThanValidator
 } from 'ts-generate-validator';
 
+import { userValidator } from './nestedModel.model';
+
 import { Dog } from '../../model';
 
 import * as configFromFile from '../../ts-generate-validator-config.json';
@@ -30,7 +32,9 @@ export const dogValidator: GeneratedValidation = (payload: GeneratedValidationPa
     property: payload.data.name,
     propertyName: 'name',
     data: payload.data,
-    config
+    config,
+
+    type: 'string'
   });
 
   minLengthValidator({
@@ -55,7 +59,9 @@ export const dogValidator: GeneratedValidation = (payload: GeneratedValidationPa
     property: payload.data.age,
     propertyName: 'age',
     data: payload.data,
-    config
+    config,
+
+    type: 'number'
   });
 
   minValidator({
@@ -93,7 +99,9 @@ export const dogValidator: GeneratedValidation = (payload: GeneratedValidationPa
     property: payload.data.ownedYears,
     propertyName: 'ownedYears',
     data: payload.data,
-    config
+    config,
+
+    type: 'number'
   });
 
   lessThanValidator({
@@ -105,6 +113,58 @@ export const dogValidator: GeneratedValidation = (payload: GeneratedValidationPa
     targetPropertyName: 'age',
 
     customMessage: \\"dog can't be owned by anyone longer than his age\\"
+  });
+
+  typeValidator({
+    property: payload.data.owner,
+    propertyName: 'owner',
+    data: payload.data,
+    config,
+
+    typeDescription: userValidator,
+
+    type: 'nested'
+  });
+};
+"
+`;
+
+exports[`codegen/dog create validators: generated validators at "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/dog/generated/validators/nestedModel.model.ts" 1`] = `
+"import {
+  GeneratedValidation,
+  GeneratedValidationPayload,
+  UserContext,
+  initConfig,
+  getConfig,
+  mergeDeep,
+  typeValidator
+} from 'ts-generate-validator';
+
+import { User } from '../../nestedModel/model';
+
+import * as configFromFile from '../../ts-generate-validator-config.json';
+
+initConfig(configFromFile);
+
+export const userValidator: GeneratedValidation = (payload: GeneratedValidationPayload<typeof User, UserContext>) => {
+  const config = mergeDeep({}, getConfig(), payload.config);
+
+  typeValidator({
+    property: payload.data.name,
+    propertyName: 'name',
+    data: payload.data,
+    config,
+
+    type: 'string'
+  });
+
+  typeValidator({
+    property: payload.data.surname,
+    propertyName: 'surname',
+    data: payload.data,
+    config,
+
+    type: 'string'
   });
 };
 "
@@ -122,6 +182,10 @@ Array [
         "path": "ts-generate-validator",
       },
       Object {
+        "clauses": "userValidator",
+        "path": "./nestedModel.model",
+      },
+      Object {
         "clauses": "Dog",
         "path": "../../model",
       },
@@ -137,7 +201,13 @@ Array [
           Object {
             "propertyName": "name",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "string",
+              },
+            ],
           },
           Object {
             "propertyName": "name",
@@ -164,7 +234,13 @@ Array [
           Object {
             "propertyName": "age",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "number",
+              },
+            ],
           },
           Object {
             "propertyName": "age",
@@ -212,7 +288,13 @@ Array [
           Object {
             "propertyName": "ownedYears",
             "validatorName": "typeValidator",
-            "validatorPayload": Array [],
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "number",
+              },
+            ],
           },
           Object {
             "propertyName": "ownedYears",
@@ -230,9 +312,75 @@ Array [
               },
             ],
           },
+          Object {
+            "propertyName": "owner",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "typeDescription",
+                "type": "object",
+                "value": "userValidator",
+              },
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "nested",
+              },
+            ],
+          },
         ],
         "modelClassName": "Dog",
         "name": "dogValidator",
+      },
+    ],
+  },
+  Object {
+    "configFilePath": "../../ts-generate-validator-config.json",
+    "fileName": "nestedModel.model",
+    "filePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/dog/generated/validators",
+    "imports": Array [
+      Object {
+        "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, initConfig, getConfig, mergeDeep, typeValidator",
+        "path": "ts-generate-validator",
+      },
+      Object {
+        "clauses": "User",
+        "path": "../../nestedModel/model",
+      },
+    ],
+    "validationArgs": Object {
+      "config": "config",
+      "data": "data",
+    },
+    "validations": Array [
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "name",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "string",
+              },
+            ],
+          },
+          Object {
+            "propertyName": "surname",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "string",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "User",
+        "name": "userValidator",
       },
     ],
   },
@@ -325,9 +473,9 @@ Array [
             "name": "owner",
             "optional": true,
             "type": Object {
-              "name": "mock",
-              "referencePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/dog/model",
-              "validationType": "notSupported",
+              "name": "User",
+              "referencePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/dog/nestedModel/model",
+              "validationType": "nested",
             },
           },
         ],
@@ -335,6 +483,40 @@ Array [
       },
     ],
     "name": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/dog/model",
+  },
+  Object {
+    "classes": Array [
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [],
+            "name": "name",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+          Object {
+            "decorators": Array [],
+            "name": "surname",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+        ],
+        "name": "User",
+      },
+    ],
+    "name": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/dog/nestedModel/model",
   },
 ]
 `;
