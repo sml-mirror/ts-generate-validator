@@ -17,12 +17,16 @@ export const prepareDataForRender = <C extends UserContext = UserContext>(
   return inputFilesMetadata.map((metadata) => {
     const { name, classes } = metadata;
 
-    const filePath = path.resolve(config.outputPath);
+    const filePath = buildOutputFilePath({ inputFileName: name, config });
     const fileName = buildOutputFileName(name);
 
     const importMap = buildBaseImportMap({ isConfigFileExists });
     const handleImportAdd = (targetPath: string, clause: string): void => {
-      const importPath = targetPath.indexOf('/') > -1 ? path.relative(filePath, targetPath) : targetPath;
+      const isPackageName = targetPath.indexOf('/') < 0;
+      let importPath = isPackageName ? targetPath : path.relative(filePath, targetPath);
+      if (!isPackageName && importPath.indexOf('/') < 0) {
+        importPath = `./${importPath}`;
+      }
       if (!importMap[importPath]) {
         importMap[importPath] = {};
       }
@@ -58,7 +62,16 @@ export const prepareDataForRender = <C extends UserContext = UserContext>(
   });
 };
 
-const buildOutputFileName = (inputFileName: string): string => {
+export const buildOutputFilePath = <C extends UserContext = UserContext>({
+  config
+}: {
+  inputFileName: string;
+  config: GenerateValidatorConfig<C>;
+}): string => {
+  return path.resolve(config.outputPath);
+};
+
+export const buildOutputFileName = (inputFileName: string): string => {
   return path.relative(process.cwd(), inputFileName).replace(/\s/g, '_').replace(/\/+/g, '.');
 };
 

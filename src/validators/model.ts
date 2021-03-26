@@ -1,3 +1,4 @@
+import { GeneratedValidation } from './../codegen/model';
 import { Message } from '../localization/model';
 import { UserContext, GenerateValidatorConfig } from '../config/model';
 import { Data } from '../codegen/model';
@@ -7,6 +8,7 @@ export enum ValidationType {
   string = 'string',
   boolean = 'boolean',
   enum = 'enum',
+  nested = 'nested',
   unknown = 'unknown',
   notSupported = 'notSupported'
 }
@@ -96,7 +98,7 @@ export type EnumDescription = Record<string, any>;
 
 export type TypeValidatorPayload = {
   type: ValidationType;
-  typeDescription?: EnumDescription;
+  typeDescription?: EnumDescription | GeneratedValidation;
 };
 
 export type TypeValidator<

@@ -23,7 +23,7 @@ export const buildFieldTypeMetadata = (
     if (type.validationType === ValidationType.unknown) {
       const externalPath = findExternalPathForCustomType(typeName, imports);
       type.referencePath =
-        externalPath ?? fieldType.modulePath ? stripFileExt(path.resolve(fieldType.modulePath)) : undefined;
+        externalPath ?? (fieldType.modulePath ? stripFileExt(path.resolve(fieldType.modulePath)) : undefined);
 
       onCustomTypeFound();
     }
@@ -57,6 +57,6 @@ export const findExternalPathForCustomType = (typeName: string, imports: ImportN
   });
 
   if (foundImport) {
-    return path.resolve(...foundImport.absPathNode);
+    return stripFileExt(path.resolve(...foundImport.absPathNode));
   }
 };

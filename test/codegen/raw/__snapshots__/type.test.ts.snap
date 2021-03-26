@@ -35,7 +35,9 @@ export const classWithEnumPropertyValidator: GeneratedValidation = (
     data: payload.data,
     config,
 
-    typeDescription: SomeEnum
+    typeDescription: SomeEnum,
+
+    type: 'enum'
   });
 };
 "
@@ -79,6 +81,11 @@ Array [
                 "property": "typeDescription",
                 "type": "object",
                 "value": "SomeEnum",
+              },
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "enum",
               },
             ],
           },

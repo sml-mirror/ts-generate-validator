@@ -1,3 +1,4 @@
+import { GeneratedValidationParameter } from './../codegen/model';
 import { IssueError } from './../codegen/utils/error';
 import { getEnumValues } from './../utils/enum';
 import {
@@ -17,11 +18,11 @@ export const requiredOneOfValidator: RequiredOneOfValidator = ({ data, fields, c
   }
 };
 
-export const typeValidator: TypeValidator = ({ property, type, typeDescription, customMessage }) => {
+export const typeValidator: TypeValidator = ({ property, type, typeDescription, customMessage, config }) => {
   const propertyType = typeof property;
 
   if (type === ValidationType.enum) {
-    if (!typeDescription) {
+    if (!typeDescription || typeof typeDescription !== 'object') {
       throw new IssueError(`Type description for "${type}" type not provided.`);
     }
 
@@ -32,6 +33,15 @@ export const typeValidator: TypeValidator = ({ property, type, typeDescription, 
       )}`;
       throw new Error(customMessage ?? defaultMessage);
     }
+    return;
+  }
+
+  if (type === ValidationType.nested) {
+    if (!typeDescription || typeof typeDescription !== 'function') {
+      throw new IssueError(`Type description for "${type}" type not provided.`);
+    }
+
+    typeDescription({ [GeneratedValidationParameter.data]: property, config });
     return;
   }
 
