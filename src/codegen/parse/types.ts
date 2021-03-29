@@ -1,5 +1,4 @@
 import { normalizePath } from './../../utils/path';
-import { cutFileExt } from '../../utils/path';
 import * as path from 'path';
 import { FieldModel, BasicType, ImportNode } from 'ts-file-parser';
 import { ValidationType } from '../../validators/model';
@@ -23,11 +22,18 @@ export const buildFieldTypeMetadata = (
 
     if (type.validationType === ValidationType.unknown) {
       const externalPath = findExternalPathForCustomType(typeName, imports);
-      const resultPath =
-        externalPath ?? (fieldType.modulePath ? cutFileExt(path.resolve(fieldType.modulePath)) : undefined);
+      console.log('buildFieldTypeMetadata - externalPath', externalPath);
+      console.log('buildFieldTypeMetadata - module path', fieldType.modulePath);
+      const resultPath = externalPath ?? (fieldType.modulePath ? path.resolve(fieldType.modulePath) : undefined);
+
+      console.log('buildFieldTypeMetadata - resultPath', resultPath);
 
       if (resultPath) {
-        type.referencePath = normalizePath(resultPath);
+        console.log(
+          'buildFieldTypeMetadata - resultPath normalized',
+          normalizePath(path.relative(process.cwd(), resultPath))
+        );
+        type.referencePath = normalizePath(path.relative(process.cwd(), resultPath));
       }
 
       onCustomTypeFound();
@@ -62,8 +68,6 @@ export const findExternalPathForCustomType = (typeName: string, imports: ImportN
   });
 
   if (foundImport) {
-    let result = path.resolve(...foundImport.absPathNode);
-    result = cutFileExt(result);
-    return result;
+    return path.resolve(...foundImport.absPathNode);
   }
 };

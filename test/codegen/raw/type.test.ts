@@ -27,7 +27,7 @@ describe('codegen/raw/type', () => {
 
   test('parse & prepare', () => {
     const config = getCodegenConfig();
-    const inputFiles = getAllFiles(path.resolve(config.inputPath));
+    const inputFiles = getAllFiles(path.resolve(process.cwd(), config.inputPath));
     const inputFilesMetadata = parseInputFiles(inputFiles);
 
     inputFilesMetadata.forEach(({ name: fileName, classes }, index) => {

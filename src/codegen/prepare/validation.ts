@@ -10,6 +10,7 @@ import { PreparedValidation } from './model';
 import { ClassMetadata } from './../parse/model';
 import { UserContext, GenerateValidatorConfig } from './../../config/model';
 import * as pkg from '../../../package.json';
+import * as path from 'path';
 
 export const buildValidationFromClassMetadata = <C extends UserContext = UserContext>({
   cls,
@@ -19,7 +20,7 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
 }: {
   cls: ClassMetadata;
   clsFileName: string;
-  addImport: (path: string, clause: string) => void;
+  addImport: (path: string, clause: string, isPackageName?: boolean) => void;
   config: GenerateValidatorConfig<C>;
 }): PreparedValidation | undefined => {
   const name = getValidationName(cls.name);
@@ -52,7 +53,7 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
         validatorPayload.push({ property: 'customMessage', value: escapeString(customMessage), type: 'string' });
       }
 
-      addImport(pkg.name, requiredOneOfValidator.name);
+      addImport(pkg.name, requiredOneOfValidator.name, true);
       items.push({
         propertyName: fields[0],
         validatorName: requiredOneOfValidator.name,
@@ -105,7 +106,7 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
             ? getValidationName(typeMetadata.name)
             : typeMetadata.name;
 
-        addImport(importPath, typeDescription);
+        addImport(path.resolve(importPath), typeDescription, false);
 
         validatorPayload.push({
           property: 'typeDescription',
@@ -125,7 +126,7 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
       type: 'string'
     });
 
-    addImport(pkg.name, typeValidator.name);
+    addImport(pkg.name, typeValidator.name, true);
 
     items.push({
       propertyName: fieldName,
@@ -169,7 +170,7 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
         async = true;
       }
 
-      addImport(pkg.name, validatorName);
+      addImport(pkg.name, validatorName, true);
       items.push({
         propertyName: fieldName,
         validatorName,

@@ -1,5 +1,3 @@
-import * as path from 'path';
-
 export const getRootDir = (): string => {
   return process.cwd();
 };
@@ -8,6 +6,10 @@ export const cutFileExt = (file: string): string => {
   return file.replace(/\.[^/.]+$/, '');
 };
 
+export const hasFileExt = (file: string): boolean => {
+  return /\.[^/.]+$/.test(file);
+};
+
 export const normalizePath = (rawPath: string): string => {
-  return path.relative(process.cwd(), rawPath).replace(/\\+/g, '/');
+  return rawPath.replace(/\\+/g, '/');
 };

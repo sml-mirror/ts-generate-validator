@@ -5,7 +5,7 @@ import { getCodegenConfig } from '../../src/config/codegen';
 
 export const readAllOutputFiles = (onFileReaded: (payload: { file: string; content: string }) => void): void => {
   const config = getCodegenConfig();
-  const outputFiles = getAllFiles(path.resolve(config.outputPath));
+  const outputFiles = getAllFiles(path.resolve(process.cwd(), config.outputPath));
 
   outputFiles.forEach((file) => {
     const content = fs.readFileSync(file, 'utf-8');

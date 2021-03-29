@@ -11,7 +11,7 @@ describe('codegen/raw/common', () => {
   const prevRootDir = process.cwd();
 
   beforeAll(() => {
-    const testRootDir = process.cwd() + '/test/mock/raw/common';
+    const testRootDir = path.resolve(process.cwd(), 'test/mock/raw/common');
     process.chdir(testRootDir);
     createConfigFile({
       inputPath: '.'
@@ -23,9 +23,9 @@ describe('codegen/raw/common', () => {
     process.chdir(prevRootDir);
   });
 
-  test('parse & prepare', () => {
+  test('parse & prepare', async () => {
     const config = getCodegenConfig();
-    const inputFiles = getAllFiles(path.resolve(config.inputPath));
+    const inputFiles = getAllFiles(path.resolve(process.cwd(), config.inputPath));
 
     const inputFilesMetadata = parseInputFiles(inputFiles);
     expect(inputFilesMetadata).toMatchSnapshot('parsed metadata');

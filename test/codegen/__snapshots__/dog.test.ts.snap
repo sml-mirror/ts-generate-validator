@@ -19,9 +19,9 @@ exports[`codegen/dog create validators: generated validators at "generated/valid
 
 import { userValidator } from './nestedModel.model';
 
-import { Dog } from 'model';
+import { Dog } from './../../model';
 
-import * as configFromFile from '....\\\\ts-generate-validator-config.json';
+import * as configFromFile from './../../ts-generate-validator-config.json';
 
 initConfig(configFromFile);
 
@@ -140,9 +140,9 @@ exports[`codegen/dog create validators: generated validators at "generated/valid
   typeValidator
 } from 'ts-generate-validator';
 
-import { User } from './....\\\\nestedModelmodel';
+import { User } from './../../nestedModel/model';
 
-import * as configFromFile from '....\\\\ts-generate-validator-config.json';
+import * as configFromFile from './../../ts-generate-validator-config.json';
 
 initConfig(configFromFile);
 
@@ -173,8 +173,8 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
 exports[`codegen/dog parse & prepare: data for render 1`] = `
 Array [
   Object {
-    "configFilePath": "..\\\\..\\\\ts-generate-validator-config.json",
-    "fileName": "model",
+    "configFilePath": "./../../ts-generate-validator-config.json",
+    "fileName": "model.ts",
     "filePath": "E:\\\\PROJECTS\\\\ts-generate-validator\\\\test\\\\mock\\\\dog\\\\generated\\\\validators",
     "imports": Array [
       Object {
@@ -187,7 +187,7 @@ Array [
       },
       Object {
         "clauses": "Dog",
-        "path": "model",
+        "path": "./../../model",
       },
     ],
     "validationArgs": Object {
@@ -335,8 +335,8 @@ Array [
     ],
   },
   Object {
-    "configFilePath": "..\\\\..\\\\ts-generate-validator-config.json",
-    "fileName": "nestedModel.model",
+    "configFilePath": "./../../ts-generate-validator-config.json",
+    "fileName": "nestedModel.model.ts",
     "filePath": "E:\\\\PROJECTS\\\\ts-generate-validator\\\\test\\\\mock\\\\dog\\\\generated\\\\validators",
     "imports": Array [
       Object {
@@ -345,7 +345,7 @@ Array [
       },
       Object {
         "clauses": "User",
-        "path": "./..\\\\..\\\\nestedModel\\\\model",
+        "path": "./../../nestedModel/model",
       },
     ],
     "validationArgs": Object {
@@ -474,7 +474,7 @@ Array [
             "optional": true,
             "type": Object {
               "name": "User",
-              "referencePath": "nestedModel/model",
+              "referencePath": "nestedModel/model.ts",
               "validationType": "nested",
             },
           },
@@ -482,7 +482,7 @@ Array [
         "name": "Dog",
       },
     ],
-    "name": "model",
+    "name": "model.ts",
   },
   Object {
     "classes": Array [
@@ -516,7 +516,7 @@ Array [
         "name": "User",
       },
     ],
-    "name": "nestedModel/model",
+    "name": "nestedModel/model.ts",
   },
 ]
 `;

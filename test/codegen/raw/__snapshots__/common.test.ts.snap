@@ -27,11 +27,11 @@ import {
   EqualValidatorWithCustomMessage,
   EqualValidatorForBoolean,
   EqualToValidatorWithDefaultMessage
-} from 'model';
+} from './../../model';
 
 import { customValidatorFailedValidator } from './model';
 
-import * as configFromFile from '....\\\\ts-generate-validator-config.json';
+import * as configFromFile from './../../ts-generate-validator-config.json';
 
 initConfig(configFromFile);
 
@@ -287,8 +287,8 @@ export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = 
 exports[`codegen/raw/common parse & prepare: data for render 1`] = `
 Array [
   Object {
-    "configFilePath": "..\\\\..\\\\ts-generate-validator-config.json",
-    "fileName": "model",
+    "configFilePath": "./../../ts-generate-validator-config.json",
+    "fileName": "model.ts",
     "filePath": "E:\\\\PROJECTS\\\\ts-generate-validator\\\\test\\\\mock\\\\raw\\\\common\\\\generated\\\\validators",
     "imports": Array [
       Object {
@@ -297,7 +297,7 @@ Array [
       },
       Object {
         "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnWrongPropertyType, CustomValidatorFailed, CutomValidatorSuccess, CutomValidatorSuccessAsync, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
-        "path": "model",
+        "path": "./../../model",
       },
       Object {
         "clauses": "customValidatorFailedValidator",
@@ -667,7 +667,7 @@ Array [
             "optional": true,
             "type": Object {
               "name": "CustomValidatorFailed",
-              "referencePath": "model",
+              "referencePath": "model.ts",
               "validationType": "nested",
             },
           },
@@ -970,7 +970,7 @@ Array [
         "name": "EqualToValidatorWithDefaultMessage",
       },
     ],
-    "name": "model",
+    "name": "model.ts",
   },
 ]
 `;

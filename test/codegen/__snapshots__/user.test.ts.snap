@@ -27,11 +27,9 @@ exports[`codegen/user create validators: generated validators at "generated/vali
   floatValidator
 } from 'ts-generate-validator';
 
-import { UserType } from './....\\\\typemodel';
+import { User } from './../../model';
 
-import { User } from 'model';
-
-import * as configFromFile from '....\\\\ts-generate-validator-config.json';
+import * as configFromFile from './../../ts-generate-validator-config.json';
 
 initConfig(configFromFile);
 
@@ -313,17 +311,6 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
     data: payload.data,
     config
   });
-
-  typeValidator({
-    property: payload.data.userType,
-    propertyName: 'userType',
-    data: payload.data,
-    config,
-
-    typeDescription: UserType,
-
-    type: 'enum'
-  });
 };
 "
 `;
@@ -331,8 +318,8 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
 exports[`codegen/user parse & prepare: data for render 1`] = `
 Array [
   Object {
-    "configFilePath": "..\\\\..\\\\ts-generate-validator-config.json",
-    "fileName": "model",
+    "configFilePath": "./../../ts-generate-validator-config.json",
+    "fileName": "model.ts",
     "filePath": "E:\\\\PROJECTS\\\\ts-generate-validator\\\\test\\\\mock\\\\user\\\\generated\\\\validators",
     "imports": Array [
       Object {
@@ -340,12 +327,8 @@ Array [
         "path": "ts-generate-validator",
       },
       Object {
-        "clauses": "UserType",
-        "path": "./..\\\\..\\\\type\\\\model",
-      },
-      Object {
         "clauses": "User",
-        "path": "model",
+        "path": "./../../model",
       },
     ],
     "validationArgs": Object {
@@ -670,22 +653,6 @@ Array [
             "validatorName": "floatValidator",
             "validatorPayload": Array [],
           },
-          Object {
-            "propertyName": "userType",
-            "validatorName": "typeValidator",
-            "validatorPayload": Array [
-              Object {
-                "property": "typeDescription",
-                "type": "object",
-                "value": "UserType",
-              },
-              Object {
-                "property": "type",
-                "type": "string",
-                "value": "enum",
-              },
-            ],
-          },
         ],
         "modelClassName": "User",
         "name": "userValidator",
@@ -939,14 +906,14 @@ Array [
             "type": Object {
               "name": "UserType",
               "referencePath": "type/model",
-              "validationType": "enum",
+              "validationType": "notSupported",
             },
           },
         ],
         "name": "User",
       },
     ],
-    "name": "model",
+    "name": "model.ts",
   },
 ]
 `;

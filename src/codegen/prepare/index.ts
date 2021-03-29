@@ -1,3 +1,4 @@
+import { normalizePath, cutFileExt } from './../../utils/path';
 import { configFileExists, configFileName } from './../../config/codegen';
 import { buildValidationFromClassMetadata } from './validation';
 import { PreparedDataItem, PreparedValidation, PreparedImportMap, PreparedImport } from './model';
@@ -21,19 +22,18 @@ export const prepareDataForRender = <C extends UserContext = UserContext>(
     const fileName = buildOutputFileName(name);
 
     const importMap = buildBaseImportMap({ isConfigFileExists });
-    const handleImportAdd = (targetPath: string, clause: string): void => {
-      const isPackageName = targetPath.indexOf('/') < 0;
-      let importPath = isPackageName ? targetPath : path.relative(filePath, targetPath);
-      if (!isPackageName && importPath.indexOf('/') < 0) {
-        importPath = `./${importPath}`;
-      }
+    const handleImportAdd = (targetPath: string, clause: string, isPackageName?: boolean): void => {
+      isPackageName = isPackageName ?? targetPath.indexOf('/') < 0;
+      const importPath = isPackageName ? targetPath : normalizeImportPathForFile(filePath, targetPath);
       if (!importMap[importPath]) {
         importMap[importPath] = {};
       }
       importMap[importPath][clause] = true;
     };
 
-    const configFilePath = isConfigFileExists ? path.relative(filePath, path.resolve(configFileName)) : undefined;
+    const configFilePath = isConfigFileExists
+      ? normalizeImportPathForFile(filePath, path.resolve(configFileName))
+      : undefined;
 
     const validations: PreparedValidation[] = [];
     classes.forEach((cls) => {
@@ -44,7 +44,7 @@ export const prepareDataForRender = <C extends UserContext = UserContext>(
         config
       });
       if (validation) {
-        handleImportAdd(name, cls.name);
+        handleImportAdd(path.resolve(name), cls.name, false);
         validations.push(validation);
       }
     });
@@ -62,6 +62,17 @@ export const prepareDataForRender = <C extends UserContext = UserContext>(
   });
 };
 
+const normalizeImportPathForFile = (filePath: string, importPath: string): string => {
+  let resultPath = normalizePath(path.relative(filePath, importPath));
+  if (!resultPath.startsWith('./')) {
+    resultPath = `./${resultPath}`;
+  }
+  if (resultPath.match(/\.(ts|tsx|js|jsx)$/)) {
+    resultPath = cutFileExt(resultPath);
+  }
+  return resultPath;
+};
+
 export const buildOutputFilePath = <C extends UserContext = UserContext>({
   config
 }: {
@@ -72,10 +83,12 @@ export const buildOutputFilePath = <C extends UserContext = UserContext>({
 };
 
 export const buildOutputFileName = (inputFileName: string): string => {
-  return path
-    .relative(process.cwd(), inputFileName)
-    .replace(/\s/g, '_')
-    .replace(/[/\\]+/g, '.');
+  const pathToInputFileFromRoot = path.relative(process.cwd(), inputFileName);
+  return (
+    cutFileExt(pathToInputFileFromRoot)
+      .replace(/\s/g, '_')
+      .replace(/[/\\]+/g, '.') + '.ts'
+  );
 };
 
 const buildBaseImportMap = ({ isConfigFileExists }: { isConfigFileExists: boolean }): PreparedImportMap => {
