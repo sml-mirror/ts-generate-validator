@@ -289,7 +289,7 @@ Array [
   Object {
     "configFilePath": "./../../ts-generate-validator-config.json",
     "fileName": "model.ts",
-    "filePath": "E:\\\\PROJECTS\\\\ts-generate-validator\\\\test\\\\mock\\\\raw\\\\common\\\\generated\\\\validators",
+    "filePath": "generated\\\\validators",
     "imports": Array [
       Object {
         "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, initConfig, getConfig, mergeDeep, typeValidator, customValidator, equalValidator, equalToValidator",

@@ -79,7 +79,7 @@ export const buildOutputFilePath = <C extends UserContext = UserContext>({
   inputFileName: string;
   config: GenerateValidatorConfig<C>;
 }): string => {
-  return path.resolve(config.outputPath);
+  return path.relative(process.cwd(), path.resolve(process.cwd(), config.outputPath));
 };
 
 export const buildOutputFileName = (inputFileName: string): string => {

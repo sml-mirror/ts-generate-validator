@@ -19,7 +19,7 @@ describe('codegen/dog', () => {
   });
 
   afterAll(() => {
-    //deleteConfigFile();
+    deleteConfigFile();
     process.chdir(prevRootDir);
   });
 
@@ -41,6 +41,6 @@ describe('codegen/dog', () => {
       expect(content).toMatchSnapshot(`generated validators at "${file}"`);
     });
 
-    // removeGeneratedValidators();
+    removeGeneratedValidators();
   });
 });

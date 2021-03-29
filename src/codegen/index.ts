@@ -34,6 +34,6 @@ export const createValidators = async (): Promise<void> => {
 
     const { filePath, fileName } = dataItem;
     mkdirp.sync(filePath);
-    fs.writeFileSync(`${filePath}/${fileName}`, content, 'utf-8');
+    fs.writeFileSync(path.resolve(process.cwd(), `${filePath}/${fileName}`), content, 'utf-8');
   });
 };
