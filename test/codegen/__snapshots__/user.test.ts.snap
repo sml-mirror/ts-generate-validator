@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`codegen/user create validators: generated validators at "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/user/generated/validators/model.ts" 1`] = `
+exports[`codegen/user create validators: generated validators at "generated/validators/model.ts" 1`] = `
 "import {
   GeneratedValidation,
   GeneratedValidationPayload,
@@ -27,11 +27,11 @@ exports[`codegen/user create validators: generated validators at "/Users/alex-sh
   floatValidator
 } from 'ts-generate-validator';
 
-import { UserType } from '../../type/model';
+import { UserType } from './....\\\\typemodel';
 
-import { User } from '../../model';
+import { User } from 'model';
 
-import * as configFromFile from '../../ts-generate-validator-config.json';
+import * as configFromFile from '....\\\\ts-generate-validator-config.json';
 
 initConfig(configFromFile);
 
@@ -331,9 +331,9 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
 exports[`codegen/user parse & prepare: data for render 1`] = `
 Array [
   Object {
-    "configFilePath": "../../ts-generate-validator-config.json",
+    "configFilePath": "..\\\\..\\\\ts-generate-validator-config.json",
     "fileName": "model",
-    "filePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/user/generated/validators",
+    "filePath": "E:\\\\PROJECTS\\\\ts-generate-validator\\\\test\\\\mock\\\\user\\\\generated\\\\validators",
     "imports": Array [
       Object {
         "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, initConfig, getConfig, mergeDeep, requiredOneOfValidator, typeValidator, minLengthValidator, maxLengthValidator, trimValidator, minValidator, maxValidator, integerValidator, lessThanValidator, positiveValidator, equalValidator, emailValidator, matchValidator, urlValidator, lowercaseValidator, uppercaseValidator, floatValidator",
@@ -341,11 +341,11 @@ Array [
       },
       Object {
         "clauses": "UserType",
-        "path": "../../type/model",
+        "path": "./..\\\\..\\\\type\\\\model",
       },
       Object {
         "clauses": "User",
-        "path": "../../model",
+        "path": "model",
       },
     ],
     "validationArgs": Object {
@@ -938,7 +938,7 @@ Array [
             "optional": true,
             "type": Object {
               "name": "UserType",
-              "referencePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/user/type/model",
+              "referencePath": "type/model",
               "validationType": "enum",
             },
           },
@@ -946,7 +946,7 @@ Array [
         "name": "User",
       },
     ],
-    "name": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/user/model",
+    "name": "model",
   },
 ]
 `;

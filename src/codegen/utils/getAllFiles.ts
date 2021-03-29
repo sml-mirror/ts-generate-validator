@@ -1,3 +1,4 @@
+import { normalizePath } from './../../utils/path';
 import * as fs from 'fs';
 
 export const getAllFiles = (path: string): string[] => {
@@ -13,7 +14,7 @@ export const getAllFiles = (path: string): string[] => {
     } else {
       const matches = tsRegExp.exec(endPath);
       if (matches && matches.length > 0) {
-        returnFiles.push(matches[0]);
+        returnFiles.push(normalizePath(matches[0]));
       }
     }
   });

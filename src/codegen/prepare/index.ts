@@ -72,7 +72,10 @@ export const buildOutputFilePath = <C extends UserContext = UserContext>({
 };
 
 export const buildOutputFileName = (inputFileName: string): string => {
-  return path.relative(process.cwd(), inputFileName).replace(/\s/g, '_').replace(/\/+/g, '.');
+  return path
+    .relative(process.cwd(), inputFileName)
+    .replace(/\s/g, '_')
+    .replace(/[/\\]+/g, '.');
 };
 
 const buildBaseImportMap = ({ isConfigFileExists }: { isConfigFileExists: boolean }): PreparedImportMap => {
