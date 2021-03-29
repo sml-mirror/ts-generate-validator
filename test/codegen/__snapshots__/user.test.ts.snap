@@ -320,7 +320,7 @@ Array [
   Object {
     "configFilePath": "./../../ts-generate-validator-config.json",
     "fileName": "model.ts",
-    "filePath": "generated\\\\validators",
+    "filePath": "generated/validators",
     "imports": Array [
       Object {
         "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, initConfig, getConfig, mergeDeep, requiredOneOfValidator, typeValidator, minLengthValidator, maxLengthValidator, trimValidator, minValidator, maxValidator, integerValidator, lessThanValidator, positiveValidator, equalValidator, emailValidator, matchValidator, urlValidator, lowercaseValidator, uppercaseValidator, floatValidator",
