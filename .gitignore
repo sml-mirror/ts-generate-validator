@@ -9,3 +9,6 @@ package-lock.json
 
 # Macos metadata
 **/.DS_Store
+
+# Dist
+dist/

@@ -8,7 +8,7 @@
     "lint": "eslint . --ext .ts",
     "fix": "npm run lint -- --fix",
     "test": "jest",
-    "build": "tsc --resolveJsonModule --outDir dist src/bin.ts && cp -r ./src/codegen/view ./dist/src/codegen/",
+    "build": "tsc --resolveJsonModule --outDir dist src/bin.ts && shx cp -r ./src/codegen/view ./dist/src/codegen/",
     "bin": "node dist/src/bin.js"
   },
   "repository": {
@@ -27,8 +27,8 @@
   },
   "homepage": "https://github.com/SoftMediaLab/ts-generate-validator#readme",
   "devDependencies": {
-    "@types/mkdirp": "1.0.1",
     "@types/jest": "26.0.20",
+    "@types/mkdirp": "1.0.1",
     "@types/node": "14.14.30",
     "@types/nunjucks": "3.1.4",
     "@typescript-eslint/eslint-plugin": "4.15.2",
@@ -45,6 +45,7 @@
     "husky": "5.1.1",
     "jest": "26.6.3",
     "lint-staged": "10.5.4",
+    "shx": "0.3.3",
     "ts-jest": "26.5.2",
     "ts-node": "9.1.1",
     "typescript": "4.2.2"
