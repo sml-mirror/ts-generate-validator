@@ -1,25 +1,29 @@
+/*Codegen*/
+// tslint:disable
+/* eslint-disable */
+
 {% for import in imports %}
 import { {{ import.clauses }} } from '{{ import.path }}';
 {% endfor %}
-{% if configFilePath %}
-import * as configFromFile from '{{ configFilePath }}';
-
-initConfig(configFromFile);
-{% endif %}
 
 {% for validation in validations %}
-export const {{ validation.name }}: GeneratedValidation = {% if validation.async %}async {% endif %}(
-  payload: GeneratedValidationPayload<typeof {{ validation.modelClassName }}, UserContext>
+export const {{ validation.name }}: GeneratedValidation = {% if validation.async %}async {% endif %}<
+  D extends Record<string, any> = typeof {{ validation.modelClassName }},
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig = {},
+  context?: C = undefined
 ) => {
-  {% if validation.items.length %}{% else %}// eslint-disable-next-line{% endif %}
-  const config = mergeDeep({}, getConfig(), payload.{{ validationArgs.config }});
+  const config = mergeDeep({}, getConfig(), configArg);
 
   {% for item in validation.items %}
   {{ item.validatorName }}({
-    property: payload.{{ validationArgs.data }}.{{ item.propertyName }},
+    property: data?.{{ item.propertyName }},
     propertyName: '{{ item.propertyName }}',
-    data: payload.{{ validationArgs.data }},
+    data: data,
     config,
+    context,
     {% for vArg in item.validatorPayload %}
     {{ vArg.property }}: {% if vArg.type === 'string' %}'{{ vArg.value }}'{% else %}{{ vArg.value }}{% endif %},
     {% endfor %}

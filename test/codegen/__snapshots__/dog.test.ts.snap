@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`codegen/dog create validators: generated validators at "generated/validators/model.ts" 1`] = `
-"import {
+"/*Codegen*/
+// tslint:disable
+/* eslint-disable */
+
+import {
   GeneratedValidation,
   GeneratedValidationPayload,
+  ValidationConfig,
   UserContext,
-  initConfig,
   getConfig,
   mergeDeep,
   typeValidator,
@@ -21,54 +25,62 @@ import { userValidator } from './nestedModel.model';
 
 import { Dog } from './../../model';
 
-import * as configFromFile from './../../ts-generate-validator-config.json';
-
-initConfig(configFromFile);
-
-export const dogValidator: GeneratedValidation = (payload: GeneratedValidationPayload<typeof Dog, UserContext>) => {
-  const config = mergeDeep({}, getConfig(), payload.config);
+export const dogValidator: GeneratedValidation = <
+  D extends Record<string, any> = typeof Dog,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig = {},
+  context?: C = undefined
+) => {
+  const config = mergeDeep({}, getConfig(), configArg);
 
   typeValidator({
-    property: payload.data.name,
+    property: data?.name,
     propertyName: 'name',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     type: 'string'
   });
 
   minLengthValidator({
-    property: payload.data.name,
+    property: data?.name,
     propertyName: 'name',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     threshold: 5
   });
 
   maxLengthValidator({
-    property: payload.data.name,
+    property: data?.name,
     propertyName: 'name',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     threshold: 20
   });
 
   typeValidator({
-    property: payload.data.age,
+    property: data?.age,
     propertyName: 'age',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     type: 'number'
   });
 
   minValidator({
-    property: payload.data.age,
+    property: data?.age,
     propertyName: 'age',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     threshold: 2,
 
@@ -76,10 +88,11 @@ export const dogValidator: GeneratedValidation = (payload: GeneratedValidationPa
   });
 
   maxValidator({
-    property: payload.data.age,
+    property: data?.age,
     propertyName: 'age',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     threshold: 16,
 
@@ -87,28 +100,31 @@ export const dogValidator: GeneratedValidation = (payload: GeneratedValidationPa
   });
 
   integerValidator({
-    property: payload.data.age,
+    property: data?.age,
     propertyName: 'age',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     customMessage: 'age must be an integer value'
   });
 
   typeValidator({
-    property: payload.data.ownedYears,
+    property: data?.ownedYears,
     propertyName: 'ownedYears',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     type: 'number'
   });
 
   lessThanValidator({
-    property: payload.data.ownedYears,
+    property: data?.ownedYears,
     propertyName: 'ownedYears',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     targetPropertyName: 'age',
 
@@ -116,10 +132,11 @@ export const dogValidator: GeneratedValidation = (payload: GeneratedValidationPa
   });
 
   typeValidator({
-    property: payload.data.owner,
+    property: data?.owner,
     propertyName: 'owner',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     typeDescription: userValidator,
 
@@ -130,11 +147,15 @@ export const dogValidator: GeneratedValidation = (payload: GeneratedValidationPa
 `;
 
 exports[`codegen/dog create validators: generated validators at "generated/validators/nestedModel.model.ts" 1`] = `
-"import {
+"/*Codegen*/
+// tslint:disable
+/* eslint-disable */
+
+import {
   GeneratedValidation,
   GeneratedValidationPayload,
+  ValidationConfig,
   UserContext,
-  initConfig,
   getConfig,
   mergeDeep,
   typeValidator
@@ -142,27 +163,32 @@ exports[`codegen/dog create validators: generated validators at "generated/valid
 
 import { User } from './../../nestedModel/model';
 
-import * as configFromFile from './../../ts-generate-validator-config.json';
-
-initConfig(configFromFile);
-
-export const userValidator: GeneratedValidation = (payload: GeneratedValidationPayload<typeof User, UserContext>) => {
-  const config = mergeDeep({}, getConfig(), payload.config);
+export const userValidator: GeneratedValidation = <
+  D extends Record<string, any> = typeof User,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig = {},
+  context?: C = undefined
+) => {
+  const config = mergeDeep({}, getConfig(), configArg);
 
   typeValidator({
-    property: payload.data.name,
+    property: data?.name,
     propertyName: 'name',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     type: 'string'
   });
 
   typeValidator({
-    property: payload.data.surname,
+    property: data?.surname,
     propertyName: 'surname',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     type: 'string'
   });
@@ -173,12 +199,11 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
 exports[`codegen/dog parse & prepare: data for render 1`] = `
 Array [
   Object {
-    "configFilePath": "./../../ts-generate-validator-config.json",
     "fileName": "model.ts",
     "filePath": "generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, initConfig, getConfig, mergeDeep, typeValidator, minLengthValidator, maxLengthValidator, minValidator, maxValidator, integerValidator, lessThanValidator",
+        "clauses": "GeneratedValidation, GeneratedValidationPayload, ValidationConfig, UserContext, getConfig, mergeDeep, typeValidator, minLengthValidator, maxLengthValidator, minValidator, maxValidator, integerValidator, lessThanValidator",
         "path": "ts-generate-validator",
       },
       Object {
@@ -190,10 +215,6 @@ Array [
         "path": "./../../model",
       },
     ],
-    "validationArgs": Object {
-      "config": "config",
-      "data": "data",
-    },
     "validations": Array [
       Object {
         "async": false,
@@ -335,12 +356,11 @@ Array [
     ],
   },
   Object {
-    "configFilePath": "./../../ts-generate-validator-config.json",
     "fileName": "nestedModel.model.ts",
     "filePath": "generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, initConfig, getConfig, mergeDeep, typeValidator",
+        "clauses": "GeneratedValidation, GeneratedValidationPayload, ValidationConfig, UserContext, getConfig, mergeDeep, typeValidator",
         "path": "ts-generate-validator",
       },
       Object {
@@ -348,10 +368,6 @@ Array [
         "path": "./../../nestedModel/model",
       },
     ],
-    "validationArgs": Object {
-      "config": "config",
-      "data": "data",
-    },
     "validations": Array [
       Object {
         "async": false,

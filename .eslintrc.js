@@ -26,6 +26,7 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 0,
     'object-curly-spacing': 0,
     'array-bracket-spacing': 0,
-    'computed-property-spacing': 0
+    'computed-property-spacing': 0,
+    quotes: ['error', 'single', { avoidEscape: false, allowTemplateLiterals: true }]
   }
 };

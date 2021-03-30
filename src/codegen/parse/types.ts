@@ -22,17 +22,9 @@ export const buildFieldTypeMetadata = (
 
     if (type.validationType === ValidationType.unknown) {
       const externalPath = findExternalPathForCustomType(typeName, imports);
-      console.log('buildFieldTypeMetadata - externalPath', externalPath);
-      console.log('buildFieldTypeMetadata - module path', fieldType.modulePath);
       const resultPath = externalPath ?? (fieldType.modulePath ? path.resolve(fieldType.modulePath) : undefined);
 
-      console.log('buildFieldTypeMetadata - resultPath', resultPath);
-
       if (resultPath) {
-        console.log(
-          'buildFieldTypeMetadata - resultPath normalized',
-          normalizePath(path.relative(process.cwd(), resultPath))
-        );
         type.referencePath = normalizePath(path.relative(process.cwd(), resultPath));
       }
 

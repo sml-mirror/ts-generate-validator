@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`codegen/user create validators: generated validators at "generated/validators/model.ts" 1`] = `
-"import {
+"/*Codegen*/
+// tslint:disable
+/* eslint-disable */
+
+import {
   GeneratedValidation,
   GeneratedValidationPayload,
+  ValidationConfig,
   UserContext,
-  initConfig,
   getConfig,
   mergeDeep,
   requiredOneOfValidator,
@@ -29,70 +33,80 @@ exports[`codegen/user create validators: generated validators at "generated/vali
 
 import { User } from './../../model';
 
-import * as configFromFile from './../../ts-generate-validator-config.json';
-
-initConfig(configFromFile);
-
-export const userValidator: GeneratedValidation = (payload: GeneratedValidationPayload<typeof User, UserContext>) => {
-  const config = mergeDeep({}, getConfig(), payload.config);
+export const userValidator: GeneratedValidation = <
+  D extends Record<string, any> = typeof User,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig = {},
+  context?: C = undefined
+) => {
+  const config = mergeDeep({}, getConfig(), configArg);
 
   requiredOneOfValidator({
-    property: payload.data.email,
+    property: data?.email,
     propertyName: 'email',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     fields: ['email', 'phone']
   });
 
   typeValidator({
-    property: payload.data.name,
+    property: data?.name,
     propertyName: 'name',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     type: 'string'
   });
 
   minLengthValidator({
-    property: payload.data.name,
+    property: data?.name,
     propertyName: 'name',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     threshold: 2
   });
 
   maxLengthValidator({
-    property: payload.data.name,
+    property: data?.name,
     propertyName: 'name',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     threshold: 50
   });
 
   trimValidator({
-    property: payload.data.name,
+    property: data?.name,
     propertyName: 'name',
-    data: payload.data,
-    config
+    data: data,
+    config,
+    context
   });
 
   typeValidator({
-    property: payload.data.surname,
+    property: data?.surname,
     propertyName: 'surname',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     type: 'string'
   });
 
   minLengthValidator({
-    property: payload.data.surname,
+    property: data?.surname,
     propertyName: 'surname',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     threshold: 2,
 
@@ -100,10 +114,11 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
   });
 
   maxLengthValidator({
-    property: payload.data.surname,
+    property: data?.surname,
     propertyName: 'surname',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     threshold: 50,
 
@@ -111,205 +126,229 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
   });
 
   trimValidator({
-    property: payload.data.surname,
+    property: data?.surname,
     propertyName: 'surname',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     customMessage: 'there should be no spaces at the beginning and at the end of surname'
   });
 
   typeValidator({
-    property: payload.data.age,
+    property: data?.age,
     propertyName: 'age',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     type: 'number'
   });
 
   minValidator({
-    property: payload.data.age,
+    property: data?.age,
     propertyName: 'age',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     threshold: 18
   });
 
   maxValidator({
-    property: payload.data.age,
+    property: data?.age,
     propertyName: 'age',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     threshold: 60
   });
 
   integerValidator({
-    property: payload.data.age,
+    property: data?.age,
     propertyName: 'age',
-    data: payload.data,
-    config
+    data: data,
+    config,
+    context
   });
 
   typeValidator({
-    property: payload.data.workExperience,
+    property: data?.workExperience,
     propertyName: 'workExperience',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     type: 'number'
   });
 
   lessThanValidator({
-    property: payload.data.workExperience,
+    property: data?.workExperience,
     propertyName: 'workExperience',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     targetPropertyName: 'age'
   });
 
   positiveValidator({
-    property: payload.data.workExperience,
+    property: data?.workExperience,
     propertyName: 'workExperience',
-    data: payload.data,
-    config
+    data: data,
+    config,
+    context
   });
 
   typeValidator({
-    property: payload.data.isActive,
+    property: data?.isActive,
     propertyName: 'isActive',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     type: 'boolean'
   });
 
   equalValidator({
-    property: payload.data.isActive,
+    property: data?.isActive,
     propertyName: 'isActive',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     value: true
   });
 
   typeValidator({
-    property: payload.data.email,
+    property: data?.email,
     propertyName: 'email',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     type: 'string'
   });
 
   emailValidator({
-    property: payload.data.email,
+    property: data?.email,
     propertyName: 'email',
-    data: payload.data,
-    config
+    data: data,
+    config,
+    context
   });
 
   typeValidator({
-    property: payload.data.phone,
+    property: data?.phone,
     propertyName: 'phone',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     type: 'string'
   });
 
   matchValidator({
-    property: payload.data.phone,
+    property: data?.phone,
     propertyName: 'phone',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     regexp: /^\\\\d{10}$/
   });
 
   typeValidator({
-    property: payload.data.website,
+    property: data?.website,
     propertyName: 'website',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     type: 'string'
   });
 
   urlValidator({
-    property: payload.data.website,
+    property: data?.website,
     propertyName: 'website',
-    data: payload.data,
-    config
+    data: data,
+    config,
+    context
   });
 
   typeValidator({
-    property: payload.data.nickname,
+    property: data?.nickname,
     propertyName: 'nickname',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     type: 'string'
   });
 
   lowercaseValidator({
-    property: payload.data.nickname,
+    property: data?.nickname,
     propertyName: 'nickname',
-    data: payload.data,
-    config
+    data: data,
+    config,
+    context
   });
 
   minLengthValidator({
-    property: payload.data.nickname,
+    property: data?.nickname,
     propertyName: 'nickname',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     threshold: 5
   });
 
   maxLengthValidator({
-    property: payload.data.nickname,
+    property: data?.nickname,
     propertyName: 'nickname',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     threshold: 20
   });
 
   typeValidator({
-    property: payload.data.cardHolderName,
+    property: data?.cardHolderName,
     propertyName: 'cardHolderName',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     type: 'string'
   });
 
   uppercaseValidator({
-    property: payload.data.cardHolderName,
+    property: data?.cardHolderName,
     propertyName: 'cardHolderName',
-    data: payload.data,
-    config
+    data: data,
+    config,
+    context
   });
 
   typeValidator({
-    property: payload.data.insuranceRatio,
+    property: data?.insuranceRatio,
     propertyName: 'insuranceRatio',
-    data: payload.data,
+    data: data,
     config,
+    context,
 
     type: 'number'
   });
 
   floatValidator({
-    property: payload.data.insuranceRatio,
+    property: data?.insuranceRatio,
     propertyName: 'insuranceRatio',
-    data: payload.data,
-    config
+    data: data,
+    config,
+    context
   });
 };
 "
@@ -318,12 +357,11 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
 exports[`codegen/user parse & prepare: data for render 1`] = `
 Array [
   Object {
-    "configFilePath": "./../../ts-generate-validator-config.json",
     "fileName": "model.ts",
     "filePath": "generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, initConfig, getConfig, mergeDeep, requiredOneOfValidator, typeValidator, minLengthValidator, maxLengthValidator, trimValidator, minValidator, maxValidator, integerValidator, lessThanValidator, positiveValidator, equalValidator, emailValidator, matchValidator, urlValidator, lowercaseValidator, uppercaseValidator, floatValidator",
+        "clauses": "GeneratedValidation, GeneratedValidationPayload, ValidationConfig, UserContext, getConfig, mergeDeep, requiredOneOfValidator, typeValidator, minLengthValidator, maxLengthValidator, trimValidator, minValidator, maxValidator, integerValidator, lessThanValidator, positiveValidator, equalValidator, emailValidator, matchValidator, urlValidator, lowercaseValidator, uppercaseValidator, floatValidator",
         "path": "ts-generate-validator",
       },
       Object {
@@ -331,10 +369,6 @@ Array [
         "path": "./../../model",
       },
     ],
-    "validationArgs": Object {
-      "config": "config",
-      "data": "data",
-    },
     "validations": Array [
       Object {
         "async": false,

@@ -58,11 +58,6 @@ export const resolveCustomTypes = ({
 
     const { referencePath, name: typeName } = fieldTypeMetadata;
     if (!referencePath || !typeName) {
-      console.log(
-        `not supported - "${metadata[fileIndex].classes[classIndex].fields[fieldIndex].name}", reason: "!referencePath || !typeName"`,
-        !referencePath,
-        !typeName
-      );
       fieldTypeMetadata.validationType = ValidationType.notSupported;
       return;
     }
@@ -94,16 +89,7 @@ export const resolveCustomTypes = ({
       fieldTypeMetadata.validationType = ValidationType.nested;
       fieldTypeMetadata.referencePath = metadataItemWithNestedClass.name;
       return;
-    } else {
-      console.log(
-        `nested cls not found for refPath "${referencePath}". List of files:`,
-        metadata.map(({ name }) => name)
-      );
     }
-
-    console.log(
-      `not supported - "${metadata[fileIndex].classes[classIndex].fields[fieldIndex].name}", reason: "type desc not found"`
-    );
 
     fieldTypeMetadata.validationType = ValidationType.notSupported;
   });

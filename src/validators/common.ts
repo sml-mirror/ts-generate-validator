@@ -1,4 +1,3 @@
-import { GeneratedValidationParameter } from './../codegen/model';
 import { IssueError } from './../codegen/utils/error';
 import { getEnumValues } from './../utils/enum';
 import {
@@ -18,7 +17,7 @@ export const requiredOneOfValidator: RequiredOneOfValidator = ({ data, fields, c
   }
 };
 
-export const typeValidator: TypeValidator = ({ property, type, typeDescription, customMessage, config }) => {
+export const typeValidator: TypeValidator = ({ property, type, typeDescription, context, customMessage, config }) => {
   const propertyType = typeof property;
 
   if (type === ValidationType.enum) {
@@ -41,7 +40,7 @@ export const typeValidator: TypeValidator = ({ property, type, typeDescription, 
       throw new IssueError(`Type description for "${type}" type not provided.`);
     }
 
-    typeDescription({ [GeneratedValidationParameter.data]: property, config });
+    typeDescription(property, config, context);
     return;
   }
 

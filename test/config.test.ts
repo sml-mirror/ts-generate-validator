@@ -1,10 +1,10 @@
 import { createConfigFile, deleteConfigFile } from './utils/config';
-import { PartialGenerateValidatorConfig, UserContext, SeverityLevel } from './../src/config/model';
-import { defaultConfig } from './../src/config/default';
+import { PartialCodegenConfig, SeverityLevel } from './../src/config/model';
+import { defaultCodegenConfig } from './../src/config/default';
 import { mergeDeep } from './../src/utils/deepValue';
 import { getCodegenConfig } from './../src/config/codegen';
 
-const testConfigs: PartialGenerateValidatorConfig<UserContext>[] = [
+const testConfigs: PartialCodegenConfig[] = [
   {
     inputPath: 'mock/'
   },
@@ -13,16 +13,6 @@ const testConfigs: PartialGenerateValidatorConfig<UserContext>[] = [
   },
   {
     unknownPropertySeverityLevel: SeverityLevel.error
-  },
-  {
-    stopAtFirstError: true
-  },
-  {
-    messages: {
-      number: {
-        type: 'test'
-      }
-    }
   }
 ];
 
@@ -39,7 +29,7 @@ describe('configuration', () => {
   });
 
   test('getCodegenConfig - file not exists', () => {
-    expect(getCodegenConfig()).toEqual(defaultConfig);
+    expect(getCodegenConfig()).toEqual(defaultCodegenConfig);
   });
 
   testConfigs.forEach((config, index) => {
@@ -47,7 +37,7 @@ describe('configuration', () => {
       createConfigFile(config);
 
       const actual = getCodegenConfig();
-      const expected = mergeDeep({}, defaultConfig, config);
+      const expected = mergeDeep({}, defaultCodegenConfig, config);
 
       expect(actual).toEqual(expected);
 
