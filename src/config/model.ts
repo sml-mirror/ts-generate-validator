@@ -1,4 +1,3 @@
-import { keys } from 'ts-transformer-keys';
 import { PartialMessageMap } from '../localization/model';
 import { MessageMap } from '../localization/model';
 
@@ -18,7 +17,7 @@ export interface CodegenConfig {
 
 export type PartialCodegenConfig = Partial<CodegenConfig>;
 
-export const codegenConfigKeys = keys<CodegenConfig>();
+export const codegenConfigKeys: (keyof CodegenConfig)[] = ['inputPath', 'outputPath', 'unknownPropertySeverityLevel'];
 
 export interface ValidationConfig {
   stopAtFirstError: boolean;

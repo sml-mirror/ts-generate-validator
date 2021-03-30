@@ -8,11 +8,11 @@ import { RequiredOneOfValidation, CustomValidation, IgnoreValidation, TypeValida
 import { PreparedValidationItem, PreparedValidatorPayloadItem } from './model';
 import { PreparedValidation } from './model';
 import { ClassMetadata } from './../parse/model';
-import { UserContext, GenerateValidatorConfig } from './../../config/model';
+import { CodegenConfig } from './../../config/model';
 import * as pkg from '../../../package.json';
 import * as path from 'path';
 
-export const buildValidationFromClassMetadata = <C extends UserContext = UserContext>({
+export const buildValidationFromClassMetadata = ({
   cls,
   clsFileName,
   addImport,
@@ -21,7 +21,7 @@ export const buildValidationFromClassMetadata = <C extends UserContext = UserCon
   cls: ClassMetadata;
   clsFileName: string;
   addImport: (path: string, clause: string, isPackageName?: boolean) => void;
-  config: GenerateValidatorConfig<C>;
+  config: CodegenConfig;
 }): PreparedValidation | undefined => {
   const name = getValidationName(cls.name);
   const items: PreparedValidationItem[] = [];

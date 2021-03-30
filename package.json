@@ -55,8 +55,7 @@
     "nunjucks": "3.2.3",
     "path": "0.12.7",
     "prettier": "2.2.1",
-    "ts-file-parser": "0.0.18",
-    "ts-transformer-keys": "^0.4.3"
+    "ts-file-parser": "0.0.18"
   },
   "husky": {
     "hooks": {

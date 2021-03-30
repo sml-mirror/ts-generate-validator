@@ -8,20 +8,20 @@ import { {{ import.clauses }} } from '{{ import.path }}';
 
 {% for validation in validations %}
 export const {{ validation.name }}: GeneratedValidation = {% if validation.async %}async {% endif %}<
-  D extends Record<string, any> = typeof {{ validation.modelClassName }},
+  D extends Data = typeof {{ validation.modelClassName }},
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig = {},
-  context?: C = undefined
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  const config = mergeDeep({}, getConfig(), configArg);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 
   {% for item in validation.items %}
   {{ item.validatorName }}({
     property: data?.{{ item.propertyName }},
     propertyName: '{{ item.propertyName }}',
-    data: data,
+    data,
     config,
     context,
     {% for vArg in item.validatorPayload %}

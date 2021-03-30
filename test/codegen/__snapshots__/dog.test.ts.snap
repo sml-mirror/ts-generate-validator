@@ -7,8 +7,8 @@ exports[`codegen/dog create validators: generated validators at "generated/valid
 
 import {
   GeneratedValidation,
-  GeneratedValidationPayload,
   ValidationConfig,
+  Data,
   UserContext,
   getConfig,
   mergeDeep,
@@ -25,20 +25,17 @@ import { userValidator } from './nestedModel.model';
 
 import { Dog } from './../../model';
 
-export const dogValidator: GeneratedValidation = <
-  D extends Record<string, any> = typeof Dog,
-  C extends UserContext = UserContext
->(
+export const dogValidator: GeneratedValidation = <D extends Data = typeof Dog, C extends UserContext = UserContext>(
   data: D,
-  configArg?: ValidationConfig = {},
-  context?: C = undefined
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  const config = mergeDeep({}, getConfig(), configArg);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 
   typeValidator({
     property: data?.name,
     propertyName: 'name',
-    data: data,
+    data,
     config,
     context,
 
@@ -48,7 +45,7 @@ export const dogValidator: GeneratedValidation = <
   minLengthValidator({
     property: data?.name,
     propertyName: 'name',
-    data: data,
+    data,
     config,
     context,
 
@@ -58,7 +55,7 @@ export const dogValidator: GeneratedValidation = <
   maxLengthValidator({
     property: data?.name,
     propertyName: 'name',
-    data: data,
+    data,
     config,
     context,
 
@@ -68,7 +65,7 @@ export const dogValidator: GeneratedValidation = <
   typeValidator({
     property: data?.age,
     propertyName: 'age',
-    data: data,
+    data,
     config,
     context,
 
@@ -78,7 +75,7 @@ export const dogValidator: GeneratedValidation = <
   minValidator({
     property: data?.age,
     propertyName: 'age',
-    data: data,
+    data,
     config,
     context,
 
@@ -90,7 +87,7 @@ export const dogValidator: GeneratedValidation = <
   maxValidator({
     property: data?.age,
     propertyName: 'age',
-    data: data,
+    data,
     config,
     context,
 
@@ -102,7 +99,7 @@ export const dogValidator: GeneratedValidation = <
   integerValidator({
     property: data?.age,
     propertyName: 'age',
-    data: data,
+    data,
     config,
     context,
 
@@ -112,7 +109,7 @@ export const dogValidator: GeneratedValidation = <
   typeValidator({
     property: data?.ownedYears,
     propertyName: 'ownedYears',
-    data: data,
+    data,
     config,
     context,
 
@@ -122,7 +119,7 @@ export const dogValidator: GeneratedValidation = <
   lessThanValidator({
     property: data?.ownedYears,
     propertyName: 'ownedYears',
-    data: data,
+    data,
     config,
     context,
 
@@ -134,7 +131,7 @@ export const dogValidator: GeneratedValidation = <
   typeValidator({
     property: data?.owner,
     propertyName: 'owner',
-    data: data,
+    data,
     config,
     context,
 
@@ -153,8 +150,8 @@ exports[`codegen/dog create validators: generated validators at "generated/valid
 
 import {
   GeneratedValidation,
-  GeneratedValidationPayload,
   ValidationConfig,
+  Data,
   UserContext,
   getConfig,
   mergeDeep,
@@ -163,20 +160,17 @@ import {
 
 import { User } from './../../nestedModel/model';
 
-export const userValidator: GeneratedValidation = <
-  D extends Record<string, any> = typeof User,
-  C extends UserContext = UserContext
->(
+export const userValidator: GeneratedValidation = <D extends Data = typeof User, C extends UserContext = UserContext>(
   data: D,
-  configArg?: ValidationConfig = {},
-  context?: C = undefined
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  const config = mergeDeep({}, getConfig(), configArg);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 
   typeValidator({
     property: data?.name,
     propertyName: 'name',
-    data: data,
+    data,
     config,
     context,
 
@@ -186,7 +180,7 @@ export const userValidator: GeneratedValidation = <
   typeValidator({
     property: data?.surname,
     propertyName: 'surname',
-    data: data,
+    data,
     config,
     context,
 
@@ -203,7 +197,7 @@ Array [
     "filePath": "generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, GeneratedValidationPayload, ValidationConfig, UserContext, getConfig, mergeDeep, typeValidator, minLengthValidator, maxLengthValidator, minValidator, maxValidator, integerValidator, lessThanValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, Data, UserContext, getConfig, mergeDeep, typeValidator, minLengthValidator, maxLengthValidator, minValidator, maxValidator, integerValidator, lessThanValidator",
         "path": "ts-generate-validator",
       },
       Object {
@@ -360,7 +354,7 @@ Array [
     "filePath": "generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, GeneratedValidationPayload, ValidationConfig, UserContext, getConfig, mergeDeep, typeValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, Data, UserContext, getConfig, mergeDeep, typeValidator",
         "path": "ts-generate-validator",
       },
       Object {

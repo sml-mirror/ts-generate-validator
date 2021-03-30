@@ -7,8 +7,8 @@ exports[`codegen/raw/common create validators: generated validators at "generate
 
 import {
   GeneratedValidation,
-  GeneratedValidationPayload,
   ValidationConfig,
+  Data,
   UserContext,
   getConfig,
   mergeDeep,
@@ -36,19 +36,19 @@ import {
 import { customValidatorFailedValidator } from './model';
 
 export const typeValidatorWithCustomMessageValidator: GeneratedValidation = <
-  D extends Record<string, any> = typeof TypeValidatorWithCustomMessage,
+  D extends Data = typeof TypeValidatorWithCustomMessage,
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig = {},
-  context?: C = undefined
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  const config = mergeDeep({}, getConfig(), configArg);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 
   typeValidator({
     property: data?.someProperty,
     propertyName: 'someProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -59,19 +59,19 @@ export const typeValidatorWithCustomMessageValidator: GeneratedValidation = <
 };
 
 export const typeValidatorOnWrongPropertyTypeValidator: GeneratedValidation = <
-  D extends Record<string, any> = typeof TypeValidatorOnWrongPropertyType,
+  D extends Data = typeof TypeValidatorOnWrongPropertyType,
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig = {},
-  context?: C = undefined
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  const config = mergeDeep({}, getConfig(), configArg);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 
   typeValidator({
     property: data?.someProperty,
     propertyName: 'someProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -84,19 +84,19 @@ export const typeValidatorOnWrongPropertyTypeValidator: GeneratedValidation = <
 };
 
 export const customValidatorFailedValidator: GeneratedValidation = <
-  D extends Record<string, any> = typeof CustomValidatorFailed,
+  D extends Data = typeof CustomValidatorFailed,
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig = {},
-  context?: C = undefined
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  const config = mergeDeep({}, getConfig(), configArg);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 
   typeValidator({
     property: data?.someProperty,
     propertyName: 'someProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -106,7 +106,7 @@ export const customValidatorFailedValidator: GeneratedValidation = <
   customValidator({
     property: data?.someProperty,
     propertyName: 'someProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -117,19 +117,19 @@ export const customValidatorFailedValidator: GeneratedValidation = <
 };
 
 export const cutomValidatorSuccessValidator: GeneratedValidation = <
-  D extends Record<string, any> = typeof CutomValidatorSuccess,
+  D extends Data = typeof CutomValidatorSuccess,
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig = {},
-  context?: C = undefined
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  const config = mergeDeep({}, getConfig(), configArg);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 
   typeValidator({
     property: data?.someProperty,
     propertyName: 'someProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -139,7 +139,7 @@ export const cutomValidatorSuccessValidator: GeneratedValidation = <
   customValidator({
     property: data?.someProperty,
     propertyName: 'someProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -148,19 +148,19 @@ export const cutomValidatorSuccessValidator: GeneratedValidation = <
 };
 
 export const cutomValidatorSuccessAsyncValidator: GeneratedValidation = async <
-  D extends Record<string, any> = typeof CutomValidatorSuccessAsync,
+  D extends Data = typeof CutomValidatorSuccessAsync,
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig = {},
-  context?: C = undefined
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  const config = mergeDeep({}, getConfig(), configArg);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 
   typeValidator({
     property: data?.someProperty,
     propertyName: 'someProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -170,7 +170,7 @@ export const cutomValidatorSuccessAsyncValidator: GeneratedValidation = async <
   customValidator({
     property: data?.someProperty,
     propertyName: 'someProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -179,55 +179,52 @@ export const cutomValidatorSuccessAsyncValidator: GeneratedValidation = async <
 };
 
 export const ignoreValidationForNonPrimitivePropertyValidator: GeneratedValidation = <
-  D extends Record<string, any> = typeof IgnoreValidationForNonPrimitiveProperty,
+  D extends Data = typeof IgnoreValidationForNonPrimitiveProperty,
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig = {},
-  context?: C = undefined
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  // eslint-disable-next-line
-  const config = mergeDeep({}, getConfig(), configArg);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 };
 
 export const ignoreValidationForPrimitivePropertyValidator: GeneratedValidation = <
-  D extends Record<string, any> = typeof IgnoreValidationForPrimitiveProperty,
+  D extends Data = typeof IgnoreValidationForPrimitiveProperty,
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig = {},
-  context?: C = undefined
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  // eslint-disable-next-line
-  const config = mergeDeep({}, getConfig(), configArg);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 };
 
 export const ignoreValidationForPrimitivePropertyWithOtherDecoratorsValidator: GeneratedValidation = <
-  D extends Record<string, any> = typeof IgnoreValidationForPrimitivePropertyWithOtherDecorators,
+  D extends Data = typeof IgnoreValidationForPrimitivePropertyWithOtherDecorators,
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig = {},
-  context?: C = undefined
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  // eslint-disable-next-line
-  const config = mergeDeep({}, getConfig(), configArg);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 };
 
 export const equalValidatorWithDefaultMessageValidator: GeneratedValidation = <
-  D extends Record<string, any> = typeof EqualValidatorWithDefaultMessage,
+  D extends Data = typeof EqualValidatorWithDefaultMessage,
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig = {},
-  context?: C = undefined
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  const config = mergeDeep({}, getConfig(), configArg);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 
   typeValidator({
     property: data?.someProperty,
     propertyName: 'someProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -237,7 +234,7 @@ export const equalValidatorWithDefaultMessageValidator: GeneratedValidation = <
   equalValidator({
     property: data?.someProperty,
     propertyName: 'someProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -246,19 +243,19 @@ export const equalValidatorWithDefaultMessageValidator: GeneratedValidation = <
 };
 
 export const equalValidatorWithCustomMessageValidator: GeneratedValidation = <
-  D extends Record<string, any> = typeof EqualValidatorWithCustomMessage,
+  D extends Data = typeof EqualValidatorWithCustomMessage,
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig = {},
-  context?: C = undefined
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  const config = mergeDeep({}, getConfig(), configArg);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 
   typeValidator({
     property: data?.someProperty,
     propertyName: 'someProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -268,7 +265,7 @@ export const equalValidatorWithCustomMessageValidator: GeneratedValidation = <
   equalValidator({
     property: data?.someProperty,
     propertyName: 'someProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -279,19 +276,19 @@ export const equalValidatorWithCustomMessageValidator: GeneratedValidation = <
 };
 
 export const equalValidatorForBooleanValidator: GeneratedValidation = <
-  D extends Record<string, any> = typeof EqualValidatorForBoolean,
+  D extends Data = typeof EqualValidatorForBoolean,
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig = {},
-  context?: C = undefined
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  const config = mergeDeep({}, getConfig(), configArg);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 
   typeValidator({
     property: data?.someProperty,
     propertyName: 'someProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -301,7 +298,7 @@ export const equalValidatorForBooleanValidator: GeneratedValidation = <
   equalValidator({
     property: data?.someProperty,
     propertyName: 'someProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -310,19 +307,19 @@ export const equalValidatorForBooleanValidator: GeneratedValidation = <
 };
 
 export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = <
-  D extends Record<string, any> = typeof EqualToValidatorWithDefaultMessage,
+  D extends Data = typeof EqualToValidatorWithDefaultMessage,
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig = {},
-  context?: C = undefined
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  const config = mergeDeep({}, getConfig(), configArg);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 
   typeValidator({
     property: data?.someProperty,
     propertyName: 'someProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -332,7 +329,7 @@ export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = 
   equalToValidator({
     property: data?.someProperty,
     propertyName: 'someProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -342,7 +339,7 @@ export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = 
   typeValidator({
     property: data?.someOtherProperty,
     propertyName: 'someOtherProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -352,7 +349,7 @@ export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = 
   equalToValidator({
     property: data?.someOtherProperty,
     propertyName: 'someOtherProperty',
-    data: data,
+    data,
     config,
     context,
 
@@ -369,7 +366,7 @@ Array [
     "filePath": "generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, GeneratedValidationPayload, ValidationConfig, UserContext, getConfig, mergeDeep, typeValidator, customValidator, equalValidator, equalToValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, Data, UserContext, getConfig, mergeDeep, typeValidator, customValidator, equalValidator, equalToValidator",
         "path": "ts-generate-validator",
       },
       Object {

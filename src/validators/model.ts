@@ -97,7 +97,7 @@ export type CustomValidator<
 export type EnumDescription = Record<string, any>;
 
 export type TypeValidatorPayload = {
-  type: ValidationType;
+  type: string; //ValidationType;
   typeDescription?: EnumDescription | GeneratedValidation;
 };
 

@@ -81,8 +81,8 @@ const buildBaseImportMap = (): PreparedImportMap => {
   const map: PreparedImportMap = {};
   map[pkg.name] = {
     GeneratedValidation: true,
-    GeneratedValidationPayload: true,
     ValidationConfig: true,
+    Data: true,
     UserContext: true,
     getConfig: true,
     mergeDeep: true
