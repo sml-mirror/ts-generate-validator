@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`codegen/user create validators: generated validators at "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/user/generated/validators/model.ts" 1`] = `
+exports[`codegen/user create validators: generated validators at "generated/validators/model.ts" 1`] = `
 "import {
   GeneratedValidation,
   GeneratedValidationPayload,
@@ -27,11 +27,9 @@ exports[`codegen/user create validators: generated validators at "/Users/alex-sh
   floatValidator
 } from 'ts-generate-validator';
 
-import { UserType } from '../../type/model';
+import { User } from './../../model';
 
-import { User } from '../../model';
-
-import * as configFromFile from '../../ts-generate-validator-config.json';
+import * as configFromFile from './../../ts-generate-validator-config.json';
 
 initConfig(configFromFile);
 
@@ -313,17 +311,6 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
     data: payload.data,
     config
   });
-
-  typeValidator({
-    property: payload.data.userType,
-    propertyName: 'userType',
-    data: payload.data,
-    config,
-
-    typeDescription: UserType,
-
-    type: 'enum'
-  });
 };
 "
 `;
@@ -331,21 +318,17 @@ export const userValidator: GeneratedValidation = (payload: GeneratedValidationP
 exports[`codegen/user parse & prepare: data for render 1`] = `
 Array [
   Object {
-    "configFilePath": "../../ts-generate-validator-config.json",
-    "fileName": "model",
-    "filePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/user/generated/validators",
+    "configFilePath": "./../../ts-generate-validator-config.json",
+    "fileName": "model.ts",
+    "filePath": "generated/validators",
     "imports": Array [
       Object {
         "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, initConfig, getConfig, mergeDeep, requiredOneOfValidator, typeValidator, minLengthValidator, maxLengthValidator, trimValidator, minValidator, maxValidator, integerValidator, lessThanValidator, positiveValidator, equalValidator, emailValidator, matchValidator, urlValidator, lowercaseValidator, uppercaseValidator, floatValidator",
         "path": "ts-generate-validator",
       },
       Object {
-        "clauses": "UserType",
-        "path": "../../type/model",
-      },
-      Object {
         "clauses": "User",
-        "path": "../../model",
+        "path": "./../../model",
       },
     ],
     "validationArgs": Object {
@@ -670,22 +653,6 @@ Array [
             "validatorName": "floatValidator",
             "validatorPayload": Array [],
           },
-          Object {
-            "propertyName": "userType",
-            "validatorName": "typeValidator",
-            "validatorPayload": Array [
-              Object {
-                "property": "typeDescription",
-                "type": "object",
-                "value": "UserType",
-              },
-              Object {
-                "property": "type",
-                "type": "string",
-                "value": "enum",
-              },
-            ],
-          },
         ],
         "modelClassName": "User",
         "name": "userValidator",
@@ -938,15 +905,15 @@ Array [
             "optional": true,
             "type": Object {
               "name": "UserType",
-              "referencePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/user/type/model",
-              "validationType": "enum",
+              "referencePath": "type/model",
+              "validationType": "notSupported",
             },
           },
         ],
         "name": "User",
       },
     ],
-    "name": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/user/model",
+    "name": "model.ts",
   },
 ]
 `;

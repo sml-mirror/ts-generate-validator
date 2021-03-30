@@ -3,6 +3,7 @@ import { PartialGenerateValidatorConfig, SeverityLevel } from './model';
 import { defaultConfig } from './default';
 import { mergeDeep } from './../utils/deepValue';
 import * as fs from 'fs';
+import * as path from 'path';
 import { GenerateValidatorConfig, UserContext } from '../config/model';
 
 export const configFileName = 'ts-generate-validator-config.json';
@@ -12,14 +13,16 @@ export const configFileExists = (): boolean => {
 };
 
 const getConfigFromFile = (): PartialGenerateValidatorConfig<UserContext> => {
-  if (!fs.existsSync(configFileName)) {
+  const configFilePath = path.resolve(process.cwd(), configFileName);
+
+  if (!fs.existsSync(configFilePath)) {
     return {};
   }
   try {
-    return <PartialGenerateValidatorConfig<UserContext>>JSON.parse(fs.readFileSync(configFileName, 'utf8'));
+    return <PartialGenerateValidatorConfig<UserContext>>JSON.parse(fs.readFileSync(configFilePath, 'utf8'));
   } catch (err) {
     console.error(
-      `Error when reading config from file "${configFileName}. Make sure the file has correct syntax. Using default config..."`
+      `Error when reading config from file "${configFileName}". Make sure the file has correct syntax. Using default config...`
     );
     return {};
   }

@@ -1,10 +1,11 @@
+import { cutFileExt, hasFileExt } from './../../utils/path';
 import { IgnoreValidation } from './../../decorators/index';
 import { IssueError, ErrorInFile } from './../utils/error';
 import { ValidationType } from './../../validators/model';
-import { stripFileExt } from './../../utils/path';
 import { buildClassesMetadata } from './classes';
 import { parseStruct } from 'ts-file-parser';
 import * as fs from 'fs';
+import * as path from 'path';
 import { InputFileMetadata, CustomTypeEntry, EnumDictionary } from './model';
 
 export const parseInputFiles = (files: string[]): InputFileMetadata[] => {
@@ -13,11 +14,11 @@ export const parseInputFiles = (files: string[]): InputFileMetadata[] => {
   const enumDictionary: EnumDictionary = {};
 
   files.forEach((file) => {
-    const content = fs.readFileSync(file, 'utf-8');
+    const content = fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8');
     const structure = parseStruct(content, {}, file);
 
     if (structure.enumDeclarations.length) {
-      enumDictionary[stripFileExt(file)] = structure.enumDeclarations.map((decl) => decl.name);
+      enumDictionary[file] = structure.enumDeclarations.map((decl) => decl.name);
     }
 
     if (structure.classes.length) {
@@ -25,7 +26,7 @@ export const parseInputFiles = (files: string[]): InputFileMetadata[] => {
       if (classesMetadata.classesForValidation.length) {
         customTypeEntries.push(...classesMetadata.customTypeEntries);
         metadata.push({
-          name: stripFileExt(structure.name),
+          name: structure.name,
           classes: classesMetadata.classesForValidation
         });
       }
@@ -57,6 +58,11 @@ export const resolveCustomTypes = ({
 
     const { referencePath, name: typeName } = fieldTypeMetadata;
     if (!referencePath || !typeName) {
+      console.log(
+        `not supported - "${metadata[fileIndex].classes[classIndex].fields[fieldIndex].name}", reason: "!referencePath || !typeName"`,
+        !referencePath,
+        !typeName
+      );
       fieldTypeMetadata.validationType = ValidationType.notSupported;
       return;
     }
@@ -66,16 +72,38 @@ export const resolveCustomTypes = ({
       return;
     }
 
-    const nestedClass = metadata.find(({ name: fileName, classes }) => {
-      if (fileName !== referencePath) {
+    const metadataItemWithNestedClass = metadata.find(({ name: fileName, classes }) => {
+      let fileNameMatched = true;
+
+      const fileNameHasExt = hasFileExt(fileName);
+      const refPathHasExt = hasFileExt(referencePath);
+
+      if (fileNameHasExt === refPathHasExt) {
+        fileNameMatched = fileName === referencePath;
+      } else {
+        fileNameMatched = cutFileExt(fileName) === cutFileExt(referencePath);
+      }
+
+      if (!fileNameMatched) {
         return false;
       }
+
       return Boolean(classes.find(({ name: className }) => className === typeName));
     });
-    if (nestedClass) {
+    if (metadataItemWithNestedClass) {
       fieldTypeMetadata.validationType = ValidationType.nested;
+      fieldTypeMetadata.referencePath = metadataItemWithNestedClass.name;
       return;
+    } else {
+      console.log(
+        `nested cls not found for refPath "${referencePath}". List of files:`,
+        metadata.map(({ name }) => name)
+      );
     }
+
+    console.log(
+      `not supported - "${metadata[fileIndex].classes[classIndex].fields[fieldIndex].name}", reason: "type desc not found"`
+    );
 
     fieldTypeMetadata.validationType = ValidationType.notSupported;
   });

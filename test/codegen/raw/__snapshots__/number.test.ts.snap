@@ -608,7 +608,7 @@ Array [
         "name": "LessThanValidatorWithCustomMessage",
       },
     ],
-    "name": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/number/model",
+    "name": "model.ts",
   },
 ]
 `;

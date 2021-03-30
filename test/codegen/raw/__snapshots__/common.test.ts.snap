@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`codegen/raw/common create validators: generated validators at "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/common/generated/validators/model.ts" 1`] = `
+exports[`codegen/raw/common create validators: generated validators at "generated/validators/model.ts" 1`] = `
 "import {
   GeneratedValidation,
   GeneratedValidationPayload,
@@ -27,11 +27,11 @@ import {
   EqualValidatorWithCustomMessage,
   EqualValidatorForBoolean,
   EqualToValidatorWithDefaultMessage
-} from '../../model';
+} from './../../model';
 
 import { customValidatorFailedValidator } from './model';
 
-import * as configFromFile from '../../ts-generate-validator-config.json';
+import * as configFromFile from './../../ts-generate-validator-config.json';
 
 initConfig(configFromFile);
 
@@ -287,9 +287,9 @@ export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = 
 exports[`codegen/raw/common parse & prepare: data for render 1`] = `
 Array [
   Object {
-    "configFilePath": "../../ts-generate-validator-config.json",
-    "fileName": "model",
-    "filePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/common/generated/validators",
+    "configFilePath": "./../../ts-generate-validator-config.json",
+    "fileName": "model.ts",
+    "filePath": "generated/validators",
     "imports": Array [
       Object {
         "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, initConfig, getConfig, mergeDeep, typeValidator, customValidator, equalValidator, equalToValidator",
@@ -297,7 +297,7 @@ Array [
       },
       Object {
         "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnWrongPropertyType, CustomValidatorFailed, CutomValidatorSuccess, CutomValidatorSuccessAsync, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
-        "path": "../../model",
+        "path": "./../../model",
       },
       Object {
         "clauses": "customValidatorFailedValidator",
@@ -667,7 +667,7 @@ Array [
             "optional": true,
             "type": Object {
               "name": "CustomValidatorFailed",
-              "referencePath": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/common/model",
+              "referencePath": "model.ts",
               "validationType": "nested",
             },
           },
@@ -970,7 +970,7 @@ Array [
         "name": "EqualToValidatorWithDefaultMessage",
       },
     ],
-    "name": "/Users/alex-shul/Desktop/projects/ts-generate-validator/test/mock/raw/common/model",
+    "name": "model.ts",
   },
 ]
 `;

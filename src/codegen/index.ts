@@ -10,7 +10,7 @@ import { parseInputFiles } from './parse';
 
 export const createValidators = async (): Promise<void> => {
   const config = getCodegenConfig();
-  const inputFiles = getAllFiles(path.resolve(config.inputPath));
+  const inputFiles = getAllFiles(path.resolve(process.cwd(), config.inputPath));
   const inputFilesMetadata = parseInputFiles(inputFiles);
   const dataForRender = prepareDataForRender(inputFilesMetadata, config);
 
@@ -34,6 +34,6 @@ export const createValidators = async (): Promise<void> => {
 
     const { filePath, fileName } = dataItem;
     mkdirp.sync(filePath);
-    fs.writeFileSync(`${filePath}/${fileName}.ts`, content, 'utf-8');
+    fs.writeFileSync(path.resolve(process.cwd(), `${filePath}/${fileName}`), content, 'utf-8');
   });
 };
