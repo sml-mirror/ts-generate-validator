@@ -1,4 +1,23 @@
-# ts-generate-validator
+# Tool for code generation validators by typescript model description
+
+Кодогенерация валидаторов на основе typescript моделей
+
+Содержание:
+
+- [Мотивация](#мотивация)
+- [Установка](#установка)
+- [Использование](#usage)
+- [Как это работает](#как-это-работает)
+  - [Конфигурация кодогенерации](#конфигурация-кодогенерации)
+  - [Конфигурация валидаторов](#конфигурация-валидаторов)
+  - [Валидатор](#валидатор)
+  - [Локализация](#локализация)
+  - [Декораторы](#декораторы)
+    - [Для классов](#для-классов)
+    - [Для свойств классов](#для-свойств-классов)
+- [Лицензия](#license)
+
+# Мотивация
 
 В ходе анализа популярных библиотек для валидации, таких как:
 
@@ -23,155 +42,150 @@ https://www.npmjs.com/package/grunt-generate-view-model
 6. мультиязычность (вывод ошибок валидации на разных языках);
 7. удобство использования;
 
-## Конфигурация
+# Установка
 
-```
-enum SeverityLevel {
-    silent = 0,
-    warning = 1,
-    error = 2,
-}
-
-interface CodegenConfig {
-    inputPath?: string;
-    outputPath?: string;
-    unknownPropertySeverityLevel?: SeverityLevel;
-}
-
-interface ValidationConfig {
-    stopAtFirstError?: boolean;
-    emailRegExp: RegExp;
-    messages?: MessageMap;
-    context?: any;
-}
-
-type GenerateValidatorConfig = CodegenConfig & ValidationConfig;
+```bash
+npm install ts-generate-validator -D
 ```
 
-### Codegeneration:
+# Использование
 
+1. Создать внутри папки `src` класс-модель на typescript и добавить к этому классу декоратор `@Validation`.
+
+```typescript
+// src/model.ts
+import { Validation } from 'ts-generate-validator';
+
+@Validation
+export class User {
+  public name: string = '';
+  public age: number = 0;
+  public website?: string;
+}
+```
+
+2. Добавить в раздел `scripts` файла `package.json` инициализирующую команду:
+
+```json
+  "scripts": {
+    "generation": "generateValidator"
+  }
+```
+
+где "generateValidator" - строка для запуска кодонегерации
+
+3. Запустить кодогенерацию
+
+```bash
+npm run generation
+```
+
+4. В папке `generated/validators` появится новый файл `src.model.ts` экспортирующий функцию-валидатор `userValidator`
+
+5. Использовать валидатор для проверки соответствия данных json схеме, описанной в typescript моделе:
+
+```typescript
+// src/index.ts
+import { userValidator } from '../generated/validators';
+
+try {
+  userValidator(data, { stopAtFirstError: true });
+} catch (err) {
+  console.log(`Неправильный формат данных: ${err.message}`);
+}
+```
+
+# Как это работает
+
+## Конфигурация кодогенерации
+
+Для изменения конфигурации по умолчанию, создайте файл "`ts-generate-validator-config.json`" в корне проекта, содержащий объект со следующими свойствами:
 `inputPath` - путь к папке с моделями для которых необходимо сгенерировать валидаторы (по умолчанию _"./src"_).
 `outputPath` - путь к папке, в которой появятся сгенерированные валидаторы (по умолчанию _"./src/generated/validators"_).
 `unknownPropertySeverityLevel` - уровень проверки неизвестных параметров (другие классы моделей без `@Validation` декораторов или свойства имеющие сложные типы без `@CustomValidation` декораторов):
 
-- error - при генерации валидаторов выбрасывается ошибка
-- warning - кодогенерация проходит, но в консоли появляется предупреждение об отсутствии валидации
-- silent - кодогенерация проходит
+- `2` (error) - при генерации валидаторов выбрасывается ошибка
+- `1` (warning) - кодогенерация проходит, но в консоли появляется предупреждение об отсутствии валидации
+- `0` (silent) - кодогенерация проходит
 
 (по умолчанию _"warning"_)
 
-### Validation:
+Например:
+
+```json
+{
+  "inputPath": "src/models",
+  "outputPath": "generated/validators",
+  "unknownPropertySeverityLevel": 2
+}
+```
+
+## Конфигурация валидаторов
+
+Конфигурацию валидаторов можно изменить двумя способами
+
+1. Изменения глобальной конфигурации валидаторов с помощью функции `changeConfig`:
+
+```typescript
+import { changeConfig } from 'ts-generate-validator';
+
+changeConfig({ stopAtFirstError: true });
+```
+
+2. Изменение конфигурации только для текущего вызова валидатора:
+
+```typescript
+import { userValidator } from 'generated/validators';
+
+userValidator(data, { stopAtFirstError: true });
+```
+
+Следующие параметры могут быть сконфигурированы:
 
 `stopAtFirstError` - не продолжать валидацию после первой найденной ошибки _(по умолчанию false)_.
 `emailRegExp` - заменяет регулярное выражение по умолчанию для проверки email.
 `messages` - словарь с сообщениями об ошибках _(по умолчанию используются стандартные сообщения на английском)_.
-`context` - пользовательский контекст (данные), который доступен в валидаторах и функциях, генерирующих сообщения об ошибках.
 
-### Настройка конфигурации для всего проекта
-
-Файл `ts-generate-validator-config.json` может содержать GenerateValidatorConfig структуру для найстроки конфигурации кодогенерации и валидации.
-
-### Настройка конфигурации во время работы приложения
-
-`changeConfig(config: ValidationConfig)` - вызов функции в любом месте приложения изменяет глобально конфигурацию валидации.
-
-## Валидатор JSON данных
-
-```
-<M extends Record<string, any>>(data: M, config?: ValidationConfig) => void | Promise<void>;
-
-interface ValidationException {
-    errors: ValidationError[];
-}
-
-interface ValidationError {
-    field: string | string[];
-    message: string;
-}
-```
+## Валидатор
 
 Сгенерированная из класса-модели функция-валидатор данных является асинхронной, если хотя бы для одного из свойств в классе-модели добавлен асинхронный custom валидатор. Она принимает в качестве аргументов:
-`data` - JSON данные для проверки
-`config` - объект с параметрами конфигурации
+
+`data`_(обязательный)_ - JSON данные для проверки
+`config`_(необязательный)_ - объект с параметрами конфигурации
+`context`_(необязательный)_ - любое пользовательское значение, которое будет доступно в пользовательских валидаторах
 
 **Результат выполнения:**
 Пустой результат в результате успешной валидации. Если валидация завершилась неудачей, то выбрасывается `ValidationException`.
 
 ## Локализация
 
-```
-enum ValidationType = {
-    number: "number",
-    string: "string",
-    boolean: "boolean",
-}
-
-type MessageMap = {
-    [type: ValidationType]: {
-        [validator: string]: Message
-    }
-}
-
-type Message = string | MessageCreator;
-
-type MessageCreator = ({
-    model: string;
-    field: string;
-    value: string;
-    expected: string;
-    context: any;
-}) => string
-```
-
-Сообщения об ошибках сгруппированы в карте по типу данных(type) и названию валидатора(validator).
-
-Сообщения могу быть в виде строки или в виде функции, которая принимает первым аргументом объект со следующими параметрами:
-`model` - название модели
-`field` - название поля(свойства модели)
-`value` - полученное значение
-`expected` - ожидаемое значение
-`context` - пользовательский контекст, переданный в функцию-валидатор или в декоратор `@Validation`
-
-Например:
-
-```
-const map: MessagesMap = {
-    number: {
-        min: ({ expected }) => 'Минимально разрешенное количество ${expected}',
-        type: 'Значение должно быть числом',
-    }
-}
-```
+Сообщения об ошибке по умолчанию на английском языке, но они могут быть заменены на любые другие с помощью декораторов свойств классов-моделей. Смотрите раздел [декораторы для свойств классов](#для-свойств-классов).
 
 ## Декораторы
 
-### Для классов-моделей
+Декораторы, разделяются на те, которые могут быть применены на классах, и те, которые могут быть использованы на свойствах классов.
+
+### Для классов
 
 - `@Validation(config?: ValidationConfig)` - помечает класс, как требующий генерации функции-валидатора.
 
 - `@RequiredOneOfValidation(fields: string[], message?: Message)` - добавляет к нескольким свойствам класса, перечисленным в первом аргументе fields, валидатор, проверяющий заполненность как минимум одного из указанных полей.
 
-### Для свойств классов-моделей
+### Для свойств классов
 
 - **all types**
 
   - `@TypeValidation(message: Message)` - заменяет стандартное сообщение об ошибке для валидатора типа.
 
-  - `@CustomValidation(validator: CustomValidator, message: Message)` - добавляет к свойству пользовательский валидатор
+  - `@CustomValidation(validator: CustomValidator, message: Message)` - добавляет к свойству пользовательскую функцию-валидатор, которая принимает в качестве первого аргумента объект со следующими свойствами
 
-  ```
-  type CustomValidator = <
-      M extends Record<string, any>,
-      F extends keyof M,
-      C extends any
-  >(
-      fieldValue: M[F],
-      modelValues: M,
-      context: C
-  ) => boolean;
-  ```
+  `property` - значение свойства для валидации
+  `propertyName` - имя свойства для валидации
+  `data` - объект с JSON данными для валидации
+  `config` - объект с текущей конфигурацией валидаторов
+  `context` - пользовательский контекст, переданный в сгенерированную функцию-валидатор
 
-  - `@IgnoreValidation` - помечает свойство как игнорируемое в функции-валидаторе - оно не будет проверяться на соответствие типу, а любые примененные декораторы будут проигнорированы. По умолчанию значение этого свойства не добавляется к результату валидации, но это поведение может быть переопределено в свойстве `stripIgnored` в `ValidationConfig`.
+  - `@IgnoreValidation` - помечает свойство как игнорируемое в функции-валидаторе - оно не будет проверяться на соответствие типу, а любые примененные декораторы будут проигнорированы. По умолчанию значение этого свойства не добавляется к результату валидации.
 
 - **number**
 
@@ -216,3 +230,7 @@ const map: MessagesMap = {
   - `@EqualValidation(value: string, message?: Message)` - добавляет валидатор, который проверяет - соответствует ли строка значению, переданному в первом аргументе.
 
   - `@EqualToValidation(propName: string, message?: Message)` - добавляет валидатор, который проверяет - соответствует ли строка значению, содержащемуся в свойстве `propName`.
+
+# Лицензия
+
+[MIT License](./LICENSE)
