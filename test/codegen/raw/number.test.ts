@@ -1,4 +1,4 @@
-import { prepareDataForRender } from './../../../src/codegen/prepare/index';
+// import { prepareDataForRender } from './../../../src/codegen/prepare/index';
 import { parseInputFiles } from '../../../src/codegen/parse/index';
 import * as path from 'path';
 import { getAllFiles } from '../../../src/codegen/utils/getAllFiles';

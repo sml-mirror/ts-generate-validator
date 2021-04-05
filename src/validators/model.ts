@@ -1,6 +1,6 @@
 import { GeneratedValidation } from './../codegen/model';
 import { Message } from '../localization/model';
-import { UserContext, GenerateValidatorConfig } from '../config/model';
+import { UserContext, ValidationConfig } from '../config/model';
 import { Data } from '../codegen/model';
 
 export enum ValidationType {
@@ -51,7 +51,8 @@ export interface BaseValidatorPayload<D extends Data, P extends keyof D, C exten
   property: D[P];
   propertyName: P;
   data: D;
-  config: GenerateValidatorConfig<C>;
+  config: ValidationConfig;
+  context?: C;
   customMessage?: Message;
 }
 
@@ -80,11 +81,10 @@ export type RequiredOneOfValidator<
 > = BaseValidator<RequiredOneOfValidatorPayload<D>, D, P, C>;
 
 export type CustomValidationFunction = <D extends Data, P extends keyof D, C extends UserContext>(
-  payload: Omit<BaseValidatorPayload<D, P, C>, 'customMessage'> & { context: C }
+  payload: Omit<BaseValidatorPayload<D, P, C>, 'customMessage'>
 ) => ReturnType<BaseValidator> | Promise<ReturnType<BaseValidator>>;
 
-export type CustomValidatorPayload<C extends UserContext> = {
-  context: C;
+export type CustomValidatorPayload = {
   customValidationFunction: CustomValidationFunction;
 };
 
@@ -92,12 +92,12 @@ export type CustomValidator<
   D extends Data = Data,
   P extends keyof D = keyof D,
   C extends UserContext = UserContext
-> = BaseValidator<CustomValidatorPayload<C>, D, P, C>;
+> = BaseValidator<CustomValidatorPayload, D, P, C>;
 
 export type EnumDescription = Record<string, any>;
 
 export type TypeValidatorPayload = {
-  type: ValidationType;
+  type: string; //ValidationType;
   typeDescription?: EnumDescription | GeneratedValidation;
 };
 

@@ -1,25 +1,27 @@
+import { getSanitizedObjectCopy, isObject } from './../utils/object';
 import { getEnumValues } from './../utils/enum';
-import { PartialGenerateValidatorConfig, SeverityLevel } from './model';
-import { defaultConfig } from './default';
+import { CodegenConfig, PartialCodegenConfig, SeverityLevel, codegenConfigKeys } from './model';
+import { defaultCodegenConfig } from './default';
 import { mergeDeep } from './../utils/deepValue';
 import * as fs from 'fs';
 import * as path from 'path';
-import { GenerateValidatorConfig, UserContext } from '../config/model';
 
 export const configFileName = 'ts-generate-validator-config.json';
 
-export const configFileExists = (): boolean => {
-  return Boolean(Object.keys(getConfigFromFile()).length);
-};
-
-const getConfigFromFile = (): PartialGenerateValidatorConfig<UserContext> => {
+const getConfigFromFile = (): Record<string, any> => {
   const configFilePath = path.resolve(process.cwd(), configFileName);
 
   if (!fs.existsSync(configFilePath)) {
     return {};
   }
   try {
-    return <PartialGenerateValidatorConfig<UserContext>>JSON.parse(fs.readFileSync(configFilePath, 'utf8'));
+    const parsedData = JSON.parse(fs.readFileSync(configFilePath, 'utf8'));
+
+    if (!isObject(parsedData)) {
+      throw new Error();
+    }
+
+    return parsedData;
   } catch (err) {
     console.error(
       `Error when reading config from file "${configFileName}". Make sure the file has correct syntax. Using default config...`
@@ -28,23 +30,41 @@ const getConfigFromFile = (): PartialGenerateValidatorConfig<UserContext> => {
   }
 };
 
-export const getCodegenConfig = (): GenerateValidatorConfig<UserContext> => {
+export const getCodegenConfig = (): CodegenConfig => {
   const configFromFile = getConfigFromFile();
+  const sanitizedConfig = getSanitizedObjectCopy<PartialCodegenConfig>(configFromFile, codegenConfigKeys);
 
-  if (configFromFile.hasOwnProperty('unknownPropertySeverityLevel')) {
+  if (sanitizedConfig.hasOwnProperty('inputPath')) {
+    if (typeof sanitizedConfig.inputPath !== 'string' || !sanitizedConfig.inputPath.trim()) {
+      console.warn(
+        `File "${configFileName}" has wrong configuration. Property "inputPath" is not a valid path. Using default value "${defaultCodegenConfig.inputPath}".`
+      );
+      delete sanitizedConfig.inputPath;
+    }
+  }
+
+  if (sanitizedConfig.hasOwnProperty('outputPath')) {
+    if (typeof sanitizedConfig.outputPath !== 'string' || !sanitizedConfig.outputPath.trim()) {
+      console.warn(
+        `File "${configFileName}" has wrong configuration. Property "outputPath" is not a valid path. Using default value "${defaultCodegenConfig.outputPath}".`
+      );
+      delete sanitizedConfig.inputPath;
+    }
+  }
+
+  if (sanitizedConfig.hasOwnProperty('unknownPropertySeverityLevel')) {
     const possibleValues = getEnumValues(SeverityLevel);
-    if (!possibleValues.includes(String(configFromFile.unknownPropertySeverityLevel))) {
-      delete configFromFile.unknownPropertySeverityLevel;
+    if (!possibleValues.includes(String(sanitizedConfig.unknownPropertySeverityLevel))) {
+      console.warn(
+        `File "${configFileName}" has wrong configuration. Property "unknownPropertySeverityLevel" must be one of "${possibleValues.join(
+          ', '
+        )}", but recieved "${sanitizedConfig.unknownPropertySeverityLevel}". Using default value "${
+          defaultCodegenConfig.unknownPropertySeverityLevel
+        }".`
+      );
+      delete sanitizedConfig.unknownPropertySeverityLevel;
     }
   }
 
-  if (configFromFile.hasOwnProperty('emailRegExp')) {
-    if (typeof configFromFile.emailRegExp === 'string' && (configFromFile.emailRegExp as string | undefined)?.length) {
-      configFromFile.emailRegExp = new RegExp(configFromFile.emailRegExp);
-    } else {
-      delete configFromFile.emailRegExp;
-    }
-  }
-
-  return mergeDeep({}, defaultConfig, configFromFile) as GenerateValidatorConfig<UserContext>;
+  return mergeDeep({}, defaultCodegenConfig, sanitizedConfig) as CodegenConfig;
 };

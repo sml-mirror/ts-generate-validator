@@ -32,7 +32,5 @@ export type PreparedDataItem = {
   filePath: string;
   fileName: string;
   imports: PreparedImport[];
-  validationArgs: Record<string, string>;
   validations: PreparedValidation[];
-  configFilePath?: string;
 };

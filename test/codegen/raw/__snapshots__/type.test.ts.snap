@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`codegen/raw/type create validators: generated validators at "generated/validators/subfolder_#1.subfolder_#2.model.ts" 1`] = `
-"import {
+"/*Codegen*/
+// tslint:disable
+/* eslint-disable */
+
+import {
   GeneratedValidation,
-  GeneratedValidationPayload,
+  ValidationConfig,
+  Data,
   UserContext,
-  initConfig,
   getConfig,
   mergeDeep,
   typeValidator
@@ -17,27 +21,33 @@ import {
   ClassWithEnumProperty
 } from './../../subfolder #1/subfolder #2/model';
 
-import * as configFromFile from './../../ts-generate-validator-config.json';
-
-initConfig(configFromFile);
-
-export const classWithNonPrimitivePropertyValidator: GeneratedValidation = (
-  payload: GeneratedValidationPayload<typeof ClassWithNonPrimitiveProperty, UserContext>
+export const classWithNonPrimitivePropertyValidator: GeneratedValidation = <
+  D extends Data = typeof ClassWithNonPrimitiveProperty,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  // eslint-disable-next-line
-  const config = mergeDeep({}, getConfig(), payload.config);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 };
 
-export const classWithEnumPropertyValidator: GeneratedValidation = (
-  payload: GeneratedValidationPayload<typeof ClassWithEnumProperty, UserContext>
+export const classWithEnumPropertyValidator: GeneratedValidation = <
+  D extends Data = typeof ClassWithEnumProperty,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig,
+  context?: C
 ) => {
-  const config = mergeDeep({}, getConfig(), payload.config);
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
 
   typeValidator({
-    property: payload.data.someProperty,
+    property: data?.someProperty,
     propertyName: 'someProperty',
-    data: payload.data,
+    data,
     config,
+    context,
 
     typeDescription: SomeEnum,
 
@@ -50,12 +60,11 @@ export const classWithEnumPropertyValidator: GeneratedValidation = (
 exports[`codegen/raw/type parse & prepare: data for render 1`] = `
 Array [
   Object {
-    "configFilePath": "./../../ts-generate-validator-config.json",
     "fileName": "subfolder_#1.subfolder_#2.model.ts",
     "filePath": "generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, GeneratedValidationPayload, UserContext, initConfig, getConfig, mergeDeep, typeValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, Data, UserContext, getConfig, mergeDeep, typeValidator",
         "path": "ts-generate-validator",
       },
       Object {
@@ -63,10 +72,6 @@ Array [
         "path": "./../../subfolder #1/subfolder #2/model",
       },
     ],
-    "validationArgs": Object {
-      "config": "config",
-      "data": "data",
-    },
     "validations": Array [
       Object {
         "async": false,

@@ -17,17 +17,12 @@ export interface CodegenConfig {
 
 export type PartialCodegenConfig = Partial<CodegenConfig>;
 
-export interface ValidationConfig<C extends UserContext> {
+export const codegenConfigKeys: (keyof CodegenConfig)[] = ['inputPath', 'outputPath', 'unknownPropertySeverityLevel'];
+
+export interface ValidationConfig {
   stopAtFirstError: boolean;
   emailRegExp: RegExp;
   messages?: MessageMap;
-  context?: C;
 }
 
-export type PartialValidationConfig<C extends UserContext> = Partial<
-  Omit<ValidationConfig<C>, 'messages'> & { messages: PartialMessageMap }
->;
-
-export type GenerateValidatorConfig<C extends UserContext> = CodegenConfig & ValidationConfig<C>;
-
-export type PartialGenerateValidatorConfig<C extends UserContext> = PartialCodegenConfig & PartialValidationConfig<C>;
+export type PartialValidationConfig = Partial<Omit<ValidationConfig, 'messages'> & { messages: PartialMessageMap }>;
