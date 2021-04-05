@@ -166,7 +166,8 @@ export const buildValidationFromClassMetadata = ({
         );
       }
 
-      if (decoratorName === CustomValidation.name && args[0].toString().match(/^\s*async/)) {
+      const isAsync = decoratorName === CustomValidation.name && Boolean(args[0].toString().match(/^\s*async/));
+      if (isAsync) {
         async = true;
       }
 
@@ -174,6 +175,7 @@ export const buildValidationFromClassMetadata = ({
       items.push({
         propertyName: fieldName,
         validatorName,
+        async: isAsync,
         validatorPayload: args.map((arg, index) => {
           const property = validatorArgumentNames[index];
           let type = '';

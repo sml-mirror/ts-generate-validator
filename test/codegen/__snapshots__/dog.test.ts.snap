@@ -8,6 +8,8 @@ exports[`codegen/dog create validators: generated validators at "generated/valid
 import {
   GeneratedValidation,
   ValidationConfig,
+  ValidationError,
+  ValidationException,
   Data,
   UserContext,
   getConfig,
@@ -31,114 +33,131 @@ export const dogValidator: GeneratedValidation = <D extends Data = typeof Dog, C
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
 
-  typeValidator({
-    property: data?.name,
-    propertyName: 'name',
-    data,
-    config,
-    context,
+  try {
+    typeValidator({
+      property: data?.name,
+      propertyName: 'name',
+      data,
+      config,
+      context,
 
-    type: 'string'
-  });
+      type: 'string'
+    });
 
-  minLengthValidator({
-    property: data?.name,
-    propertyName: 'name',
-    data,
-    config,
-    context,
+    minLengthValidator({
+      property: data?.name,
+      propertyName: 'name',
+      data,
+      config,
+      context,
 
-    threshold: 5
-  });
+      threshold: 5
+    });
 
-  maxLengthValidator({
-    property: data?.name,
-    propertyName: 'name',
-    data,
-    config,
-    context,
+    maxLengthValidator({
+      property: data?.name,
+      propertyName: 'name',
+      data,
+      config,
+      context,
 
-    threshold: 20
-  });
+      threshold: 20
+    });
 
-  typeValidator({
-    property: data?.age,
-    propertyName: 'age',
-    data,
-    config,
-    context,
+    typeValidator({
+      property: data?.age,
+      propertyName: 'age',
+      data,
+      config,
+      context,
 
-    type: 'number'
-  });
+      type: 'number'
+    });
 
-  minValidator({
-    property: data?.age,
-    propertyName: 'age',
-    data,
-    config,
-    context,
+    minValidator({
+      property: data?.age,
+      propertyName: 'age',
+      data,
+      config,
+      context,
 
-    threshold: 2,
+      threshold: 2,
 
-    customMessage: 'only dogs over 2 years old are accepted'
-  });
+      customMessage: 'only dogs over 2 years old are accepted'
+    });
 
-  maxValidator({
-    property: data?.age,
-    propertyName: 'age',
-    data,
-    config,
-    context,
+    maxValidator({
+      property: data?.age,
+      propertyName: 'age',
+      data,
+      config,
+      context,
 
-    threshold: 16,
+      threshold: 16,
 
-    customMessage: \\"dogs can't live that long\\"
-  });
+      customMessage: \\"dogs can't live that long\\"
+    });
 
-  integerValidator({
-    property: data?.age,
-    propertyName: 'age',
-    data,
-    config,
-    context,
+    integerValidator({
+      property: data?.age,
+      propertyName: 'age',
+      data,
+      config,
+      context,
 
-    customMessage: 'age must be an integer value'
-  });
+      customMessage: 'age must be an integer value'
+    });
 
-  typeValidator({
-    property: data?.ownedYears,
-    propertyName: 'ownedYears',
-    data,
-    config,
-    context,
+    typeValidator({
+      property: data?.ownedYears,
+      propertyName: 'ownedYears',
+      data,
+      config,
+      context,
 
-    type: 'number'
-  });
+      type: 'number'
+    });
 
-  lessThanValidator({
-    property: data?.ownedYears,
-    propertyName: 'ownedYears',
-    data,
-    config,
-    context,
+    lessThanValidator({
+      property: data?.ownedYears,
+      propertyName: 'ownedYears',
+      data,
+      config,
+      context,
 
-    targetPropertyName: 'age',
+      targetPropertyName: 'age',
 
-    customMessage: \\"dog can't be owned by anyone longer than his age\\"
-  });
+      customMessage: \\"dog can't be owned by anyone longer than his age\\"
+    });
 
-  typeValidator({
-    property: data?.owner,
-    propertyName: 'owner',
-    data,
-    config,
-    context,
+    typeValidator({
+      property: data?.owner,
+      propertyName: 'owner',
+      data,
+      config,
+      context,
 
-    typeDescription: userValidator,
+      typeDescription: userValidator,
 
-    type: 'nested'
-  });
+      type: 'nested'
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 "
 `;
@@ -151,6 +170,8 @@ exports[`codegen/dog create validators: generated validators at "generated/valid
 import {
   GeneratedValidation,
   ValidationConfig,
+  ValidationError,
+  ValidationException,
   Data,
   UserContext,
   getConfig,
@@ -166,26 +187,43 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
 
-  typeValidator({
-    property: data?.name,
-    propertyName: 'name',
-    data,
-    config,
-    context,
+  try {
+    typeValidator({
+      property: data?.name,
+      propertyName: 'name',
+      data,
+      config,
+      context,
 
-    type: 'string'
-  });
+      type: 'string'
+    });
 
-  typeValidator({
-    property: data?.surname,
-    propertyName: 'surname',
-    data,
-    config,
-    context,
+    typeValidator({
+      property: data?.surname,
+      propertyName: 'surname',
+      data,
+      config,
+      context,
 
-    type: 'string'
-  });
+      type: 'string'
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 "
 `;
@@ -197,7 +235,7 @@ Array [
     "filePath": "generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, ValidationConfig, Data, UserContext, getConfig, mergeDeep, typeValidator, minLengthValidator, maxLengthValidator, minValidator, maxValidator, integerValidator, lessThanValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, Data, UserContext, getConfig, mergeDeep, typeValidator, minLengthValidator, maxLengthValidator, minValidator, maxValidator, integerValidator, lessThanValidator",
         "path": "ts-generate-validator",
       },
       Object {
@@ -225,6 +263,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "name",
             "validatorName": "minLengthValidator",
             "validatorPayload": Array [
@@ -236,6 +275,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "name",
             "validatorName": "maxLengthValidator",
             "validatorPayload": Array [
@@ -258,6 +298,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "age",
             "validatorName": "minValidator",
             "validatorPayload": Array [
@@ -274,6 +315,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "age",
             "validatorName": "maxValidator",
             "validatorPayload": Array [
@@ -290,6 +332,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "age",
             "validatorName": "integerValidator",
             "validatorPayload": Array [
@@ -312,6 +355,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "ownedYears",
             "validatorName": "lessThanValidator",
             "validatorPayload": Array [
@@ -354,7 +398,7 @@ Array [
     "filePath": "generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, ValidationConfig, Data, UserContext, getConfig, mergeDeep, typeValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, Data, UserContext, getConfig, mergeDeep, typeValidator",
         "path": "ts-generate-validator",
       },
       Object {

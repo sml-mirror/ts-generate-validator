@@ -16,19 +16,36 @@ export const {{ validation.name }}: GeneratedValidation = {% if validation.async
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
 
-  {% for item in validation.items %}
-  {{ item.validatorName }}({
-    property: data?.{{ item.propertyName }},
-    propertyName: '{{ item.propertyName }}',
-    data,
-    config,
-    context,
-    {% for vArg in item.validatorPayload %}
-    {{ vArg.property }}: {% if vArg.type === 'string' %}'{{ vArg.value }}'{% else %}{{ vArg.value }}{% endif %},
+  try {
+    {% for item in validation.items %}
+    {% if item.async %}await {% endif %}{{ item.validatorName }}({
+      property: data?.{{ item.propertyName }},
+      propertyName: '{{ item.propertyName }}',
+      data,
+      config,
+      context,
+      {% for vArg in item.validatorPayload %}
+      {{ vArg.property }}: {% if vArg.type === 'string' %}'{{ vArg.value }}'{% else %}{{ vArg.value }}{% endif %},
+      {% endfor %}
+    });
     {% endfor %}
-  });
-  {% endfor %}
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+    
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 }
 
 {% endfor %}

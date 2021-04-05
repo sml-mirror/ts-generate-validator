@@ -1,3 +1,4 @@
+import { Message } from './../../localization/model';
 import { SeverityLevel } from '../../config/model';
 import * as pkg from '../../../package.json';
 
@@ -30,5 +31,30 @@ export class IssueError extends Error {
     // Set the prototype explicitly
     // https://stackoverflow.com/a/41429145/3151214
     Object.setPrototypeOf(this, IssueError.prototype);
+  }
+}
+
+export class ValidationError extends Error {
+  field: string;
+
+  constructor(field: string, message: Message) {
+    const errMessage = `${message}\n\nIt seems like "${pkg.name}" issue. Please, report this to ${pkg.bugs.url}.`;
+    super(errMessage);
+    this.field = field;
+    // Set the prototype explicitly
+    // https://stackoverflow.com/a/41429145/3151214
+    Object.setPrototypeOf(this, ValidationError.prototype);
+  }
+}
+
+export class ValidationException extends Error {
+  errors: ValidationError[] = [];
+
+  constructor(errors: ValidationError[]) {
+    super();
+    this.errors = errors;
+    // Set the prototype explicitly
+    // https://stackoverflow.com/a/41429145/3151214
+    Object.setPrototypeOf(this, ValidationException.prototype);
   }
 }

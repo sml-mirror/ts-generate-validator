@@ -8,6 +8,8 @@ exports[`codegen/raw/common create validators: generated validators at "generate
 import {
   GeneratedValidation,
   ValidationConfig,
+  ValidationError,
+  ValidationException,
   Data,
   UserContext,
   getConfig,
@@ -44,18 +46,35 @@ export const typeValidatorWithCustomMessageValidator: GeneratedValidation = <
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
 
-  typeValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    customMessage: 'type custom message',
+      customMessage: 'type custom message',
 
-    type: 'string'
-  });
+      type: 'string'
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 
 export const typeValidatorOnWrongPropertyTypeValidator: GeneratedValidation = <
@@ -67,20 +86,37 @@ export const typeValidatorOnWrongPropertyTypeValidator: GeneratedValidation = <
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
 
-  typeValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    customMessage: 'type custom message',
+      customMessage: 'type custom message',
 
-    typeDescription: customValidatorFailedValidator,
+      typeDescription: customValidatorFailedValidator,
 
-    type: 'nested'
-  });
+      type: 'nested'
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 
 export const customValidatorFailedValidator: GeneratedValidation = <
@@ -92,28 +128,45 @@ export const customValidatorFailedValidator: GeneratedValidation = <
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
 
-  typeValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    type: 'number'
-  });
+      type: 'number'
+    });
 
-  customValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+    customValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    customValidationFunction: () => {
-      throw new Error('Failed!');
+      customValidationFunction: () => {
+        throw new Error('Failed!');
+      }
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
     }
-  });
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 
 export const cutomValidatorSuccessValidator: GeneratedValidation = <
@@ -125,26 +178,43 @@ export const cutomValidatorSuccessValidator: GeneratedValidation = <
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
 
-  typeValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    type: 'number'
-  });
+      type: 'number'
+    });
 
-  customValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+    customValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    customValidationFunction: () => undefined
-  });
+      customValidationFunction: () => undefined
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 
 export const cutomValidatorSuccessAsyncValidator: GeneratedValidation = async <
@@ -156,26 +226,43 @@ export const cutomValidatorSuccessAsyncValidator: GeneratedValidation = async <
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
 
-  typeValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    type: 'number'
-  });
+      type: 'number'
+    });
 
-  customValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+    await customValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    customValidationFunction: async (): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), 300))
-  });
+      customValidationFunction: async (): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), 300))
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 
 export const ignoreValidationForNonPrimitivePropertyValidator: GeneratedValidation = <
@@ -187,6 +274,24 @@ export const ignoreValidationForNonPrimitivePropertyValidator: GeneratedValidati
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+
+  try {
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 
 export const ignoreValidationForPrimitivePropertyValidator: GeneratedValidation = <
@@ -198,6 +303,24 @@ export const ignoreValidationForPrimitivePropertyValidator: GeneratedValidation 
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+
+  try {
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 
 export const ignoreValidationForPrimitivePropertyWithOtherDecoratorsValidator: GeneratedValidation = <
@@ -209,6 +332,24 @@ export const ignoreValidationForPrimitivePropertyWithOtherDecoratorsValidator: G
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+
+  try {
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 
 export const equalValidatorWithDefaultMessageValidator: GeneratedValidation = <
@@ -220,26 +361,43 @@ export const equalValidatorWithDefaultMessageValidator: GeneratedValidation = <
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
 
-  typeValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    type: 'string'
-  });
+      type: 'string'
+    });
 
-  equalValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+    equalValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    value: 'abcdef'
-  });
+      value: 'abcdef'
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 
 export const equalValidatorWithCustomMessageValidator: GeneratedValidation = <
@@ -251,28 +409,45 @@ export const equalValidatorWithCustomMessageValidator: GeneratedValidation = <
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
 
-  typeValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    type: 'number'
-  });
+      type: 'number'
+    });
 
-  equalValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+    equalValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    value: 245,
+      value: 245,
 
-    customMessage: 'equal custom message'
-  });
+      customMessage: 'equal custom message'
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 
 export const equalValidatorForBooleanValidator: GeneratedValidation = <
@@ -284,26 +459,43 @@ export const equalValidatorForBooleanValidator: GeneratedValidation = <
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
 
-  typeValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    type: 'boolean'
-  });
+      type: 'boolean'
+    });
 
-  equalValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+    equalValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    value: true
-  });
+      value: true
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 
 export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = <
@@ -315,46 +507,63 @@ export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = 
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
 
-  typeValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    type: 'string'
-  });
+      type: 'string'
+    });
 
-  equalToValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+    equalToValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    targetPropertyName: 'someOtherProperty'
-  });
+      targetPropertyName: 'someOtherProperty'
+    });
 
-  typeValidator({
-    property: data?.someOtherProperty,
-    propertyName: 'someOtherProperty',
-    data,
-    config,
-    context,
+    typeValidator({
+      property: data?.someOtherProperty,
+      propertyName: 'someOtherProperty',
+      data,
+      config,
+      context,
 
-    type: 'string'
-  });
+      type: 'string'
+    });
 
-  equalToValidator({
-    property: data?.someOtherProperty,
-    propertyName: 'someOtherProperty',
-    data,
-    config,
-    context,
+    equalToValidator({
+      property: data?.someOtherProperty,
+      propertyName: 'someOtherProperty',
+      data,
+      config,
+      context,
 
-    targetPropertyName: 'someProperty'
-  });
+      targetPropertyName: 'someProperty'
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 "
 `;
@@ -366,7 +575,7 @@ Array [
     "filePath": "generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, ValidationConfig, Data, UserContext, getConfig, mergeDeep, typeValidator, customValidator, equalValidator, equalToValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, Data, UserContext, getConfig, mergeDeep, typeValidator, customValidator, equalValidator, equalToValidator",
         "path": "ts-generate-validator",
       },
       Object {
@@ -445,6 +654,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "someProperty",
             "validatorName": "customValidator",
             "validatorPayload": Array [
@@ -476,6 +686,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "someProperty",
             "validatorName": "customValidator",
             "validatorPayload": Array [
@@ -505,6 +716,7 @@ Array [
             ],
           },
           Object {
+            "async": true,
             "propertyName": "someProperty",
             "validatorName": "customValidator",
             "validatorPayload": Array [
@@ -552,6 +764,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "someProperty",
             "validatorName": "equalValidator",
             "validatorPayload": Array [
@@ -581,6 +794,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "someProperty",
             "validatorName": "equalValidator",
             "validatorPayload": Array [
@@ -615,6 +829,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "someProperty",
             "validatorName": "equalValidator",
             "validatorPayload": Array [
@@ -644,6 +859,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "someProperty",
             "validatorName": "equalToValidator",
             "validatorPayload": Array [
@@ -666,6 +882,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "someOtherProperty",
             "validatorName": "equalToValidator",
             "validatorPayload": Array [

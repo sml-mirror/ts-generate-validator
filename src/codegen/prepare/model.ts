@@ -19,6 +19,7 @@ export interface PreparedValidationItem {
   propertyName: string;
   validatorName: string;
   validatorPayload: PreparedValidatorPayloadItem[];
+  async?: boolean;
 }
 
 export interface PreparedValidation {
