@@ -1,7 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`codegen/raw/common create validators: generated validators at "generated/validators/model.ts" 1`] = `
-"/*Codegen*/
+"/*
+Codegen
+
+this file was automatically generated and should not be edited
+*/
 // tslint:disable
 /* eslint-disable */
 

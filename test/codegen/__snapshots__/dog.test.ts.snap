@@ -1,7 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`codegen/dog create validators: generated validators at "generated/validators/model.ts" 1`] = `
-"/*Codegen*/
+"/*
+Codegen
+
+this file was automatically generated and should not be edited
+*/
 // tslint:disable
 /* eslint-disable */
 
@@ -163,7 +167,11 @@ export const dogValidator: GeneratedValidation = <D extends Data = typeof Dog, C
 `;
 
 exports[`codegen/dog create validators: generated validators at "generated/validators/nestedModel.model.ts" 1`] = `
-"/*Codegen*/
+"/*
+Codegen
+
+this file was automatically generated and should not be edited
+*/
 // tslint:disable
 /* eslint-disable */
 
