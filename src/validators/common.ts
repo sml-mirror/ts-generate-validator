@@ -1,6 +1,6 @@
 import { ValidationError } from './../codegen/utils/error';
 import { AllowedCommonValidators } from './../localization/model';
-import { PartialValidationConfig } from 'src/config/model';
+import { PartialValidationConfig } from '../../src/config/model';
 import { IssueError } from './../codegen/utils/error';
 import { getEnumValues } from './../utils/enum';
 import {
