@@ -3,15 +3,20 @@ import { ValidationType, NumberValidator, StringValidator } from '../validators/
 
 export type Message = string;
 
+export type AllowedCommonValidators = Exclude<CommonValidator, CommonValidator.custom | CommonValidator.requiredOneOf>;
+
 export type MessageMap = {
+  common: {
+    [key in AllowedCommonValidators | CommonValidator.requiredOneOf]: Message;
+  };
   [ValidationType.number]: {
-    [key in NumberValidator | CommonValidator]: Message;
+    [key in NumberValidator | AllowedCommonValidators]: Message;
   };
   [ValidationType.string]: {
-    [key in StringValidator | CommonValidator]: Message;
+    [key in StringValidator | AllowedCommonValidators]: Message;
   };
   [ValidationType.boolean]: {
-    [key in BooleanValidator | CommonValidator]: Message;
+    [key in BooleanValidator | AllowedCommonValidators]: Message;
   };
 };
 

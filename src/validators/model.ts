@@ -20,7 +20,8 @@ export enum CommonValidator {
   type = 'type',
   custom = 'custom',
   equal = 'equal',
-  equalTo = 'equalTo'
+  equalTo = 'equalTo',
+  requiredOneOf = 'requiredOneOf'
 }
 
 export enum NumberValidator {
