@@ -8,6 +8,8 @@ exports[`codegen/user create validators: generated validators at "generated/vali
 import {
   GeneratedValidation,
   ValidationConfig,
+  ValidationError,
+  ValidationException,
   Data,
   UserContext,
   getConfig,
@@ -39,314 +41,331 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
 
-  requiredOneOfValidator({
-    property: data?.email,
-    propertyName: 'email',
-    data,
-    config,
-    context,
+  try {
+    requiredOneOfValidator({
+      property: data?.email,
+      propertyName: 'email',
+      data,
+      config,
+      context,
 
-    fields: ['email', 'phone']
-  });
+      fields: ['email', 'phone']
+    });
 
-  typeValidator({
-    property: data?.name,
-    propertyName: 'name',
-    data,
-    config,
-    context,
+    typeValidator({
+      property: data?.name,
+      propertyName: 'name',
+      data,
+      config,
+      context,
 
-    type: 'string'
-  });
+      type: 'string'
+    });
 
-  minLengthValidator({
-    property: data?.name,
-    propertyName: 'name',
-    data,
-    config,
-    context,
+    minLengthValidator({
+      property: data?.name,
+      propertyName: 'name',
+      data,
+      config,
+      context,
 
-    threshold: 2
-  });
+      threshold: 2
+    });
 
-  maxLengthValidator({
-    property: data?.name,
-    propertyName: 'name',
-    data,
-    config,
-    context,
+    maxLengthValidator({
+      property: data?.name,
+      propertyName: 'name',
+      data,
+      config,
+      context,
 
-    threshold: 50
-  });
+      threshold: 50
+    });
 
-  trimValidator({
-    property: data?.name,
-    propertyName: 'name',
-    data,
-    config,
-    context
-  });
+    trimValidator({
+      property: data?.name,
+      propertyName: 'name',
+      data,
+      config,
+      context
+    });
 
-  typeValidator({
-    property: data?.surname,
-    propertyName: 'surname',
-    data,
-    config,
-    context,
+    typeValidator({
+      property: data?.surname,
+      propertyName: 'surname',
+      data,
+      config,
+      context,
 
-    type: 'string'
-  });
+      type: 'string'
+    });
 
-  minLengthValidator({
-    property: data?.surname,
-    propertyName: 'surname',
-    data,
-    config,
-    context,
+    minLengthValidator({
+      property: data?.surname,
+      propertyName: 'surname',
+      data,
+      config,
+      context,
 
-    threshold: 2,
+      threshold: 2,
 
-    customMessage: 'surname length must be more then 2 letters'
-  });
+      customMessage: 'surname length must be more then 2 letters'
+    });
 
-  maxLengthValidator({
-    property: data?.surname,
-    propertyName: 'surname',
-    data,
-    config,
-    context,
+    maxLengthValidator({
+      property: data?.surname,
+      propertyName: 'surname',
+      data,
+      config,
+      context,
 
-    threshold: 50,
+      threshold: 50,
 
-    customMessage: 'surname length must be less then 50 letters'
-  });
+      customMessage: 'surname length must be less then 50 letters'
+    });
 
-  trimValidator({
-    property: data?.surname,
-    propertyName: 'surname',
-    data,
-    config,
-    context,
+    trimValidator({
+      property: data?.surname,
+      propertyName: 'surname',
+      data,
+      config,
+      context,
 
-    customMessage: 'there should be no spaces at the beginning and at the end of surname'
-  });
+      customMessage: 'there should be no spaces at the beginning and at the end of surname'
+    });
 
-  typeValidator({
-    property: data?.age,
-    propertyName: 'age',
-    data,
-    config,
-    context,
+    typeValidator({
+      property: data?.age,
+      propertyName: 'age',
+      data,
+      config,
+      context,
 
-    type: 'number'
-  });
+      type: 'number'
+    });
 
-  minValidator({
-    property: data?.age,
-    propertyName: 'age',
-    data,
-    config,
-    context,
+    minValidator({
+      property: data?.age,
+      propertyName: 'age',
+      data,
+      config,
+      context,
 
-    threshold: 18
-  });
+      threshold: 18
+    });
 
-  maxValidator({
-    property: data?.age,
-    propertyName: 'age',
-    data,
-    config,
-    context,
+    maxValidator({
+      property: data?.age,
+      propertyName: 'age',
+      data,
+      config,
+      context,
 
-    threshold: 60
-  });
+      threshold: 60
+    });
 
-  integerValidator({
-    property: data?.age,
-    propertyName: 'age',
-    data,
-    config,
-    context
-  });
+    integerValidator({
+      property: data?.age,
+      propertyName: 'age',
+      data,
+      config,
+      context
+    });
 
-  typeValidator({
-    property: data?.workExperience,
-    propertyName: 'workExperience',
-    data,
-    config,
-    context,
+    typeValidator({
+      property: data?.workExperience,
+      propertyName: 'workExperience',
+      data,
+      config,
+      context,
 
-    type: 'number'
-  });
+      type: 'number'
+    });
 
-  lessThanValidator({
-    property: data?.workExperience,
-    propertyName: 'workExperience',
-    data,
-    config,
-    context,
+    lessThanValidator({
+      property: data?.workExperience,
+      propertyName: 'workExperience',
+      data,
+      config,
+      context,
 
-    targetPropertyName: 'age'
-  });
+      targetPropertyName: 'age'
+    });
 
-  positiveValidator({
-    property: data?.workExperience,
-    propertyName: 'workExperience',
-    data,
-    config,
-    context
-  });
+    positiveValidator({
+      property: data?.workExperience,
+      propertyName: 'workExperience',
+      data,
+      config,
+      context
+    });
 
-  typeValidator({
-    property: data?.isActive,
-    propertyName: 'isActive',
-    data,
-    config,
-    context,
+    typeValidator({
+      property: data?.isActive,
+      propertyName: 'isActive',
+      data,
+      config,
+      context,
 
-    type: 'boolean'
-  });
+      type: 'boolean'
+    });
 
-  equalValidator({
-    property: data?.isActive,
-    propertyName: 'isActive',
-    data,
-    config,
-    context,
+    equalValidator({
+      property: data?.isActive,
+      propertyName: 'isActive',
+      data,
+      config,
+      context,
 
-    value: true
-  });
+      value: true
+    });
 
-  typeValidator({
-    property: data?.email,
-    propertyName: 'email',
-    data,
-    config,
-    context,
+    typeValidator({
+      property: data?.email,
+      propertyName: 'email',
+      data,
+      config,
+      context,
 
-    type: 'string'
-  });
+      type: 'string'
+    });
 
-  emailValidator({
-    property: data?.email,
-    propertyName: 'email',
-    data,
-    config,
-    context
-  });
+    emailValidator({
+      property: data?.email,
+      propertyName: 'email',
+      data,
+      config,
+      context
+    });
 
-  typeValidator({
-    property: data?.phone,
-    propertyName: 'phone',
-    data,
-    config,
-    context,
+    typeValidator({
+      property: data?.phone,
+      propertyName: 'phone',
+      data,
+      config,
+      context,
 
-    type: 'string'
-  });
+      type: 'string'
+    });
 
-  matchValidator({
-    property: data?.phone,
-    propertyName: 'phone',
-    data,
-    config,
-    context,
+    matchValidator({
+      property: data?.phone,
+      propertyName: 'phone',
+      data,
+      config,
+      context,
 
-    regexp: /^\\\\d{10}$/
-  });
+      regexp: /^\\\\d{10}$/
+    });
 
-  typeValidator({
-    property: data?.website,
-    propertyName: 'website',
-    data,
-    config,
-    context,
+    typeValidator({
+      property: data?.website,
+      propertyName: 'website',
+      data,
+      config,
+      context,
 
-    type: 'string'
-  });
+      type: 'string'
+    });
 
-  urlValidator({
-    property: data?.website,
-    propertyName: 'website',
-    data,
-    config,
-    context
-  });
+    urlValidator({
+      property: data?.website,
+      propertyName: 'website',
+      data,
+      config,
+      context
+    });
 
-  typeValidator({
-    property: data?.nickname,
-    propertyName: 'nickname',
-    data,
-    config,
-    context,
+    typeValidator({
+      property: data?.nickname,
+      propertyName: 'nickname',
+      data,
+      config,
+      context,
 
-    type: 'string'
-  });
+      type: 'string'
+    });
 
-  lowercaseValidator({
-    property: data?.nickname,
-    propertyName: 'nickname',
-    data,
-    config,
-    context
-  });
+    lowercaseValidator({
+      property: data?.nickname,
+      propertyName: 'nickname',
+      data,
+      config,
+      context
+    });
 
-  minLengthValidator({
-    property: data?.nickname,
-    propertyName: 'nickname',
-    data,
-    config,
-    context,
+    minLengthValidator({
+      property: data?.nickname,
+      propertyName: 'nickname',
+      data,
+      config,
+      context,
 
-    threshold: 5
-  });
+      threshold: 5
+    });
 
-  maxLengthValidator({
-    property: data?.nickname,
-    propertyName: 'nickname',
-    data,
-    config,
-    context,
+    maxLengthValidator({
+      property: data?.nickname,
+      propertyName: 'nickname',
+      data,
+      config,
+      context,
 
-    threshold: 20
-  });
+      threshold: 20
+    });
 
-  typeValidator({
-    property: data?.cardHolderName,
-    propertyName: 'cardHolderName',
-    data,
-    config,
-    context,
+    typeValidator({
+      property: data?.cardHolderName,
+      propertyName: 'cardHolderName',
+      data,
+      config,
+      context,
 
-    type: 'string'
-  });
+      type: 'string'
+    });
 
-  uppercaseValidator({
-    property: data?.cardHolderName,
-    propertyName: 'cardHolderName',
-    data,
-    config,
-    context
-  });
+    uppercaseValidator({
+      property: data?.cardHolderName,
+      propertyName: 'cardHolderName',
+      data,
+      config,
+      context
+    });
 
-  typeValidator({
-    property: data?.insuranceRatio,
-    propertyName: 'insuranceRatio',
-    data,
-    config,
-    context,
+    typeValidator({
+      property: data?.insuranceRatio,
+      propertyName: 'insuranceRatio',
+      data,
+      config,
+      context,
 
-    type: 'number'
-  });
+      type: 'number'
+    });
 
-  floatValidator({
-    property: data?.insuranceRatio,
-    propertyName: 'insuranceRatio',
-    data,
-    config,
-    context
-  });
+    floatValidator({
+      property: data?.insuranceRatio,
+      propertyName: 'insuranceRatio',
+      data,
+      config,
+      context
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 "
 `;
@@ -358,7 +377,7 @@ Array [
     "filePath": "generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, ValidationConfig, Data, UserContext, getConfig, mergeDeep, requiredOneOfValidator, typeValidator, minLengthValidator, maxLengthValidator, trimValidator, minValidator, maxValidator, integerValidator, lessThanValidator, positiveValidator, equalValidator, emailValidator, matchValidator, urlValidator, lowercaseValidator, uppercaseValidator, floatValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, Data, UserContext, getConfig, mergeDeep, requiredOneOfValidator, typeValidator, minLengthValidator, maxLengthValidator, trimValidator, minValidator, maxValidator, integerValidator, lessThanValidator, positiveValidator, equalValidator, emailValidator, matchValidator, urlValidator, lowercaseValidator, uppercaseValidator, floatValidator",
         "path": "ts-generate-validator",
       },
       Object {
@@ -393,6 +412,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "name",
             "validatorName": "minLengthValidator",
             "validatorPayload": Array [
@@ -404,6 +424,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "name",
             "validatorName": "maxLengthValidator",
             "validatorPayload": Array [
@@ -415,6 +436,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "name",
             "validatorName": "trimValidator",
             "validatorPayload": Array [],
@@ -431,6 +453,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "surname",
             "validatorName": "minLengthValidator",
             "validatorPayload": Array [
@@ -447,6 +470,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "surname",
             "validatorName": "maxLengthValidator",
             "validatorPayload": Array [
@@ -463,6 +487,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "surname",
             "validatorName": "trimValidator",
             "validatorPayload": Array [
@@ -485,6 +510,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "age",
             "validatorName": "minValidator",
             "validatorPayload": Array [
@@ -496,6 +522,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "age",
             "validatorName": "maxValidator",
             "validatorPayload": Array [
@@ -507,6 +534,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "age",
             "validatorName": "integerValidator",
             "validatorPayload": Array [],
@@ -523,6 +551,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "workExperience",
             "validatorName": "lessThanValidator",
             "validatorPayload": Array [
@@ -534,6 +563,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "workExperience",
             "validatorName": "positiveValidator",
             "validatorPayload": Array [],
@@ -550,6 +580,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "isActive",
             "validatorName": "equalValidator",
             "validatorPayload": Array [
@@ -572,6 +603,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "email",
             "validatorName": "emailValidator",
             "validatorPayload": Array [],
@@ -588,6 +620,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "phone",
             "validatorName": "matchValidator",
             "validatorPayload": Array [
@@ -610,6 +643,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "website",
             "validatorName": "urlValidator",
             "validatorPayload": Array [],
@@ -626,11 +660,13 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "nickname",
             "validatorName": "lowercaseValidator",
             "validatorPayload": Array [],
           },
           Object {
+            "async": false,
             "propertyName": "nickname",
             "validatorName": "minLengthValidator",
             "validatorPayload": Array [
@@ -642,6 +678,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "nickname",
             "validatorName": "maxLengthValidator",
             "validatorPayload": Array [
@@ -664,6 +701,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "cardHolderName",
             "validatorName": "uppercaseValidator",
             "validatorPayload": Array [],
@@ -680,6 +718,7 @@ Array [
             ],
           },
           Object {
+            "async": false,
             "propertyName": "insuranceRatio",
             "validatorName": "floatValidator",
             "validatorPayload": Array [],

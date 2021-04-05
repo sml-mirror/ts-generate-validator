@@ -3,6 +3,7 @@ export * from './codegen/model';
 export * from './config/model';
 export * from './localization/model';
 export * from './validators/model';
+export { ValidationError, ValidationException } from './codegen/utils/error';
 
 // Decorators
 export * from './decorators';

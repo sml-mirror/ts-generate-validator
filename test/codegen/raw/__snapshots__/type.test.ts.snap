@@ -8,6 +8,8 @@ exports[`codegen/raw/type create validators: generated validators at "generated/
 import {
   GeneratedValidation,
   ValidationConfig,
+  ValidationError,
+  ValidationException,
   Data,
   UserContext,
   getConfig,
@@ -30,6 +32,24 @@ export const classWithNonPrimitivePropertyValidator: GeneratedValidation = <
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+
+  try {
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 
 export const classWithEnumPropertyValidator: GeneratedValidation = <
@@ -41,18 +61,35 @@ export const classWithEnumPropertyValidator: GeneratedValidation = <
   context?: C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
 
-  typeValidator({
-    property: data?.someProperty,
-    propertyName: 'someProperty',
-    data,
-    config,
-    context,
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
 
-    typeDescription: SomeEnum,
+      typeDescription: SomeEnum,
 
-    type: 'enum'
-  });
+      type: 'enum'
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
 };
 "
 `;
@@ -64,7 +101,7 @@ Array [
     "filePath": "generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, ValidationConfig, Data, UserContext, getConfig, mergeDeep, typeValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, Data, UserContext, getConfig, mergeDeep, typeValidator",
         "path": "ts-generate-validator",
       },
       Object {
