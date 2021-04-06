@@ -2,7 +2,7 @@ import { CodegenConfig, ValidationConfig, SeverityLevel } from './model';
 
 export const defaultCodegenConfig: CodegenConfig = {
   inputPath: 'src',
-  outputPath: 'generated/validators',
+  outputPath: 'src/generated/validators',
   unknownPropertySeverityLevel: SeverityLevel.warning
 };
 

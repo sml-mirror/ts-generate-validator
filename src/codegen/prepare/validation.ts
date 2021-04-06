@@ -157,7 +157,7 @@ export const buildValidationFromClassMetadata = ({
         decoratorName
       ];
 
-      if (!allowedValidationTypes.includes(typeMetadata.validationType)) {
+      if (!allowedValidationTypes.includes(typeMetadata.validationType) && decoratorName !== CustomValidation.name) {
         throw new ErrorInFile(
           `Decorator "${validatorName}" can't be used on "${cls.name}.${fieldName}" of type "${
             typeMetadata.validationType
