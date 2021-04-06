@@ -4,14 +4,14 @@
   "description": "Task to generate validation functions to check whether JSON data conforms to a schema described as typescript classes",
   "main": "src/index.ts",
   "bin": {
-    "generateValidator": "./dist/src/bin.js"
+    "generateValidator": "./dist/bin.js"
   },
   "scripts": {
     "lint": "eslint . --ext .ts",
     "fix": "npm run lint -- --fix",
     "test": "jest",
-    "build": "tsc --resolveJsonModule --outDir dist src/bin.ts && shx cp -r ./src/codegen/view ./dist/src/codegen/",
-    "bin": "node dist/src/bin.js"
+    "build": "tsc --resolveJsonModule --outDir dist src/bin.ts && shx cp -r ./src/codegen/view ./dist/src/codegen/ && mv ./dist/src/* ./dist/ && rm -f ./dist/package.json && rm -rf ./dist/src",
+    "bin": "node dist/bin.js"
   },
   "repository": {
     "type": "git",

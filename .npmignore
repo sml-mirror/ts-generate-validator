@@ -1,0 +1,11 @@
+/node_modules
+
+/test
+
+/.vscode
+
+/.tscache
+
+/jest.config.ts
+
+/ts-generate-validator-config.json
