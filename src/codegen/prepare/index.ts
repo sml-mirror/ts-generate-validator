@@ -11,7 +11,8 @@ export const prepareDataForRender = (
   config: CodegenConfig
 ): PreparedDataItem[] => {
   return inputFilesMetadata.map((metadata) => {
-    const { name, classes } = metadata;
+    const { name, classes, imports: inputFileImportsMetadata, functions: inputFileFunctionsMetadata } = metadata;
+    const inputFilePath = cutFileExt(name);
 
     const filePath = buildOutputFilePath({ inputFileName: name, config });
     const fileName = buildOutputFileName(name);
@@ -32,6 +33,9 @@ export const prepareDataForRender = (
         cls,
         clsFileName: name,
         addImport: handleImportAdd,
+        inputFileImportsMetadata,
+        inputFileFunctionsMetadata,
+        inputFilePath,
         config
       });
       if (validation) {

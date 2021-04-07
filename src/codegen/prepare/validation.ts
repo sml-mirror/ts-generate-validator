@@ -7,20 +7,27 @@ import { requiredOneOfValidator, typeValidator } from './../../validators/common
 import { RequiredOneOfValidation, CustomValidation, IgnoreValidation, TypeValidation } from './../../decorators/index';
 import { PreparedValidationItem, PreparedValidatorPayloadItem } from './model';
 import { PreparedValidation } from './model';
-import { ClassMetadata } from './../parse/model';
+import { ClassMetadata, ImportMetadata, FunctionMetadata } from './../parse/model';
 import { CodegenConfig } from './../../config/model';
 import * as pkg from '../../../package.json';
 import * as path from 'path';
+import { Arg } from 'ts-file-parser';
 
 export const buildValidationFromClassMetadata = ({
   cls,
   clsFileName,
   addImport,
+  inputFileImportsMetadata,
+  inputFileFunctionsMetadata,
+  inputFilePath,
   config
 }: {
   cls: ClassMetadata;
   clsFileName: string;
   addImport: (path: string, clause: string, isPackageName?: boolean) => void;
+  inputFileImportsMetadata: ImportMetadata[];
+  inputFileFunctionsMetadata: FunctionMetadata[];
+  inputFilePath: string;
   config: CodegenConfig;
 }): PreparedValidation | undefined => {
   const name = getValidationName(cls.name);
@@ -179,6 +186,15 @@ export const buildValidationFromClassMetadata = ({
         async = true;
       }
 
+      if (decoratorName === CustomValidation.name) {
+        addImportsForCustomValidator({
+          inputFileImportsMetadata,
+          inputFileFunctionsMetadata,
+          inputFilePath,
+          decoratorArgs: args
+        });
+      }
+
       addImport(pkg.name, validatorName, true);
       items.push({
         propertyName: fieldName,
@@ -221,4 +237,24 @@ export const buildValidationFromClassMetadata = ({
 
 const getValidationName = (className: string): string => {
   return `${className[0].toLocaleLowerCase()}${className.slice(1)}Validator`;
+};
+
+const addImportsForCustomValidator = ({
+  inputFileImportsMetadata,
+  inputFileFunctionsMetadata,
+  inputFilePath,
+  decoratorArgs
+}: {
+  inputFileImportsMetadata: ImportMetadata[];
+  inputFileFunctionsMetadata: FunctionMetadata[];
+  inputFilePath: string;
+  decoratorArgs: (Arg | Arg[])[];
+}): void => {
+  const func = <string>decoratorArgs[0];
+  console.log(inputFileImportsMetadata, inputFilePath, inputFileFunctionsMetadata, decoratorArgs);
+  // Case #1: inline function
+  if (func.match(/.*(function|=>).+/)) {
+    // TODO: find all possible entities, which may be imported
+    return;
+  }
 };

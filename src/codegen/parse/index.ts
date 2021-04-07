@@ -3,10 +3,10 @@ import { IgnoreValidation } from './../../decorators/index';
 import { IssueError, ErrorInFile } from './../utils/error';
 import { ValidationType } from './../../validators/model';
 import { buildClassesMetadata } from './classes';
-import { parseStruct } from 'ts-file-parser';
+import { parseStruct, ImportNode } from 'ts-file-parser';
 import * as fs from 'fs';
 import * as path from 'path';
-import { InputFileMetadata, CustomTypeEntry, EnumDictionary } from './model';
+import { InputFileMetadata, CustomTypeEntry, EnumDictionary, ImportMetadata } from './model';
 
 export const parseInputFiles = (files: string[]): InputFileMetadata[] => {
   const metadata: InputFileMetadata[] = [];
@@ -27,7 +27,9 @@ export const parseInputFiles = (files: string[]): InputFileMetadata[] => {
         customTypeEntries.push(...classesMetadata.customTypeEntries);
         metadata.push({
           name: structure.name,
-          classes: classesMetadata.classesForValidation
+          classes: classesMetadata.classesForValidation,
+          imports: buildImportsMetadata(structure._imports),
+          functions: structure.functions.map(({ name, isExport }) => ({ name, isExported: isExport }))
         });
       }
     }
@@ -142,5 +144,15 @@ export const validateNestedClasses = ({
     if (fieldTypeMetadata.name && fieldTypeMetadata.referencePath) {
       checkNestedClasses(fieldTypeMetadata.name, fieldTypeMetadata.referencePath);
     }
+  });
+};
+
+const buildImportsMetadata = (nodes: ImportNode[]): ImportMetadata[] => {
+  return nodes.map(({ clauses, absPathNode }) => {
+    const pathToFile = absPathNode.join('/');
+    return {
+      clauses,
+      absPath: path.relative(process.cwd(), path.resolve(pathToFile))
+    };
   });
 };
