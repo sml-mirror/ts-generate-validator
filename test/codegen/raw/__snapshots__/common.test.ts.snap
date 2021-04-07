@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`codegen/raw/common create validators: generated validators at "generated/validators/model.ts" 1`] = `
+exports[`codegen/raw/common create validators: generated validators at "src/generated/validators/model.ts" 1`] = `
 "/* This file was automatically generated and should not be edited */
 // tslint:disable
 /* eslint-disable */
@@ -23,8 +23,10 @@ import {
 import {
   TypeValidatorWithCustomMessage,
   TypeValidatorOnWrongPropertyType,
+  TypeValidatorOnNullPropertyType,
   CustomValidatorFailed,
   CutomValidatorSuccess,
+  CutomValidatorOnNonPrimitiveStructure,
   CutomValidatorSuccessAsync,
   IgnoreValidationForNonPrimitiveProperty,
   IgnoreValidationForPrimitiveProperty,
@@ -33,7 +35,7 @@ import {
   EqualValidatorWithCustomMessage,
   EqualValidatorForBoolean,
   EqualToValidatorWithDefaultMessage
-} from './../../model';
+} from './../../../model';
 
 import { customValidatorFailedValidator } from './model';
 
@@ -101,6 +103,44 @@ export const typeValidatorOnWrongPropertyTypeValidator: GeneratedValidation = <
       typeDescription: customValidatorFailedValidator,
 
       type: 'nested'
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
+
+export const typeValidatorOnNullPropertyTypeValidator: GeneratedValidation = <
+  D extends Data = typeof TypeValidatorOnNullPropertyType,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig,
+  context?: C
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
+
+      type: 'null'
     });
   } catch (err) {
     if (!(err instanceof ValidationError)) {
@@ -191,6 +231,44 @@ export const cutomValidatorSuccessValidator: GeneratedValidation = <
       type: 'number'
     });
 
+    customValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
+
+      customValidationFunction: () => undefined
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
+
+export const cutomValidatorOnNonPrimitiveStructureValidator: GeneratedValidation = <
+  D extends Data = typeof CutomValidatorOnNonPrimitiveStructure,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig,
+  context?: C
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+
+  try {
     customValidator({
       property: data?.someProperty,
       propertyName: 'someProperty',
@@ -572,15 +650,15 @@ exports[`codegen/raw/common parse & prepare: data for render 1`] = `
 Array [
   Object {
     "fileName": "model.ts",
-    "filePath": "generated/validators",
+    "filePath": "src/generated/validators",
     "imports": Array [
       Object {
         "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, Data, UserContext, getConfig, mergeDeep, typeValidator, customValidator, equalValidator, equalToValidator",
         "path": "ts-generate-validator",
       },
       Object {
-        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnWrongPropertyType, CustomValidatorFailed, CutomValidatorSuccess, CutomValidatorSuccessAsync, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
-        "path": "./../../model",
+        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnWrongPropertyType, TypeValidatorOnNullPropertyType, CustomValidatorFailed, CutomValidatorSuccess, CutomValidatorOnNonPrimitiveStructure, CutomValidatorSuccessAsync, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
+        "path": "./../../../model",
       },
       Object {
         "clauses": "customValidatorFailedValidator",
@@ -649,6 +727,24 @@ Array [
               Object {
                 "property": "type",
                 "type": "string",
+                "value": "null",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "TypeValidatorOnNullPropertyType",
+        "name": "typeValidatorOnNullPropertyTypeValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
                 "value": "number",
               },
             ],
@@ -700,6 +796,25 @@ Array [
         ],
         "modelClassName": "CutomValidatorSuccess",
         "name": "cutomValidatorSuccessValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "async": false,
+            "propertyName": "someProperty",
+            "validatorName": "customValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customValidationFunction",
+                "type": "",
+                "value": "() => undefined",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "CutomValidatorOnNonPrimitiveStructure",
+        "name": "cutomValidatorOnNonPrimitiveStructureValidator",
       },
       Object {
         "async": true,
@@ -970,6 +1085,26 @@ Array [
         ],
         "fields": Array [
           Object {
+            "decorators": Array [],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "null",
+              "validationType": "null",
+            },
+          },
+        ],
+        "name": "TypeValidatorOnNullPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
             "decorators": Array [
               Object {
                 "arguments": Array [
@@ -1016,6 +1151,34 @@ Array [
           },
         ],
         "name": "CutomValidatorSuccess",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "() => undefined",
+                ],
+                "name": "CustomValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": true,
+            "type": Object {
+              "name": "mock",
+              "referencePath": "model.ts",
+              "validationType": "notSupported",
+            },
+          },
+        ],
+        "name": "CutomValidatorOnNonPrimitiveStructure",
       },
       Object {
         "decorators": Array [

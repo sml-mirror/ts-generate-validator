@@ -82,57 +82,63 @@ export const buildValidationFromClassMetadata = ({
     }
 
     // Type validation
-    const customMessageForTypeValidator = <Parameters<typeof TypeValidation>[0] | undefined>(
-      decorators.find(({ name: decoratorName }) => decoratorName === TypeValidation.name)?.arguments[0]
-    );
+    const { allowedValidationTypes } = decoratorNameToValidationItemData[TypeValidation.name];
+    if (allowedValidationTypes.includes(typeMetadata.validationType)) {
+      const customMessageForTypeValidator = <Parameters<typeof TypeValidation>[0] | undefined>(
+        decorators.find(({ name: decoratorName }) => decoratorName === TypeValidation.name)?.arguments[0]
+      );
 
-    const validatorPayload: PreparedValidatorPayloadItem[] = [];
-    if (customMessageForTypeValidator) {
+      const validatorPayload: PreparedValidatorPayloadItem[] = [];
+      if (customMessageForTypeValidator) {
+        validatorPayload.push({
+          property: 'customMessage',
+          value: escapeString(customMessageForTypeValidator),
+          type: 'string'
+        });
+      }
+      if (
+        typeMetadata.validationType === ValidationType.enum ||
+        typeMetadata.validationType === ValidationType.nested
+      ) {
+        if (typeMetadata.referencePath && typeMetadata.name) {
+          const refPath = typeMetadata.referencePath;
+          const importPath =
+            typeMetadata.validationType === ValidationType.nested
+              ? `${buildOutputFilePath({ inputFileName: refPath, config })}/${buildOutputFileName(refPath)}`
+              : refPath;
+          const typeDescription =
+            typeMetadata.validationType === ValidationType.nested
+              ? getValidationName(typeMetadata.name)
+              : typeMetadata.name;
+
+          addImport(path.resolve(importPath), typeDescription, false);
+
+          validatorPayload.push({
+            property: 'typeDescription',
+            value: typeDescription,
+            type: 'object'
+          });
+        } else {
+          throw new IssueError(
+            `Failed to create validation for "${cls.name}.${fieldName}" -> "${typeMetadata.validationType}" validation type requires "referencePath" and "name" filled in metadata, but some of them is empty.`
+          );
+        }
+      }
+
       validatorPayload.push({
-        property: 'customMessage',
-        value: escapeString(customMessageForTypeValidator),
+        property: 'type',
+        value: typeMetadata.validationType,
         type: 'string'
       });
+
+      addImport(pkg.name, typeValidator.name, true);
+
+      items.push({
+        propertyName: fieldName,
+        validatorName: typeValidator.name,
+        validatorPayload
+      });
     }
-    if (typeMetadata.validationType === ValidationType.enum || typeMetadata.validationType === ValidationType.nested) {
-      if (typeMetadata.referencePath && typeMetadata.name) {
-        const refPath = typeMetadata.referencePath;
-        const importPath =
-          typeMetadata.validationType === ValidationType.nested
-            ? `${buildOutputFilePath({ inputFileName: refPath, config })}/${buildOutputFileName(refPath)}`
-            : refPath;
-        const typeDescription =
-          typeMetadata.validationType === ValidationType.nested
-            ? getValidationName(typeMetadata.name)
-            : typeMetadata.name;
-
-        addImport(path.resolve(importPath), typeDescription, false);
-
-        validatorPayload.push({
-          property: 'typeDescription',
-          value: typeDescription,
-          type: 'object'
-        });
-      } else {
-        throw new IssueError(
-          `Failed to create validation for "${cls.name}.${fieldName}". Enum validation type requires "referencePath" and "name" filled in metadata, but some of them is empty.`
-        );
-      }
-    }
-
-    validatorPayload.push({
-      property: 'type',
-      value: typeMetadata.validationType,
-      type: 'string'
-    });
-
-    addImport(pkg.name, typeValidator.name, true);
-
-    items.push({
-      propertyName: fieldName,
-      validatorName: typeValidator.name,
-      validatorPayload
-    });
 
     // Other validations
     decorators.forEach(({ name: decoratorName, arguments: args }) => {
@@ -149,14 +155,16 @@ export const buildValidationFromClassMetadata = ({
         );
       }
 
+      // Decorator is not for validation -> skip
       if (!decoratorNameToValidationItemData[decoratorName]) {
-        throw new IssueError(`Validation data for "${decoratorName}" property decorator not found`);
+        return;
       }
 
       const { validatorName, validatorArgumentNames, allowedValidationTypes } = decoratorNameToValidationItemData[
         decoratorName
       ];
 
+      // Decorator misused
       if (!allowedValidationTypes.includes(typeMetadata.validationType) && decoratorName !== CustomValidation.name) {
         throw new ErrorInFile(
           `Decorator "${validatorName}" can't be used on "${cls.name}.${fieldName}" of type "${

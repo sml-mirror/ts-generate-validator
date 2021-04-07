@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`codegen/raw/type create validators: generated validators at "generated/validators/subfolder_#1.subfolder_#2.model.ts" 1`] = `
+exports[`codegen/raw/type create validators: generated validators at "src/generated/validators/subfolder_#1.subfolder_#2.model.ts" 1`] = `
 "/* This file was automatically generated and should not be edited */
 // tslint:disable
 /* eslint-disable */
@@ -21,7 +21,7 @@ import {
   ClassWithNonPrimitiveProperty,
   SomeEnum,
   ClassWithEnumProperty
-} from './../../subfolder #1/subfolder #2/model';
+} from './../../../subfolder #1/subfolder #2/model';
 
 export const classWithNonPrimitivePropertyValidator: GeneratedValidation = <
   D extends Data = typeof ClassWithNonPrimitiveProperty,
@@ -98,7 +98,7 @@ exports[`codegen/raw/type parse & prepare: data for render 1`] = `
 Array [
   Object {
     "fileName": "subfolder_#1.subfolder_#2.model.ts",
-    "filePath": "generated/validators",
+    "filePath": "src/generated/validators",
     "imports": Array [
       Object {
         "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, Data, UserContext, getConfig, mergeDeep, typeValidator",
@@ -106,7 +106,7 @@ Array [
       },
       Object {
         "clauses": "ClassWithNonPrimitiveProperty, SomeEnum, ClassWithEnumProperty",
-        "path": "./../../subfolder #1/subfolder #2/model",
+        "path": "./../../../subfolder #1/subfolder #2/model",
       },
     ],
     "validations": Array [

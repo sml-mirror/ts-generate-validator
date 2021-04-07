@@ -192,7 +192,7 @@ userValidator(data, { stopAtFirstError: true });
 
   - `@TypeValidation(message: Message)` - заменяет стандартное сообщение об ошибке для валидатора типа.
 
-  - `@CustomValidation(validator: CustomValidator, message: Message)` - добавляет к свойству пользовательскую функцию-валидатор, которая принимает в качестве первого аргумента объект со следующими свойствами:
+  - `@CustomValidation(validator: CustomValidator, message: Message)` - добавляет к свойству пользовательскую функцию-валидатор, которая принимает в качестве **первого аргумента** объект со следующими свойствами:
 
     `property`_(any)_ - значение свойства для валидации
 
@@ -203,6 +203,19 @@ userValidator(data, { stopAtFirstError: true });
     `config`_(object)_ - объект с текущей конфигурацией валидаторов
 
     `context`_(any)_ - пользовательский контекст, переданный в сгенерированную функцию-валидатор
+
+    **Возвращаемое значение:** в случае успешной валидации - ничего не возвращает, в случае когда данные не соответствуют типу - должна выбрасываться ошибка `ValidationError`, например:
+
+    ```typescript
+    import { ValidationError } from 'ts-generate-validator';
+
+    ({ propeerty, propertyName }) => {
+      const allowedValues = [1, 4, 9];
+      if (!allowedValues.includes(property)) {
+        throw new ValidationError(propertyName, 'is invalid');
+      }
+    };
+    ```
 
   - `@IgnoreValidation` - помечает свойство как игнорируемое в функции-валидаторе - оно не будет проверяться на соответствие типу, а любые примененные декораторы для дополнительной валидацией будут проигнорированы.
 

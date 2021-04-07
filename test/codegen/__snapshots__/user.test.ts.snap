@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`codegen/user create validators: generated validators at "generated/validators/model.ts" 1`] = `
+exports[`codegen/user create validators: generated validators at "src/generated/validators/model.ts" 1`] = `
 "/* This file was automatically generated and should not be edited */
 // tslint:disable
 /* eslint-disable */
@@ -33,7 +33,7 @@ import {
   floatValidator
 } from 'ts-generate-validator';
 
-import { User } from './../../model';
+import { User } from './../../../model';
 
 export const userValidator: GeneratedValidation = <D extends Data = typeof User, C extends UserContext = UserContext>(
   data: D,
@@ -374,7 +374,7 @@ exports[`codegen/user parse & prepare: data for render 1`] = `
 Array [
   Object {
     "fileName": "model.ts",
-    "filePath": "generated/validators",
+    "filePath": "src/generated/validators",
     "imports": Array [
       Object {
         "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, Data, UserContext, getConfig, mergeDeep, requiredOneOfValidator, typeValidator, minLengthValidator, maxLengthValidator, trimValidator, minValidator, maxValidator, integerValidator, lessThanValidator, positiveValidator, equalValidator, emailValidator, matchValidator, urlValidator, lowercaseValidator, uppercaseValidator, floatValidator",
@@ -382,7 +382,7 @@ Array [
       },
       Object {
         "clauses": "User",
-        "path": "./../../model",
+        "path": "./../../../model",
       },
     ],
     "validations": Array [

@@ -7,13 +7,19 @@ export enum ValidationType {
   number = 'number',
   string = 'string',
   boolean = 'boolean',
+  null = 'null',
   enum = 'enum',
   nested = 'nested',
   unknown = 'unknown',
   notSupported = 'notSupported'
 }
 
-export const primitiveValidationTypes = [ValidationType.boolean, ValidationType.number, ValidationType.string] as const;
+export const primitiveValidationTypes = [
+  ValidationType.boolean,
+  ValidationType.number,
+  ValidationType.string,
+  ValidationType.null
+] as const;
 export type PrimitiveValidationType = typeof primitiveValidationTypes[number];
 
 export enum CommonValidator {

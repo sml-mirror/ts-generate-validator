@@ -46,7 +46,7 @@ export const typeValidator: TypeValidator = ({
   customMessage,
   config
 }) => {
-  const propertyType = typeof property;
+  const propertyType = property === null ? 'null' : typeof property;
   const msgFromConfig = getMessageFromConfig(type, CommonValidator.type, config);
 
   if (type === ValidationType.enum) {
