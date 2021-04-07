@@ -1,3 +1,4 @@
+import { outError } from './utils/error';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as mkdirp from 'mkdirp';
@@ -8,7 +9,19 @@ import { getCodegenConfig } from './../config/codegen';
 import { prepareDataForRender } from './prepare';
 import { parseInputFiles } from './parse';
 
-export const createValidators = async (): Promise<void> => {
+export const createValidators = async (throwErrors: boolean = false): Promise<void> => {
+  try {
+    await _createValidators();
+  } catch (err) {
+    outError(err.message);
+
+    if (throwErrors) {
+      throw err;
+    }
+  }
+};
+
+const _createValidators = async (): Promise<void> => {
   const config = getCodegenConfig();
   const inputFiles = getAllFiles(path.resolve(process.cwd(), config.inputPath));
   const inputFilesMetadata = parseInputFiles(inputFiles);

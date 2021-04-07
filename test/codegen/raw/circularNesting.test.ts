@@ -21,7 +21,7 @@ describe('codegen/circularNesting', () => {
   test('create validators', async () => {
     await expect(
       (async () => {
-        await createValidators();
+        await createValidators(true);
 
         readAllOutputFiles(({ file, content }) => {
           expect(content).toMatchSnapshot(`generated validators at "${file}"`);

@@ -1,13 +1,26 @@
 import { Message } from './../../localization/model';
 import { SeverityLevel } from '../../config/model';
 import * as pkg from '../../../package.json';
+import 'colors';
+
+const printMessage = (msg: string) => {
+  console.log(`> ${pkg.name}@${pkg.version}: `.white + msg);
+};
+
+export const outError = (msg: string): void => {
+  printMessage(`${msg}`.red);
+};
+
+export const outWarning = (msg: string): void => {
+  printMessage(`${msg}`.yellow);
+};
 
 export const handleError = (message: string, severityLevel: SeverityLevel): void => {
   if (severityLevel === SeverityLevel.silence) {
     return;
   }
   if (severityLevel === SeverityLevel.warning) {
-    console.warn(message);
+    outWarning(message);
   }
   if (severityLevel === SeverityLevel.error) {
     throw new Error(message);
