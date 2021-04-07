@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`codegen/dog create validators: generated validators at "generated/validators/model.ts" 1`] = `
+exports[`codegen/dog create validators: generated validators at "src/generated/validators/model.ts" 1`] = `
 "/* This file was automatically generated and should not be edited */
 // tslint:disable
 /* eslint-disable */
@@ -25,7 +25,7 @@ import {
 
 import { userValidator } from './nestedModel.model';
 
-import { Dog } from './../../model';
+import { Dog } from './../../../model';
 
 export const dogValidator: GeneratedValidation = <D extends Data = typeof Dog, C extends UserContext = UserContext>(
   data: D,
@@ -162,7 +162,7 @@ export const dogValidator: GeneratedValidation = <D extends Data = typeof Dog, C
 "
 `;
 
-exports[`codegen/dog create validators: generated validators at "generated/validators/nestedModel.model.ts" 1`] = `
+exports[`codegen/dog create validators: generated validators at "src/generated/validators/nestedModel.model.ts" 1`] = `
 "/* This file was automatically generated and should not be edited */
 // tslint:disable
 /* eslint-disable */
@@ -179,7 +179,7 @@ import {
   typeValidator
 } from 'ts-generate-validator';
 
-import { User } from './../../nestedModel/model';
+import { User } from './../../../nestedModel/model';
 
 export const userValidator: GeneratedValidation = <D extends Data = typeof User, C extends UserContext = UserContext>(
   data: D,
@@ -232,7 +232,7 @@ exports[`codegen/dog parse & prepare: data for render 1`] = `
 Array [
   Object {
     "fileName": "model.ts",
-    "filePath": "generated/validators",
+    "filePath": "src/generated/validators",
     "imports": Array [
       Object {
         "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, Data, UserContext, getConfig, mergeDeep, typeValidator, minLengthValidator, maxLengthValidator, minValidator, maxValidator, integerValidator, lessThanValidator",
@@ -244,7 +244,7 @@ Array [
       },
       Object {
         "clauses": "Dog",
-        "path": "./../../model",
+        "path": "./../../../model",
       },
     ],
     "validations": Array [
@@ -395,7 +395,7 @@ Array [
   },
   Object {
     "fileName": "nestedModel.model.ts",
-    "filePath": "generated/validators",
+    "filePath": "src/generated/validators",
     "imports": Array [
       Object {
         "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, Data, UserContext, getConfig, mergeDeep, typeValidator",
@@ -403,7 +403,7 @@ Array [
       },
       Object {
         "clauses": "User",
-        "path": "./../../nestedModel/model",
+        "path": "./../../../nestedModel/model",
       },
     ],
     "validations": Array [

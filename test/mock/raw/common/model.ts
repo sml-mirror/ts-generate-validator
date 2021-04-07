@@ -24,6 +24,11 @@ export class TypeValidatorOnWrongPropertyType {
   public someProperty?: CustomValidatorFailed;
 }
 
+@Validation
+export class TypeValidatorOnNullPropertyType {
+  public someProperty: null = null;
+}
+
 /**
  * Custom
  */
@@ -39,6 +44,12 @@ export class CustomValidatorFailed {
 export class CutomValidatorSuccess {
   @CustomValidation(() => undefined)
   public someProperty?: number;
+}
+
+@Validation
+export class CutomValidatorOnNonPrimitiveStructure {
+  @CustomValidation(() => undefined)
+  public someProperty?: Record<string, any> & { a: number };
 }
 
 @Validation

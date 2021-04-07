@@ -18,6 +18,9 @@ export type MessageMap = {
   [ValidationType.boolean]: {
     [key in BooleanValidator | AllowedCommonValidators]: Message;
   };
+  [ValidationType.null]: {
+    [key in AllowedCommonValidators]: Message;
+  };
 };
 
 export type PartialMessageMap = {

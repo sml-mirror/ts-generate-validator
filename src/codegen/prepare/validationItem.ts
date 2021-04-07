@@ -19,9 +19,10 @@ import {
   lessThanValidator,
   moreThanValidator
 } from './../../validators/number';
-import { equalValidator, equalToValidator } from './../../validators/common';
+import { equalValidator, equalToValidator, typeValidator } from './../../validators/common';
 import { customValidator } from '../../validators';
 import {
+  TypeValidation,
   CustomValidation,
   EqualValidation,
   EqualToValidation,
@@ -53,10 +54,15 @@ export const decoratorNameToValidationItemData: {
   /**
    * Common
    */
+  [TypeValidation.name]: {
+    validatorName: typeValidator.name,
+    validatorArgumentNames: ['customMessage'],
+    allowedValidationTypes: [...primitiveValidationTypes, ValidationType.enum, ValidationType.nested]
+  },
   [CustomValidation.name]: {
     validatorName: customValidator.name,
     validatorArgumentNames: ['customValidationFunction'],
-    allowedValidationTypes: [...primitiveValidationTypes, ValidationType.enum]
+    allowedValidationTypes: [...primitiveValidationTypes, ValidationType.enum, ValidationType.nested]
   },
   [EqualValidation.name]: {
     validatorName: equalValidator.name,

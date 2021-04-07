@@ -18,6 +18,7 @@ const testData = {
 describe('common validators', () => {
   const config = getConfig();
   const propertyName = 'a';
+  const nullPropertyName = 'd';
   const equalPropertyName = 'e';
   const notEqualPropertyName = 'b';
 
@@ -61,6 +62,30 @@ describe('common validators', () => {
   });
 
   test('type validator', () => {
+    expect(
+      jest.fn(() => {
+        typeValidator({
+          property: testData[nullPropertyName],
+          type: ValidationType.null,
+          config,
+          data: testData,
+          propertyName: nullPropertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        typeValidator({
+          property: testData[propertyName],
+          type: ValidationType.null,
+          config,
+          data: testData,
+          propertyName: propertyName
+        });
+      })
+    ).toThrowError();
+
     expect(
       jest.fn(() => {
         typeValidator({

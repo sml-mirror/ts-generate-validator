@@ -16,7 +16,7 @@ export const handleError = (message: string, severityLevel: SeverityLevel): void
 
 export class ErrorInFile extends Error {
   constructor(message: string, fileName: string) {
-    const errMessage = `${message}\n\nThe above error was occured in ${fileName}.`;
+    const errMessage = `${message}\nThe above error was occured in ${fileName}.\n\n`;
     super(errMessage);
     // Set the prototype explicitly
     // https://stackoverflow.com/a/41429145/3151214
@@ -26,7 +26,7 @@ export class ErrorInFile extends Error {
 
 export class IssueError extends Error {
   constructor(message: string) {
-    const errMessage = `${message}\n\nIt seems like "${pkg.name}" issue. Please, report this to ${pkg.bugs.url}.`;
+    const errMessage = `${message}\nIt seems like "${pkg.name}" issue. Please, report this to ${pkg.bugs.url}.\n\n`;
     super(errMessage);
     // Set the prototype explicitly
     // https://stackoverflow.com/a/41429145/3151214
