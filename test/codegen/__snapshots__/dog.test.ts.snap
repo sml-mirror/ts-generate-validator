@@ -536,6 +536,32 @@ Array [
         "name": "Dog",
       },
     ],
+    "functions": Array [],
+    "imports": Array [
+      Object {
+        "absPath": "../../../src/decorators/index",
+        "clauses": Array [
+          "MinLengthValidation",
+          "MaxLengthValidation",
+          "MinValidation",
+          "MaxValidation",
+          "IntegerValidation",
+          "LessThanValidation",
+        ],
+      },
+      Object {
+        "absPath": "nestedModel/model",
+        "clauses": Array [
+          "User",
+        ],
+      },
+      Object {
+        "absPath": "../../../src/decorators",
+        "clauses": Array [
+          "Validation",
+        ],
+      },
+    ],
     "name": "model.ts",
   },
   Object {
@@ -568,6 +594,15 @@ Array [
           },
         ],
         "name": "User",
+      },
+    ],
+    "functions": Array [],
+    "imports": Array [
+      Object {
+        "absPath": "../../../src/decorators/index",
+        "clauses": Array [
+          "Validation",
+        ],
       },
     ],
     "name": "nestedModel/model.ts",

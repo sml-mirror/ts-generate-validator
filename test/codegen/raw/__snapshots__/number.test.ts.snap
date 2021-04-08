@@ -608,6 +608,23 @@ Array [
         "name": "LessThanValidatorWithCustomMessage",
       },
     ],
+    "functions": Array [],
+    "imports": Array [
+      Object {
+        "absPath": "../../../../src/decorators",
+        "clauses": Array [
+          "Validation",
+          "PositiveValidation",
+          "IntegerValidation",
+          "FloatValidation",
+          "LessThanValidation",
+          "NegativeValidation",
+          "MoreThanValidation",
+          "MinValidation",
+          "MaxValidation",
+        ],
+      },
+    ],
     "name": "model.ts",
   },
 ]

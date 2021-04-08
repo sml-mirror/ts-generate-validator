@@ -983,6 +983,37 @@ Array [
         "name": "User",
       },
     ],
+    "functions": Array [],
+    "imports": Array [
+      Object {
+        "absPath": "type/model",
+        "clauses": Array [
+          "UserType",
+        ],
+      },
+      Object {
+        "absPath": "../../../src/decorators/index",
+        "clauses": Array [
+          "EmailValidation",
+          "EqualValidation",
+          "FloatValidation",
+          "IntegerValidation",
+          "LessThanValidation",
+          "LowercaseValidation",
+          "MatchValidation",
+          "MaxLengthValidation",
+          "MaxValidation",
+          "MinLengthValidation",
+          "MinValidation",
+          "PositiveValidation",
+          "RequiredOneOfValidation",
+          "TrimValidation",
+          "UppercaseValidation",
+          "UrlValidation",
+          "Validation",
+        ],
+      },
+    ],
     "name": "model.ts",
   },
 ]

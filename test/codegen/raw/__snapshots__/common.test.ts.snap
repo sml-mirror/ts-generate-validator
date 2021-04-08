@@ -28,6 +28,10 @@ import {
   CutomValidatorSuccess,
   CutomValidatorOnNonPrimitiveStructure,
   CutomValidatorSuccessAsync,
+  CutomValidatorImported,
+  customValidationFuncExported,
+  CutomValidatorExported,
+  CutomValidatorWhichUsesImportedEntity,
   IgnoreValidationForNonPrimitiveProperty,
   IgnoreValidationForPrimitiveProperty,
   IgnoreValidationForPrimitivePropertyWithOtherDecorators,
@@ -38,6 +42,10 @@ import {
 } from './../../../model';
 
 import { customValidatorFailedValidator } from './model';
+
+import { customValidationFuncImported, someEntityUsedInCustomValidator } from './../../../customValidationFunc';
+
+import { ValidationError } from './../..';
 
 export const typeValidatorWithCustomMessageValidator: GeneratedValidation = <
   D extends Data = typeof TypeValidatorWithCustomMessage,
@@ -325,6 +333,154 @@ export const cutomValidatorSuccessAsyncValidator: GeneratedValidation = async <
       context,
 
       customValidationFunction: async (): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), 300))
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
+
+export const cutomValidatorImportedValidator: GeneratedValidation = <
+  D extends Data = typeof CutomValidatorImported,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig,
+  context?: C
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
+
+      type: 'number'
+    });
+
+    customValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
+
+      customValidationFunction: customValidationFuncImported
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
+
+export const cutomValidatorExportedValidator: GeneratedValidation = <
+  D extends Data = typeof CutomValidatorExported,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig,
+  context?: C
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
+
+      type: 'number'
+    });
+
+    customValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
+
+      customValidationFunction: customValidationFuncExported
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
+
+export const cutomValidatorWhichUsesImportedEntityValidator: GeneratedValidation = <
+  D extends Data = typeof CutomValidatorWhichUsesImportedEntity,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig,
+  context?: C
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
+
+      type: 'number'
+    });
+
+    customValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
+
+      customValidationFunction: ({ property, propertyName }) => {
+        if (property !== someEntityUsedInCustomValidator) {
+          throw new ValidationError(propertyName as string, 'some error message');
+        }
+      }
     });
   } catch (err) {
     if (!(err instanceof ValidationError)) {
@@ -657,12 +813,20 @@ Array [
         "path": "ts-generate-validator",
       },
       Object {
-        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnWrongPropertyType, TypeValidatorOnNullPropertyType, CustomValidatorFailed, CutomValidatorSuccess, CutomValidatorOnNonPrimitiveStructure, CutomValidatorSuccessAsync, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
+        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnWrongPropertyType, TypeValidatorOnNullPropertyType, CustomValidatorFailed, CutomValidatorSuccess, CutomValidatorOnNonPrimitiveStructure, CutomValidatorSuccessAsync, CutomValidatorImported, customValidationFuncExported, CutomValidatorExported, CutomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
         "path": "./../../../model",
       },
       Object {
         "clauses": "customValidatorFailedValidator",
         "path": "./model",
+      },
+      Object {
+        "clauses": "customValidationFuncImported, someEntityUsedInCustomValidator",
+        "path": "./../../../customValidationFunc",
+      },
+      Object {
+        "clauses": "ValidationError",
+        "path": "./../..",
       },
     ],
     "validations": Array [
@@ -845,6 +1009,100 @@ Array [
         ],
         "modelClassName": "CutomValidatorSuccessAsync",
         "name": "cutomValidatorSuccessAsyncValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "number",
+              },
+            ],
+          },
+          Object {
+            "async": false,
+            "propertyName": "someProperty",
+            "validatorName": "customValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customValidationFunction",
+                "type": "",
+                "value": "customValidationFuncImported",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "CutomValidatorImported",
+        "name": "cutomValidatorImportedValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "number",
+              },
+            ],
+          },
+          Object {
+            "async": false,
+            "propertyName": "someProperty",
+            "validatorName": "customValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customValidationFunction",
+                "type": "",
+                "value": "customValidationFuncExported",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "CutomValidatorExported",
+        "name": "cutomValidatorExportedValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "number",
+              },
+            ],
+          },
+          Object {
+            "async": false,
+            "propertyName": "someProperty",
+            "validatorName": "customValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customValidationFunction",
+                "type": "",
+                "value": "({ property, propertyName }) => {
+    if (property !== someEntityUsedInCustomValidator) {
+      throw new ValidationError(propertyName as string, 'some error message');
+    }
+  }",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "CutomValidatorWhichUsesImportedEntity",
+        "name": "cutomValidatorWhichUsesImportedEntityValidator",
       },
       Object {
         "async": false,
@@ -1218,6 +1476,91 @@ Array [
           Object {
             "decorators": Array [
               Object {
+                "arguments": Array [
+                  "customValidationFuncImported",
+                ],
+                "name": "CustomValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": true,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "CutomValidatorImported",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "customValidationFuncExported",
+                ],
+                "name": "CustomValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": true,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "CutomValidatorExported",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "({ property, propertyName }) => {
+    if (property !== someEntityUsedInCustomValidator) {
+      throw new ValidationError(propertyName as string, 'some error message');
+    }
+  }",
+                ],
+                "name": "CustomValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": true,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "CutomValidatorWhichUsesImportedEntity",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
                 "arguments": Array [],
                 "name": "IgnoreValidation",
               },
@@ -1418,6 +1761,40 @@ Array [
           },
         ],
         "name": "EqualToValidatorWithDefaultMessage",
+      },
+    ],
+    "functions": Array [
+      Object {
+        "isExported": true,
+        "name": "customValidationFuncExported",
+      },
+    ],
+    "imports": Array [
+      Object {
+        "absPath": "customValidationFunc",
+        "clauses": Array [
+          "customValidationFuncImported",
+          "someEntityUsedInCustomValidator",
+        ],
+      },
+      Object {
+        "absPath": "../../../../src/decorators",
+        "clauses": Array [
+          "Validation",
+          "CustomValidation",
+          "EqualValidation",
+          "EqualToValidation",
+          "IgnoreValidation",
+          "TypeValidation",
+          "MinValidation",
+          "MaxValidation",
+        ],
+      },
+      Object {
+        "absPath": "src",
+        "clauses": Array [
+          "ValidationError",
+        ],
       },
     ],
     "name": "model.ts",

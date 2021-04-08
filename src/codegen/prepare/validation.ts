@@ -191,7 +191,8 @@ export const buildValidationFromClassMetadata = ({
           inputFileImportsMetadata,
           inputFileFunctionsMetadata,
           inputFilePath,
-          decoratorArgs: args
+          decoratorArgs: args,
+          onImportAdd: addImport
         });
       }
 
@@ -243,18 +244,58 @@ const addImportsForCustomValidator = ({
   inputFileImportsMetadata,
   inputFileFunctionsMetadata,
   inputFilePath,
-  decoratorArgs
+  decoratorArgs,
+  onImportAdd
 }: {
   inputFileImportsMetadata: ImportMetadata[];
   inputFileFunctionsMetadata: FunctionMetadata[];
   inputFilePath: string;
   decoratorArgs: (Arg | Arg[])[];
+  onImportAdd: (path: string, clause: string, isPackageName?: boolean) => void;
 }): void => {
-  const func = <string>decoratorArgs[0];
-  console.log(inputFileImportsMetadata, inputFilePath, inputFileFunctionsMetadata, decoratorArgs);
+  const func = (<string>decoratorArgs[0]).trim();
+
   // Case #1: inline function
-  if (func.match(/.*(function|=>).+/)) {
-    // TODO: find all possible entities, which may be imported
+  if (func.match(/^(async\s*){0,1}function\s*[(]{1}/) || func.match(/^(async\s*){0,1}.+(=>).+/)) {
+    // Find all possible entities, which may be imported
+    const re = /\w+/gm;
+    const listOfPossibleImports: string[] = [];
+    let m;
+
+    do {
+      m = re.exec(func);
+      if (m) {
+        listOfPossibleImports.push(...m);
+      }
+    } while (m);
+
+    // For each found entity -> add import
+    listOfPossibleImports.forEach((possibleImport) => {
+      const matchedImportMetadata = inputFileImportsMetadata.find((im) => im.clauses.some((c) => c === possibleImport));
+      if (matchedImportMetadata) {
+        onImportAdd(path.resolve(matchedImportMetadata.absPath), possibleImport);
+      }
+    });
+
     return;
+  }
+
+  // Case #2: function in model file
+  const foundFuncMeta = inputFileFunctionsMetadata.find(({ name }) => name === func);
+  if (foundFuncMeta) {
+    if (foundFuncMeta.isExported) {
+      onImportAdd(path.resolve(inputFilePath), func);
+    } else {
+      throw new ErrorInFile(
+        `Custom validation function "${foundFuncMeta.name}" is used, but not exported. Add export keyword to this function or remove it from @CustomValidation decorator.`,
+        inputFilePath
+      );
+    }
+  }
+
+  // Case #3: imported function
+  const foundFuncImport = inputFileImportsMetadata.find((m) => m.clauses.some((c) => c === func));
+  if (foundFuncImport) {
+    onImportAdd(path.resolve(foundFuncImport.absPath), func);
   }
 };
