@@ -1,4 +1,5 @@
-import { normalizePath, cutFileExt } from './../../utils/path';
+import { allowedFileExt } from './../model';
+import { normalizePath, cutFileExt, isPackagePath } from './../../utils/path';
 import { buildValidationFromClassMetadata } from './validation';
 import { PreparedDataItem, PreparedValidation, PreparedImportMap, PreparedImport } from './model';
 import * as path from 'path';
@@ -10,7 +11,9 @@ export const prepareDataForRender = (
   inputFilesMetadata: InputFileMetadata[],
   config: CodegenConfig
 ): PreparedDataItem[] => {
-  return inputFilesMetadata.map((metadata) => {
+  const preparedData: PreparedDataItem[] = [];
+
+  inputFilesMetadata.forEach((metadata) => {
     const { name, classes, imports: inputFileImportsMetadata, functions: inputFileFunctionsMetadata } = metadata;
     const inputFilePath = cutFileExt(name);
 
@@ -26,7 +29,7 @@ export const prepareDataForRender = (
         return;
       }
 
-      isPackageName = isPackageName ?? targetPath.indexOf('/') < 0;
+      isPackageName = isPackageName ?? isPackagePath(targetPath);
       const importPath = isPackageName ? targetPath : normalizeImportPathForFile(filePath, targetPath);
 
       if (!importMap[importPath]) {
@@ -56,13 +59,17 @@ export const prepareDataForRender = (
 
     const imports = buildImportsFromMap(importMap);
 
-    return {
-      filePath,
-      fileName,
-      imports,
-      validations
-    };
+    if (validations.length) {
+      preparedData.push({
+        filePath,
+        fileName,
+        imports,
+        validations
+      });
+    }
   });
+
+  return preparedData;
 };
 
 const normalizeImportPathForFile = (filePath: string, importPath: string): string => {
@@ -70,7 +77,7 @@ const normalizeImportPathForFile = (filePath: string, importPath: string): strin
   if (!resultPath.startsWith('./')) {
     resultPath = `./${resultPath}`;
   }
-  if (resultPath.match(/\.(ts|tsx|js|jsx)$/)) {
+  if (resultPath.match(new RegExp(`\\.(${allowedFileExt.join('|')})$`))) {
     resultPath = cutFileExt(resultPath);
   }
   return resultPath;

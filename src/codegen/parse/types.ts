@@ -46,7 +46,7 @@ export const getValidationTypeByTypeName = (typeName: string): ValidationType =>
     return <ValidationType>typeName;
   }
 
-  const notSupportedTypes = ['null', 'undefined', 'symbol', 'function', 'object'];
+  const notSupportedTypes = ['undefined', 'symbol', 'function', 'object'];
   if (notSupportedTypes.includes(typeName)) {
     return ValidationType.notSupported;
   }
@@ -60,6 +60,6 @@ export const findExternalPathForCustomType = (typeName: string, imports: ImportN
   });
 
   if (foundImport) {
-    return path.resolve(...foundImport.absPathNode);
+    return foundImport.absPathString;
   }
 };

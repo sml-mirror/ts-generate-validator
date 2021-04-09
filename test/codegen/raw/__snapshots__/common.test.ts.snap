@@ -24,6 +24,7 @@ import {
   TypeValidatorWithCustomMessage,
   TypeValidatorOnNestedPropertyType,
   TypeValidatorOnNullPropertyType,
+  TypeValidatorOnImportedEnumPropertyType,
   CustomValidatorFailed,
   CutomValidatorSuccess,
   CutomValidatorOnNonPrimitiveStructure,
@@ -41,9 +42,11 @@ import {
   EqualToValidatorWithDefaultMessage
 } from './../../../model';
 
+import { UserType } from './../../../../../user/type/model';
+
 import { customValidationFuncImported, someEntityUsedInCustomValidator } from './../../../customValidationFunc';
 
-import { ValidationError } from './../..';
+import { ValidationError } from './../../../../../../../src';
 
 export const typeValidatorWithCustomMessageValidator: GeneratedValidation = <
   D extends Data = typeof TypeValidatorWithCustomMessage,
@@ -147,6 +150,46 @@ export const typeValidatorOnNullPropertyTypeValidator: GeneratedValidation = <
       context,
 
       type: 'null'
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
+
+export const typeValidatorOnImportedEnumPropertyTypeValidator: GeneratedValidation = <
+  D extends Data = typeof TypeValidatorOnImportedEnumPropertyType,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig,
+  context?: C
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
+
+      typeDescription: UserType,
+
+      type: 'enum'
     });
   } catch (err) {
     if (!(err instanceof ValidationError)) {
@@ -811,8 +854,12 @@ Array [
         "path": "ts-generate-validator",
       },
       Object {
-        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnNestedPropertyType, TypeValidatorOnNullPropertyType, CustomValidatorFailed, CutomValidatorSuccess, CutomValidatorOnNonPrimitiveStructure, CutomValidatorSuccessAsync, CutomValidatorImported, customValidationFuncExported, CutomValidatorExported, CutomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
+        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnNestedPropertyType, TypeValidatorOnNullPropertyType, TypeValidatorOnImportedEnumPropertyType, CustomValidatorFailed, CutomValidatorSuccess, CutomValidatorOnNonPrimitiveStructure, CutomValidatorSuccessAsync, CutomValidatorImported, customValidationFuncExported, CutomValidatorExported, CutomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
         "path": "./../../../model",
+      },
+      Object {
+        "clauses": "UserType",
+        "path": "./../../../../../user/type/model",
       },
       Object {
         "clauses": "customValidationFuncImported, someEntityUsedInCustomValidator",
@@ -820,7 +867,7 @@ Array [
       },
       Object {
         "clauses": "ValidationError",
-        "path": "./../..",
+        "path": "./../../../../../../../src",
       },
     ],
     "validations": Array [
@@ -892,6 +939,29 @@ Array [
         ],
         "modelClassName": "TypeValidatorOnNullPropertyType",
         "name": "typeValidatorOnNullPropertyTypeValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "typeDescription",
+                "type": "object",
+                "value": "UserType",
+              },
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "enum",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "TypeValidatorOnImportedEnumPropertyType",
+        "name": "typeValidatorOnImportedEnumPropertyTypeValidator",
       },
       Object {
         "async": false,
@@ -1272,6 +1342,17 @@ Array [
 exports[`codegen/raw/common parse & prepare: parsed metadata 1`] = `
 Array [
   Object {
+    "classes": Array [],
+    "functions": Array [
+      Object {
+        "isExported": true,
+        "name": "customValidationFuncImported",
+      },
+    ],
+    "imports": Array [],
+    "name": "customValidationFunc.ts",
+  },
+  Object {
     "classes": Array [
       Object {
         "decorators": Array [
@@ -1347,6 +1428,27 @@ Array [
           },
         ],
         "name": "TypeValidatorOnNullPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [],
+            "name": "someProperty",
+            "optional": true,
+            "type": Object {
+              "name": "UserType",
+              "referencePath": "../../user/type/model",
+              "validationType": "enum",
+            },
+          },
+        ],
+        "name": "TypeValidatorOnImportedEnumPropertyType",
       },
       Object {
         "decorators": Array [
@@ -1765,6 +1867,12 @@ Array [
     ],
     "imports": Array [
       Object {
+        "absPath": "../../user/type/model",
+        "clauses": Array [
+          "UserType",
+        ],
+      },
+      Object {
         "absPath": "customValidationFunc",
         "clauses": Array [
           "customValidationFuncImported",
@@ -1785,13 +1893,315 @@ Array [
         ],
       },
       Object {
-        "absPath": "src",
+        "absPath": "../../../../src",
         "clauses": Array [
           "ValidationError",
         ],
       },
     ],
     "name": "model.ts",
+  },
+  Object {
+    "classes": Array [],
+    "functions": Array [
+      Object {
+        "isExported": true,
+        "name": "typeValidatorWithCustomMessageValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "typeValidatorOnNestedPropertyTypeValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "typeValidatorOnNullPropertyTypeValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "typeValidatorOnImportedEnumPropertyTypeValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "customValidatorFailedValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "customValidationFunction",
+      },
+      Object {
+        "isExported": true,
+        "name": "cutomValidatorSuccessValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "customValidationFunction",
+      },
+      Object {
+        "isExported": true,
+        "name": "cutomValidatorOnNonPrimitiveStructureValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "customValidationFunction",
+      },
+      Object {
+        "isExported": true,
+        "name": "cutomValidatorSuccessAsyncValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "customValidationFunction",
+      },
+      Object {
+        "isExported": true,
+        "name": "cutomValidatorImportedValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "cutomValidatorExportedValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "cutomValidatorWhichUsesImportedEntityValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "customValidationFunction",
+      },
+      Object {
+        "isExported": true,
+        "name": "ignoreValidationForNonPrimitivePropertyValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "ignoreValidationForPrimitivePropertyValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "ignoreValidationForPrimitivePropertyWithOtherDecoratorsValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "equalValidatorWithDefaultMessageValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "equalValidatorWithCustomMessageValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "equalValidatorForBooleanValidator",
+      },
+      Object {
+        "isExported": true,
+        "name": "equalToValidatorWithDefaultMessageValidator",
+      },
+    ],
+    "imports": Array [
+      Object {
+        "absPath": "ts-generate-validator",
+        "clauses": Array [
+          "GeneratedValidation",
+          "ValidationConfig",
+          "ValidationError",
+          "ValidationException",
+          "Data",
+          "UserContext",
+          "getConfig",
+          "mergeDeep",
+          "typeValidator",
+          "customValidator",
+          "equalValidator",
+          "equalToValidator",
+        ],
+      },
+      Object {
+        "absPath": "model",
+        "clauses": Array [
+          "TypeValidatorWithCustomMessage",
+          "TypeValidatorOnNestedPropertyType",
+          "TypeValidatorOnNullPropertyType",
+          "TypeValidatorOnImportedEnumPropertyType",
+          "CustomValidatorFailed",
+          "CutomValidatorSuccess",
+          "CutomValidatorOnNonPrimitiveStructure",
+          "CutomValidatorSuccessAsync",
+          "CutomValidatorImported",
+          "customValidationFuncExported",
+          "CutomValidatorExported",
+          "CutomValidatorWhichUsesImportedEntity",
+          "IgnoreValidationForNonPrimitiveProperty",
+          "IgnoreValidationForPrimitiveProperty",
+          "IgnoreValidationForPrimitivePropertyWithOtherDecorators",
+          "EqualValidatorWithDefaultMessage",
+          "EqualValidatorWithCustomMessage",
+          "EqualValidatorForBoolean",
+          "EqualToValidatorWithDefaultMessage",
+        ],
+      },
+      Object {
+        "absPath": "../../user/type/model",
+        "clauses": Array [
+          "UserType",
+        ],
+      },
+      Object {
+        "absPath": "customValidationFunc",
+        "clauses": Array [
+          "customValidationFuncImported",
+          "someEntityUsedInCustomValidator",
+        ],
+      },
+      Object {
+        "absPath": "../../../../src",
+        "clauses": Array [
+          "ValidationError",
+        ],
+      },
+    ],
+    "name": "src/generated/validators/model.ts",
+  },
+  Object {
+    "classes": Array [],
+    "functions": Array [],
+    "imports": Array [],
+    "name": "../../user/type/model",
+  },
+  Object {
+    "classes": Array [],
+    "functions": Array [
+      Object {
+        "isExported": false,
+        "name": "emptyDecorator",
+      },
+      Object {
+        "isExported": true,
+        "name": "RequiredOneOfValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "TypeValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "CustomValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "IgnoreValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "EqualValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "EqualToValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MinValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MaxValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "NegativeValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "PositiveValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "IntegerValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "FloatValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "LessThanValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MoreThanValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "TrimValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "LowercaseValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "UppercaseValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MinLengthValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MaxLengthValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "EmailValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "UrlValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MatchValidation",
+      },
+    ],
+    "imports": Array [
+      Object {
+        "absPath": "../../../../validators/model",
+        "clauses": Array [
+          "CustomValidationFunction",
+        ],
+      },
+      Object {
+        "absPath": "../../../../codegen/model",
+        "clauses": Array [
+          "Data",
+        ],
+      },
+      Object {
+        "absPath": "../../../../localization/model",
+        "clauses": Array [
+          "Message",
+        ],
+      },
+    ],
+    "name": "../../../../src/decorators",
+  },
+  Object {
+    "classes": Array [],
+    "functions": Array [],
+    "imports": Array [],
+    "name": "../../../../src",
+  },
+  Object {
+    "classes": Array [],
+    "functions": Array [],
+    "imports": Array [],
+    "name": "../../user/type/model",
+  },
+  Object {
+    "classes": Array [],
+    "functions": Array [],
+    "imports": Array [],
+    "name": "../../../../src",
   },
 ]
 `;
