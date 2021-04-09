@@ -24,7 +24,7 @@ export class TypeValidatorWithCustomMessage {
 @Validation
 export class TypeValidatorOnNestedPropertyType {
   @TypeValidation('type custom message')
-  public someProperty?: CustomValidatorFailed;
+  public someProperty?: CutomValidatorSuccess;
 }
 
 @Validation
@@ -35,6 +35,31 @@ export class TypeValidatorOnNullPropertyType {
 @Validation
 export class TypeValidatorOnImportedEnumPropertyType {
   public someProperty?: UserType;
+}
+
+@Validation
+export class TypeValidatorOnUnionPropertyType {
+  public someProperty: string | number | null = null;
+}
+
+@Validation
+export class TypeValidatorOnUnionWithNestedPropertyType {
+  public someProperty: CutomValidatorSuccess | number | null = null;
+}
+
+@Validation
+export class TypeValidatorOnArrayPropertyType {
+  public someProperty: string[] = [];
+}
+
+@Validation
+export class TypeValidatorOnUnionWithArrayPropertyType {
+  public someProperty: null | number | string[] = null;
+}
+
+@Validation
+export class TypeValidatorOnArrayOfNestedTypePropertyType {
+  public someProperty: CutomValidatorSuccess[] = [];
 }
 
 /**

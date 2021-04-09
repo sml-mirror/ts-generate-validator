@@ -9,6 +9,8 @@ export enum ValidationType {
   boolean = 'boolean',
   null = 'null',
   enum = 'enum',
+  union = 'union',
+  array = 'array',
   nested = 'nested',
   unknown = 'unknown',
   notSupported = 'notSupported'

@@ -10,6 +10,8 @@ export interface ClassFieldTypeMetadata {
   validationType: ValidationType;
   referencePath?: string;
   name?: string;
+  arrayOf?: Omit<ClassFieldTypeMetadata, 'unionTypes'>;
+  unionTypes?: Omit<ClassFieldTypeMetadata, 'unionTypes'>[];
 }
 
 export interface ClassFieldMetadata {
