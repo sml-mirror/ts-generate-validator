@@ -11,27 +11,41 @@ export const prepareDataForRender = (
   config: CodegenConfig
 ): PreparedDataItem[] => {
   return inputFilesMetadata.map((metadata) => {
-    const { name, classes } = metadata;
+    const { name, classes, imports: inputFileImportsMetadata, functions: inputFileFunctionsMetadata } = metadata;
+    const inputFilePath = cutFileExt(name);
 
     const filePath = buildOutputFilePath({ inputFileName: name, config });
     const fileName = buildOutputFileName(name);
+    const filePathAbs = `${filePath}/${fileName}`;
 
     const importMap = buildBaseImportMap();
     const handleImportAdd = (targetPath: string, clause: string, isPackageName?: boolean): void => {
+      const importPathAbs = path.relative(process.cwd(), targetPath);
+
+      if (filePathAbs === importPathAbs) {
+        return;
+      }
+
       isPackageName = isPackageName ?? targetPath.indexOf('/') < 0;
       const importPath = isPackageName ? targetPath : normalizeImportPathForFile(filePath, targetPath);
+
       if (!importMap[importPath]) {
         importMap[importPath] = {};
       }
+
       importMap[importPath][clause] = true;
     };
 
     const validations: PreparedValidation[] = [];
+
     classes.forEach((cls) => {
       const validation = buildValidationFromClassMetadata({
         cls,
         clsFileName: name,
         addImport: handleImportAdd,
+        inputFileImportsMetadata,
+        inputFileFunctionsMetadata,
+        inputFilePath,
         config
       });
       if (validation) {

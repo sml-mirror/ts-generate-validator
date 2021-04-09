@@ -1,3 +1,4 @@
+import { customValidationFuncImported, someEntityUsedInCustomValidator } from './customValidationFunc';
 import {
   Validation,
   CustomValidation,
@@ -8,6 +9,7 @@ import {
   MinValidation,
   MaxValidation
 } from '../../../../src/decorators';
+import { ValidationError } from 'src';
 
 /**
  * Type
@@ -19,7 +21,7 @@ export class TypeValidatorWithCustomMessage {
 }
 
 @Validation
-export class TypeValidatorOnWrongPropertyType {
+export class TypeValidatorOnNestedPropertyType {
   @TypeValidation('type custom message')
   public someProperty?: CustomValidatorFailed;
 }
@@ -55,6 +57,30 @@ export class CutomValidatorOnNonPrimitiveStructure {
 @Validation
 export class CutomValidatorSuccessAsync {
   @CustomValidation(async (): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), 300)))
+  public someProperty?: number;
+}
+
+@Validation
+export class CutomValidatorImported {
+  @CustomValidation(customValidationFuncImported)
+  public someProperty?: number;
+}
+
+export const customValidationFuncExported = (): void => undefined;
+
+@Validation
+export class CutomValidatorExported {
+  @CustomValidation(customValidationFuncExported)
+  public someProperty?: number;
+}
+
+@Validation
+export class CutomValidatorWhichUsesImportedEntity {
+  @CustomValidation(({ property, propertyName }) => {
+    if (property !== someEntityUsedInCustomValidator) {
+      throw new ValidationError(propertyName as string, 'some error message');
+    }
+  })
   public someProperty?: number;
 }
 

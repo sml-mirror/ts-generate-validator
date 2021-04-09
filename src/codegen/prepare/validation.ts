@@ -7,20 +7,27 @@ import { requiredOneOfValidator, typeValidator } from './../../validators/common
 import { RequiredOneOfValidation, CustomValidation, IgnoreValidation, TypeValidation } from './../../decorators/index';
 import { PreparedValidationItem, PreparedValidatorPayloadItem } from './model';
 import { PreparedValidation } from './model';
-import { ClassMetadata } from './../parse/model';
+import { ClassMetadata, ImportMetadata, FunctionMetadata } from './../parse/model';
 import { CodegenConfig } from './../../config/model';
 import * as pkg from '../../../package.json';
 import * as path from 'path';
+import { Arg } from 'ts-file-parser';
 
 export const buildValidationFromClassMetadata = ({
   cls,
   clsFileName,
   addImport,
+  inputFileImportsMetadata,
+  inputFileFunctionsMetadata,
+  inputFilePath,
   config
 }: {
   cls: ClassMetadata;
   clsFileName: string;
   addImport: (path: string, clause: string, isPackageName?: boolean) => void;
+  inputFileImportsMetadata: ImportMetadata[];
+  inputFileFunctionsMetadata: FunctionMetadata[];
+  inputFilePath: string;
   config: CodegenConfig;
 }): PreparedValidation | undefined => {
   const name = getValidationName(cls.name);
@@ -101,29 +108,29 @@ export const buildValidationFromClassMetadata = ({
         typeMetadata.validationType === ValidationType.enum ||
         typeMetadata.validationType === ValidationType.nested
       ) {
-        if (typeMetadata.referencePath && typeMetadata.name) {
-          const refPath = typeMetadata.referencePath;
-          const importPath =
-            typeMetadata.validationType === ValidationType.nested
-              ? `${buildOutputFilePath({ inputFileName: refPath, config })}/${buildOutputFileName(refPath)}`
-              : refPath;
-          const typeDescription =
-            typeMetadata.validationType === ValidationType.nested
-              ? getValidationName(typeMetadata.name)
-              : typeMetadata.name;
-
-          addImport(path.resolve(importPath), typeDescription, false);
-
-          validatorPayload.push({
-            property: 'typeDescription',
-            value: typeDescription,
-            type: 'object'
-          });
-        } else {
+        if (!typeMetadata.referencePath || !typeMetadata.name) {
           throw new IssueError(
             `Failed to create validation for "${cls.name}.${fieldName}" -> "${typeMetadata.validationType}" validation type requires "referencePath" and "name" filled in metadata, but some of them is empty.`
           );
         }
+
+        const refPath = typeMetadata.referencePath;
+        const importPath =
+          typeMetadata.validationType === ValidationType.nested
+            ? `${buildOutputFilePath({ inputFileName: refPath, config })}/${buildOutputFileName(refPath)}`
+            : refPath;
+        const typeDescription =
+          typeMetadata.validationType === ValidationType.nested
+            ? getValidationName(typeMetadata.name)
+            : typeMetadata.name;
+
+        addImport(path.resolve(importPath), typeDescription, false);
+
+        validatorPayload.push({
+          property: 'typeDescription',
+          value: typeDescription,
+          type: 'object'
+        });
       }
 
       validatorPayload.push({
@@ -180,6 +187,16 @@ export const buildValidationFromClassMetadata = ({
         async = true;
       }
 
+      if (decoratorName === CustomValidation.name) {
+        addImportsForCustomValidator({
+          inputFileImportsMetadata,
+          inputFileFunctionsMetadata,
+          inputFilePath,
+          decoratorArgs: args,
+          onImportAdd: addImport
+        });
+      }
+
       addImport(pkg.name, validatorName, true);
       items.push({
         propertyName: fieldName,
@@ -222,4 +239,64 @@ export const buildValidationFromClassMetadata = ({
 
 const getValidationName = (className: string): string => {
   return `${className[0].toLocaleLowerCase()}${className.slice(1)}Validator`;
+};
+
+const addImportsForCustomValidator = ({
+  inputFileImportsMetadata,
+  inputFileFunctionsMetadata,
+  inputFilePath,
+  decoratorArgs,
+  onImportAdd
+}: {
+  inputFileImportsMetadata: ImportMetadata[];
+  inputFileFunctionsMetadata: FunctionMetadata[];
+  inputFilePath: string;
+  decoratorArgs: (Arg | Arg[])[];
+  onImportAdd: (path: string, clause: string, isPackageName?: boolean) => void;
+}): void => {
+  const func = (<string>decoratorArgs[0]).trim();
+
+  // Case #1: inline function
+  if (func.match(/^(async\s*){0,1}function\s*[(]{1}/) || func.match(/^(async\s*){0,1}.+(=>).+/)) {
+    // Find all possible entities, which may be imported
+    const re = /\w+/gm;
+    const listOfPossibleImports: string[] = [];
+    let m;
+
+    do {
+      m = re.exec(func);
+      if (m) {
+        listOfPossibleImports.push(...m);
+      }
+    } while (m);
+
+    // For each found entity -> add import
+    listOfPossibleImports.forEach((possibleImport) => {
+      const matchedImportMetadata = inputFileImportsMetadata.find((im) => im.clauses.some((c) => c === possibleImport));
+      if (matchedImportMetadata) {
+        onImportAdd(path.resolve(matchedImportMetadata.absPath), possibleImport);
+      }
+    });
+
+    return;
+  }
+
+  // Case #2: function in model file
+  const foundFuncMeta = inputFileFunctionsMetadata.find(({ name }) => name === func);
+  if (foundFuncMeta) {
+    if (foundFuncMeta.isExported) {
+      onImportAdd(path.resolve(inputFilePath), func);
+    } else {
+      throw new ErrorInFile(
+        `Custom validation function "${foundFuncMeta.name}" is used, but not exported. Add export keyword to this function or remove it from @CustomValidation decorator.`,
+        inputFilePath
+      );
+    }
+  }
+
+  // Case #3: imported function
+  const foundFuncImport = inputFileImportsMetadata.find((m) => m.clauses.some((c) => c === func));
+  if (foundFuncImport) {
+    onImportAdd(path.resolve(foundFuncImport.absPath), func);
+  }
 };

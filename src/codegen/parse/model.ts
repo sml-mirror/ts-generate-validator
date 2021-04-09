@@ -20,9 +20,21 @@ export interface ClassMetadata {
   fields: ClassFieldMetadata[];
 }
 
+export interface ImportMetadata {
+  clauses: string[];
+  absPath: string;
+}
+
+export interface FunctionMetadata {
+  name: string;
+  isExported: boolean;
+}
+
 export interface InputFileMetadata {
   name: string;
   classes: ClassMetadata[];
+  imports: ImportMetadata[];
+  functions: FunctionMetadata[];
 }
 
 export interface CustomTypeEntry {
