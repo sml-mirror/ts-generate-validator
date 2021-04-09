@@ -73,10 +73,11 @@ export const buildValidationFromClassMetadata = ({
     // Not supported validation
     if (typeMetadata.validationType === ValidationType.notSupported) {
       if (!decorators.find(({ name: decoratorName }) => decoratorName === CustomValidation.name)) {
-        handleError(
-          `Failed to create validation for "${cls.name}.${fieldName}". Type "${typeMetadata.name}" is not supported. Change field type or add "${IgnoreValidation.name}" decorator.\n\nThe above error was occured in ${clsFileName}`,
-          config.unknownPropertySeverityLevel
+        const error = new ErrorInFile(
+          `Failed to create validation for "${cls.name}.${fieldName}". Type "${typeMetadata.name}" is not supported. Change field type or add "${IgnoreValidation.name}" decorator.`,
+          clsFileName
         );
+        handleError(error.message, config.unknownPropertySeverityLevel);
         return;
       }
     }
