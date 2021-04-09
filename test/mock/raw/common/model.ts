@@ -1,3 +1,4 @@
+import { UserType } from './../../user/type/model';
 import { customValidationFuncImported, someEntityUsedInCustomValidator } from './customValidationFunc';
 import {
   Validation,
@@ -9,7 +10,7 @@ import {
   MinValidation,
   MaxValidation
 } from '../../../../src/decorators';
-import { ValidationError } from 'src';
+import { ValidationError } from '../../../../src';
 
 /**
  * Type
@@ -29,6 +30,11 @@ export class TypeValidatorOnNestedPropertyType {
 @Validation
 export class TypeValidatorOnNullPropertyType {
   public someProperty: null = null;
+}
+
+@Validation
+export class TypeValidatorOnImportedEnumPropertyType {
+  public someProperty?: UserType;
 }
 
 /**

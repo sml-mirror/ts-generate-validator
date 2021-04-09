@@ -607,5 +607,372 @@ Array [
     ],
     "name": "nestedModel/model.ts",
   },
+  Object {
+    "classes": Array [],
+    "functions": Array [
+      Object {
+        "isExported": false,
+        "name": "emptyDecorator",
+      },
+      Object {
+        "isExported": true,
+        "name": "RequiredOneOfValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "TypeValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "CustomValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "IgnoreValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "EqualValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "EqualToValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MinValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MaxValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "NegativeValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "PositiveValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "IntegerValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "FloatValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "LessThanValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MoreThanValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "TrimValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "LowercaseValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "UppercaseValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MinLengthValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MaxLengthValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "EmailValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "UrlValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MatchValidation",
+      },
+    ],
+    "imports": Array [
+      Object {
+        "absPath": "../../../src/validators/model",
+        "clauses": Array [
+          "CustomValidationFunction",
+        ],
+      },
+      Object {
+        "absPath": "../../../src/codegen/model",
+        "clauses": Array [
+          "Data",
+        ],
+      },
+      Object {
+        "absPath": "../../../src/localization/model",
+        "clauses": Array [
+          "Message",
+        ],
+      },
+    ],
+    "name": "../../../src/decorators/index",
+  },
+  Object {
+    "classes": Array [],
+    "functions": Array [],
+    "imports": Array [
+      Object {
+        "absPath": "../../../src/decorators/index",
+        "clauses": Array [
+          "Validation",
+        ],
+      },
+    ],
+    "name": "nestedModel/model",
+  },
+  Object {
+    "classes": Array [],
+    "functions": Array [
+      Object {
+        "isExported": false,
+        "name": "emptyDecorator",
+      },
+      Object {
+        "isExported": true,
+        "name": "RequiredOneOfValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "TypeValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "CustomValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "IgnoreValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "EqualValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "EqualToValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MinValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MaxValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "NegativeValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "PositiveValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "IntegerValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "FloatValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "LessThanValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MoreThanValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "TrimValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "LowercaseValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "UppercaseValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MinLengthValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MaxLengthValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "EmailValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "UrlValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MatchValidation",
+      },
+    ],
+    "imports": Array [
+      Object {
+        "absPath": "../../../validators/model",
+        "clauses": Array [
+          "CustomValidationFunction",
+        ],
+      },
+      Object {
+        "absPath": "../../../codegen/model",
+        "clauses": Array [
+          "Data",
+        ],
+      },
+      Object {
+        "absPath": "../../../localization/model",
+        "clauses": Array [
+          "Message",
+        ],
+      },
+    ],
+    "name": "../../../src/decorators",
+  },
+  Object {
+    "classes": Array [],
+    "functions": Array [
+      Object {
+        "isExported": false,
+        "name": "emptyDecorator",
+      },
+      Object {
+        "isExported": true,
+        "name": "RequiredOneOfValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "TypeValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "CustomValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "IgnoreValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "EqualValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "EqualToValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MinValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MaxValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "NegativeValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "PositiveValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "IntegerValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "FloatValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "LessThanValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MoreThanValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "TrimValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "LowercaseValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "UppercaseValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MinLengthValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MaxLengthValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "EmailValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "UrlValidation",
+      },
+      Object {
+        "isExported": true,
+        "name": "MatchValidation",
+      },
+    ],
+    "imports": Array [
+      Object {
+        "absPath": "../../../src/validators/model",
+        "clauses": Array [
+          "CustomValidationFunction",
+        ],
+      },
+      Object {
+        "absPath": "../../../src/codegen/model",
+        "clauses": Array [
+          "Data",
+        ],
+      },
+      Object {
+        "absPath": "../../../src/localization/model",
+        "clauses": Array [
+          "Message",
+        ],
+      },
+    ],
+    "name": "../../../src/decorators/index",
+  },
 ]
 `;

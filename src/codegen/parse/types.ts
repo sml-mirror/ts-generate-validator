@@ -22,10 +22,13 @@ export const buildFieldTypeMetadata = (
 
     if (type.validationType === ValidationType.unknown) {
       const externalPath = findExternalPathForCustomType(typeName, imports);
+      //console.log(`Type "${typeName}" -> externalPath:`, externalPath);
       const resultPath = externalPath ?? (fieldType.modulePath ? path.resolve(fieldType.modulePath) : undefined);
+      //console.log(`Type "${typeName}" -> resultPath:`, resultPath);
 
       if (resultPath) {
         type.referencePath = normalizePath(path.relative(process.cwd(), resultPath));
+        //console.log(`Type "${typeName}" -> normalized resultPath:`, type.referencePath, process.cwd());
       }
 
       onCustomTypeFound();
@@ -46,7 +49,7 @@ export const getValidationTypeByTypeName = (typeName: string): ValidationType =>
     return <ValidationType>typeName;
   }
 
-  const notSupportedTypes = ['null', 'undefined', 'symbol', 'function', 'object'];
+  const notSupportedTypes = ['undefined', 'symbol', 'function', 'object'];
   if (notSupportedTypes.includes(typeName)) {
     return ValidationType.notSupported;
   }
@@ -60,6 +63,6 @@ export const findExternalPathForCustomType = (typeName: string, imports: ImportN
   });
 
   if (foundImport) {
-    return path.resolve(...foundImport.absPathNode);
+    return foundImport.absPathString;
   }
 };

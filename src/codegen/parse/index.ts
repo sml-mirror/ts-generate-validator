@@ -1,4 +1,4 @@
-import { cutFileExt, hasFileExt } from './../../utils/path';
+import { cutFileExt, hasFileExt, isPackagePath, normalizeFileExt } from './../../utils/path';
 import { IgnoreValidation } from './../../decorators/index';
 import { IssueError, ErrorInFile } from './../utils/error';
 import { ValidationType } from './../../validators/model';
@@ -6,34 +6,72 @@ import { buildClassesMetadata } from './classes';
 import { parseStruct, ImportNode } from 'ts-file-parser';
 import * as fs from 'fs';
 import * as path from 'path';
-import { InputFileMetadata, CustomTypeEntry, EnumDictionary, ImportMetadata } from './model';
+import {
+  InputFileMetadata,
+  CustomTypeEntry,
+  EnumDictionary,
+  ImportMetadata,
+  InputFileDesc,
+  ClassMetadata
+} from './model';
 
 export const parseInputFiles = (files: string[]): InputFileMetadata[] => {
+  const inputFiles: InputFileDesc[] = files.map((f) => ({ path: f, parseClasses: true }));
   const metadata: InputFileMetadata[] = [];
   const customTypeEntries: CustomTypeEntry[] = [];
   const enumDictionary: EnumDictionary = {};
 
-  files.forEach((file) => {
-    const content = fs.readFileSync(path.resolve(process.cwd(), file), 'utf-8');
-    const structure = parseStruct(content, {}, file);
+  do {
+    const inputFileDesc = inputFiles.shift();
 
-    if (structure.enumDeclarations.length) {
-      enumDictionary[file] = structure.enumDeclarations.map((decl) => decl.name);
+    if (!inputFileDesc) {
+      break;
     }
 
-    if (structure.classes.length) {
+    const content = fs.readFileSync(path.resolve(process.cwd(), normalizeFileExt(inputFileDesc.path)), 'utf-8');
+    const structure = parseStruct(content, {}, inputFileDesc.path);
+
+    if (structure.enumDeclarations.length) {
+      enumDictionary[inputFileDesc.path] = structure.enumDeclarations.map((decl) => decl.name);
+    }
+
+    const imports = buildImportsMetadata(structure._imports);
+    // console.log(imports);
+    imports.forEach((imp) => {
+      const isAlreadyParsed = metadata.some((m) => m.name === imp.absPath);
+      if (inputFileDesc.parseClasses && !isAlreadyParsed && !isPackagePath(imp.absPath)) {
+        // console.log('SEARCH FOR ENUMS:', imp.absPath, normalizeFileExt(imp.absPath));
+        inputFiles.push({ path: imp.absPath, parseClasses: false });
+      }
+    });
+
+    const classes: ClassMetadata[] = [];
+    if (inputFileDesc.parseClasses && structure.classes.length) {
       const classesMetadata = buildClassesMetadata(metadata.length, structure.classes, structure._imports);
       if (classesMetadata.classesForValidation.length) {
         customTypeEntries.push(...classesMetadata.customTypeEntries);
-        metadata.push({
-          name: structure.name,
-          classes: classesMetadata.classesForValidation,
-          imports: buildImportsMetadata(structure._imports),
-          functions: structure.functions.map(({ name, isExport }) => ({ name, isExported: isExport }))
-        });
+        classes.push(...classesMetadata.classesForValidation);
       }
     }
-  });
+
+    metadata.push({
+      name: structure.name,
+      classes,
+      imports,
+      functions: structure.functions.map(({ name, isExport }) => ({ name, isExported: isExport }))
+    });
+  } while (inputFiles.length);
+
+  console.log(JSON.stringify(enumDictionary, null, 2));
+  console.log(
+    JSON.stringify(
+      metadata
+        .find((m) => m.name === 'model.ts')
+        ?.classes.find((c) => c.name === 'TypeValidatorOnImportedEnumPropertyType'),
+      null,
+      2
+    )
+  );
 
   resolveCustomTypes({ metadata, enumDictionary, customTypeEntries });
   validateNestedClasses({ metadata, customTypeEntries });
@@ -148,11 +186,10 @@ export const validateNestedClasses = ({
 };
 
 const buildImportsMetadata = (nodes: ImportNode[]): ImportMetadata[] => {
-  return nodes.map(({ clauses, absPathNode }) => {
-    const pathToFile = absPathNode.join('/');
+  return nodes.map(({ clauses, absPathString }) => {
     return {
       clauses,
-      absPath: path.relative(process.cwd(), path.resolve(pathToFile))
+      absPath: path.relative(process.cwd(), path.resolve(absPathString))
     };
   });
 };

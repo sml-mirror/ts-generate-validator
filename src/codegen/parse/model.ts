@@ -1,6 +1,11 @@
 import { ValidationType } from '../../validators/model';
 import { Decorator } from 'ts-file-parser';
 
+export interface InputFileDesc {
+  path: string;
+  parseClasses: boolean;
+}
+
 export interface ClassFieldTypeMetadata {
   validationType: ValidationType;
   referencePath?: string;
