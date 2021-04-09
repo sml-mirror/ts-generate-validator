@@ -21,7 +21,7 @@ export class TypeValidatorWithCustomMessage {
 }
 
 @Validation
-export class TypeValidatorOnWrongPropertyType {
+export class TypeValidatorOnNestedPropertyType {
   @TypeValidation('type custom message')
   public someProperty?: CustomValidatorFailed;
 }

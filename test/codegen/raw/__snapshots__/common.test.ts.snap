@@ -22,7 +22,7 @@ import {
 
 import {
   TypeValidatorWithCustomMessage,
-  TypeValidatorOnWrongPropertyType,
+  TypeValidatorOnNestedPropertyType,
   TypeValidatorOnNullPropertyType,
   CustomValidatorFailed,
   CutomValidatorSuccess,
@@ -40,8 +40,6 @@ import {
   EqualValidatorForBoolean,
   EqualToValidatorWithDefaultMessage
 } from './../../../model';
-
-import { customValidatorFailedValidator } from './model';
 
 import { customValidationFuncImported, someEntityUsedInCustomValidator } from './../../../customValidationFunc';
 
@@ -87,8 +85,8 @@ export const typeValidatorWithCustomMessageValidator: GeneratedValidation = <
   }
 };
 
-export const typeValidatorOnWrongPropertyTypeValidator: GeneratedValidation = <
-  D extends Data = typeof TypeValidatorOnWrongPropertyType,
+export const typeValidatorOnNestedPropertyTypeValidator: GeneratedValidation = <
+  D extends Data = typeof TypeValidatorOnNestedPropertyType,
   C extends UserContext = UserContext
 >(
   data: D,
@@ -813,12 +811,8 @@ Array [
         "path": "ts-generate-validator",
       },
       Object {
-        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnWrongPropertyType, TypeValidatorOnNullPropertyType, CustomValidatorFailed, CutomValidatorSuccess, CutomValidatorOnNonPrimitiveStructure, CutomValidatorSuccessAsync, CutomValidatorImported, customValidationFuncExported, CutomValidatorExported, CutomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
+        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnNestedPropertyType, TypeValidatorOnNullPropertyType, CustomValidatorFailed, CutomValidatorSuccess, CutomValidatorOnNonPrimitiveStructure, CutomValidatorSuccessAsync, CutomValidatorImported, customValidationFuncExported, CutomValidatorExported, CutomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
         "path": "./../../../model",
-      },
-      Object {
-        "clauses": "customValidatorFailedValidator",
-        "path": "./model",
       },
       Object {
         "clauses": "customValidationFuncImported, someEntityUsedInCustomValidator",
@@ -878,8 +872,8 @@ Array [
             ],
           },
         ],
-        "modelClassName": "TypeValidatorOnWrongPropertyType",
-        "name": "typeValidatorOnWrongPropertyTypeValidator",
+        "modelClassName": "TypeValidatorOnNestedPropertyType",
+        "name": "typeValidatorOnNestedPropertyTypeValidator",
       },
       Object {
         "async": false,
@@ -1332,7 +1326,7 @@ Array [
             },
           },
         ],
-        "name": "TypeValidatorOnWrongPropertyType",
+        "name": "TypeValidatorOnNestedPropertyType",
       },
       Object {
         "decorators": Array [

@@ -107,29 +107,29 @@ export const buildValidationFromClassMetadata = ({
         typeMetadata.validationType === ValidationType.enum ||
         typeMetadata.validationType === ValidationType.nested
       ) {
-        if (typeMetadata.referencePath && typeMetadata.name) {
-          const refPath = typeMetadata.referencePath;
-          const importPath =
-            typeMetadata.validationType === ValidationType.nested
-              ? `${buildOutputFilePath({ inputFileName: refPath, config })}/${buildOutputFileName(refPath)}`
-              : refPath;
-          const typeDescription =
-            typeMetadata.validationType === ValidationType.nested
-              ? getValidationName(typeMetadata.name)
-              : typeMetadata.name;
-
-          addImport(path.resolve(importPath), typeDescription, false);
-
-          validatorPayload.push({
-            property: 'typeDescription',
-            value: typeDescription,
-            type: 'object'
-          });
-        } else {
+        if (!typeMetadata.referencePath || !typeMetadata.name) {
           throw new IssueError(
             `Failed to create validation for "${cls.name}.${fieldName}" -> "${typeMetadata.validationType}" validation type requires "referencePath" and "name" filled in metadata, but some of them is empty.`
           );
         }
+
+        const refPath = typeMetadata.referencePath;
+        const importPath =
+          typeMetadata.validationType === ValidationType.nested
+            ? `${buildOutputFilePath({ inputFileName: refPath, config })}/${buildOutputFileName(refPath)}`
+            : refPath;
+        const typeDescription =
+          typeMetadata.validationType === ValidationType.nested
+            ? getValidationName(typeMetadata.name)
+            : typeMetadata.name;
+
+        addImport(path.resolve(importPath), typeDescription, false);
+
+        validatorPayload.push({
+          property: 'typeDescription',
+          value: typeDescription,
+          type: 'object'
+        });
       }
 
       validatorPayload.push({
