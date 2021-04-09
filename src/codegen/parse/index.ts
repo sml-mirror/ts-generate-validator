@@ -36,11 +36,9 @@ export const parseInputFiles = (files: string[]): InputFileMetadata[] => {
     }
 
     const imports = buildImportsMetadata(structure._imports);
-    // console.log(imports);
     imports.forEach((imp) => {
       const isAlreadyParsed = metadata.some((m) => m.name === imp.absPath);
       if (inputFileDesc.parseClasses && !isAlreadyParsed && !isPackagePath(imp.absPath)) {
-        // console.log('SEARCH FOR ENUMS:', imp.absPath, normalizeFileExt(imp.absPath));
         inputFiles.push({ path: imp.absPath, parseClasses: false });
       }
     });
@@ -61,17 +59,6 @@ export const parseInputFiles = (files: string[]): InputFileMetadata[] => {
       functions: structure.functions.map(({ name, isExport }) => ({ name, isExported: isExport }))
     });
   } while (inputFiles.length);
-
-  console.log(JSON.stringify(enumDictionary, null, 2));
-  console.log(
-    JSON.stringify(
-      metadata
-        .find((m) => m.name === 'model.ts')
-        ?.classes.find((c) => c.name === 'TypeValidatorOnImportedEnumPropertyType'),
-      null,
-      2
-    )
-  );
 
   resolveCustomTypes({ metadata, enumDictionary, customTypeEntries });
   validateNestedClasses({ metadata, customTypeEntries });
