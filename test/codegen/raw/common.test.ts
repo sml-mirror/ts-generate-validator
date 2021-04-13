@@ -41,6 +41,6 @@ describe('codegen/raw/common', () => {
       expect(content).toMatchSnapshot(`generated validators at "${file}"`);
     });
 
-    removeGeneratedValidators();
+    // removeGeneratedValidators();
   });
 });

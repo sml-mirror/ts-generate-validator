@@ -57,22 +57,46 @@ export const decoratorNameToValidationItemData: {
   [TypeValidation.name]: {
     validatorName: typeValidator.name,
     validatorArgumentNames: ['customMessage'],
-    allowedValidationTypes: [...primitiveValidationTypes, ValidationType.enum, ValidationType.nested]
+    allowedValidationTypes: [
+      ...primitiveValidationTypes,
+      ValidationType.enum,
+      ValidationType.nested,
+      ValidationType.array,
+      ValidationType.union
+    ]
   },
   [CustomValidation.name]: {
     validatorName: customValidator.name,
     validatorArgumentNames: ['customValidationFunction'],
-    allowedValidationTypes: [...primitiveValidationTypes, ValidationType.enum, ValidationType.nested]
+    allowedValidationTypes: [
+      ...primitiveValidationTypes,
+      ValidationType.enum,
+      ValidationType.nested,
+      ValidationType.array,
+      ValidationType.union,
+      ValidationType.unknown,
+      ValidationType.notSupported
+    ]
   },
   [EqualValidation.name]: {
     validatorName: equalValidator.name,
     validatorArgumentNames: ['value', 'customMessage'],
-    allowedValidationTypes: [...primitiveValidationTypes, ValidationType.enum]
+    allowedValidationTypes: [
+      ...primitiveValidationTypes,
+      ValidationType.enum,
+      ValidationType.array,
+      ValidationType.union
+    ]
   },
   [EqualToValidation.name]: {
     validatorName: equalToValidator.name,
     validatorArgumentNames: ['targetPropertyName', 'customMessage'],
-    allowedValidationTypes: [...primitiveValidationTypes, ValidationType.enum]
+    allowedValidationTypes: [
+      ...primitiveValidationTypes,
+      ValidationType.enum,
+      ValidationType.array,
+      ValidationType.union
+    ]
   },
   /**
    * Number
@@ -80,42 +104,42 @@ export const decoratorNameToValidationItemData: {
   [MinValidation.name]: {
     validatorName: minValidator.name,
     validatorArgumentNames: ['threshold', 'customMessage'],
-    allowedValidationTypes: [ValidationType.number]
+    allowedValidationTypes: [ValidationType.number, ValidationType.array]
   },
   [MaxValidation.name]: {
     validatorName: maxValidator.name,
     validatorArgumentNames: ['threshold', 'customMessage'],
-    allowedValidationTypes: [ValidationType.number]
+    allowedValidationTypes: [ValidationType.number, ValidationType.array]
   },
   [NegativeValidation.name]: {
     validatorName: negativeValidator.name,
     validatorArgumentNames: ['customMessage'],
-    allowedValidationTypes: [ValidationType.number]
+    allowedValidationTypes: [ValidationType.number, ValidationType.array]
   },
   [PositiveValidation.name]: {
     validatorName: positiveValidator.name,
     validatorArgumentNames: ['customMessage'],
-    allowedValidationTypes: [ValidationType.number]
+    allowedValidationTypes: [ValidationType.number, ValidationType.array]
   },
   [IntegerValidation.name]: {
     validatorName: integerValidator.name,
     validatorArgumentNames: ['customMessage'],
-    allowedValidationTypes: [ValidationType.number]
+    allowedValidationTypes: [ValidationType.number, ValidationType.array]
   },
   [FloatValidation.name]: {
     validatorName: floatValidator.name,
     validatorArgumentNames: ['customMessage'],
-    allowedValidationTypes: [ValidationType.number]
+    allowedValidationTypes: [ValidationType.number, ValidationType.array]
   },
   [LessThanValidation.name]: {
     validatorName: lessThanValidator.name,
     validatorArgumentNames: ['targetPropertyName', 'customMessage'],
-    allowedValidationTypes: [ValidationType.number]
+    allowedValidationTypes: [ValidationType.number, ValidationType.array]
   },
   [MoreThanValidation.name]: {
     validatorName: moreThanValidator.name,
     validatorArgumentNames: ['targetPropertyName', 'customMessage'],
-    allowedValidationTypes: [ValidationType.number]
+    allowedValidationTypes: [ValidationType.number, ValidationType.array]
   },
   /**
    * String
@@ -123,41 +147,41 @@ export const decoratorNameToValidationItemData: {
   [TrimValidation.name]: {
     validatorName: trimValidator.name,
     validatorArgumentNames: ['customMessage'],
-    allowedValidationTypes: [ValidationType.string]
+    allowedValidationTypes: [ValidationType.string, ValidationType.array]
   },
   [LowercaseValidation.name]: {
     validatorName: lowercaseValidator.name,
     validatorArgumentNames: ['customMessage'],
-    allowedValidationTypes: [ValidationType.string]
+    allowedValidationTypes: [ValidationType.string, ValidationType.array]
   },
   [UppercaseValidation.name]: {
     validatorName: uppercaseValidator.name,
     validatorArgumentNames: ['customMessage'],
-    allowedValidationTypes: [ValidationType.string]
+    allowedValidationTypes: [ValidationType.string, ValidationType.array]
   },
   [MinLengthValidation.name]: {
     validatorName: minLengthValidator.name,
     validatorArgumentNames: ['threshold', 'customMessage'],
-    allowedValidationTypes: [ValidationType.string]
+    allowedValidationTypes: [ValidationType.string, ValidationType.array]
   },
   [MaxLengthValidation.name]: {
     validatorName: maxLengthValidator.name,
     validatorArgumentNames: ['threshold', 'customMessage'],
-    allowedValidationTypes: [ValidationType.string]
+    allowedValidationTypes: [ValidationType.string, ValidationType.array]
   },
   [EmailValidation.name]: {
     validatorName: emailValidator.name,
     validatorArgumentNames: ['customMessage'],
-    allowedValidationTypes: [ValidationType.string]
+    allowedValidationTypes: [ValidationType.string, ValidationType.array]
   },
   [UrlValidation.name]: {
     validatorName: urlValidator.name,
     validatorArgumentNames: ['customMessage'],
-    allowedValidationTypes: [ValidationType.string]
+    allowedValidationTypes: [ValidationType.string, ValidationType.array]
   },
   [MatchValidation.name]: {
     validatorName: matchValidator.name,
     validatorArgumentNames: ['regexp', 'customMessage'],
-    allowedValidationTypes: [ValidationType.string]
+    allowedValidationTypes: [ValidationType.string, ValidationType.array]
   }
 };

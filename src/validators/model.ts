@@ -105,10 +105,30 @@ export type CustomValidator<
 
 export type EnumDescription = Record<string, any>;
 
-export type TypeValidatorPayload = {
-  type: string; //ValidationType;
-  typeDescription?: EnumDescription | GeneratedValidation;
-};
+export type TypeValidatorPayload =
+  | {
+      type: Exclude<
+        ValidationType,
+        ValidationType.enum | ValidationType.nested | ValidationType.array | ValidationType.union
+      >;
+      typeDescription?: undefined;
+    }
+  | {
+      type: ValidationType.enum;
+      typeDescription: EnumDescription;
+    }
+  | {
+      type: ValidationType.nested;
+      typeDescription: GeneratedValidation;
+    }
+  | {
+      type: ValidationType.array;
+      typeDescription: TypeValidatorPayload;
+    }
+  | {
+      type: ValidationType.union;
+      typeDescription: TypeValidatorPayload[];
+    };
 
 export type TypeValidator<
   D extends Data = Data,

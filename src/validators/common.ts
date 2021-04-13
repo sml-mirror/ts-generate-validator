@@ -1,3 +1,5 @@
+import { TypeValidation } from './../decorators/index';
+import { decoratorNameToValidationItemData } from './../codegen/prepare/validationItem';
 import { ValidationError } from './../codegen/utils/error';
 import { AllowedCommonValidators } from './../localization/model';
 import { PartialValidationConfig } from '../../src/config/model';
@@ -5,6 +7,7 @@ import { IssueError } from './../codegen/utils/error';
 import { getEnumValues } from './../utils/enum';
 import {
   TypeValidator,
+  TypeValidatorPayload,
   CustomValidator,
   primitiveValidationTypes,
   EqualValidator,
@@ -44,10 +47,63 @@ export const typeValidator: TypeValidator = ({
   typeDescription,
   context,
   customMessage,
-  config
+  config,
+  ...rest
 }) => {
   const propertyType = property === null ? 'null' : typeof property;
   const msgFromConfig = getMessageFromConfig(type, CommonValidator.type, config);
+
+  if (type === ValidationType.union) {
+    if (!typeDescription || !Array.isArray(typeDescription)) {
+      throw new IssueError(
+        `Error: "typeDescription" is invalid or not provided for union type validation (propertyName: "${propertyName}")`
+      );
+    }
+
+    for (const unionTypeDesc of typeDescription) {
+      try {
+        typeValidator({
+          property,
+          propertyName,
+          type: unionTypeDesc.type,
+          typeDescription: unionTypeDesc.typeDescription,
+          context,
+          customMessage,
+          config,
+          ...rest
+        } as Parameters<TypeValidator>[0]);
+        // If validation succeed -> return
+        return;
+      } catch (err) {
+        // Do nothing
+      }
+    }
+
+    const defaultMessage = `Must be one of the following types: ${typeDescription
+      .map((desc) => desc.type)
+      .join(', ')}. But recieved property value is none of them.`;
+    throw new ValidationError(propertyName, customMessage ?? msgFromConfig ?? defaultMessage);
+  }
+
+  if (type === ValidationType.array) {
+    if (!property || !Array.isArray(property)) {
+      const defaultMessage = `Must be an array, but received value type is "${propertyType}"`;
+      throw new ValidationError(propertyName, customMessage ?? msgFromConfig ?? defaultMessage);
+    }
+
+    property.forEach((item) =>
+      typeValidator({
+        property: item,
+        propertyName,
+        type: (typeDescription as TypeValidatorPayload).type,
+        typeDescription: (typeDescription as TypeValidatorPayload).typeDescription,
+        context,
+        customMessage,
+        config,
+        ...rest
+      } as Parameters<TypeValidator>[0])
+    );
+  }
 
   if (type === ValidationType.enum) {
     if (!typeDescription || typeof typeDescription !== 'object') {
@@ -75,7 +131,9 @@ export const typeValidator: TypeValidator = ({
 
   if (!primitiveValidationTypes.includes(type as any)) {
     throw new Error(
-      `Unexpected type to check - "${type}" (expected one of: ${primitiveValidationTypes
+      `Unexpected type to check - "${type}" (expected one of: ${decoratorNameToValidationItemData[
+        TypeValidation.name
+      ].allowedValidationTypes
         .map((t) => `"${t}"`)
         .join(', ')})`
     );
