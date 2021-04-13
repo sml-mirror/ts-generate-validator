@@ -27,7 +27,7 @@ export const prepareDataForRender = (
       let importPath = targetPath;
 
       if (!isPackageName) {
-        const importPathAbs = path.relative(process.cwd(), importPath);
+        const importPathAbs = normalizePath(path.relative(process.cwd(), importPath));
 
         if (filePathAbs === importPathAbs) {
           return;
