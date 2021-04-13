@@ -1,3 +1,4 @@
+import { findAllMatches } from './../utils/regexp';
 import { buildOutputFileName, buildOutputFilePath } from './index';
 import { escapeString } from './../utils/string';
 import { decoratorNameToValidationItemData } from './validationItem';
@@ -132,7 +133,10 @@ export const buildValidationFromClassMetadata = ({
             };
         const buildTypeValidatorPayload = (typeMetadata: ClassFieldTypeMetadata): TypeValidatorPayloadRenderData => {
           if (typeMetadata.validationType === ValidationType.array) {
-            return buildTypeValidatorPayload(typeMetadata.arrayOf);
+            return {
+              type: ValidationType.array,
+              typeDescription: buildTypeValidatorPayload(typeMetadata.arrayOf)
+            };
           }
 
           if (typeMetadata.validationType === ValidationType.union) {
@@ -144,8 +148,7 @@ export const buildValidationFromClassMetadata = ({
 
           if (primitiveValidationTypes.includes(typeMetadata.validationType as any)) {
             return {
-              type: typeMetadata.validationType,
-              typeDescription: undefined
+              type: typeMetadata.validationType
             } as TypeValidatorPayloadRenderData;
           }
 
@@ -153,6 +156,12 @@ export const buildValidationFromClassMetadata = ({
             throw new IssueError(
               `Failed to create validation for "${cls.name}.${fieldName}" -> "${typeMetadata.validationType}" validation type requires "referencePath" and "name" filled in metadata, but some of them is empty.`
             );
+          }
+
+          if (typeMetadata.validationType === ValidationType.notSupported) {
+            return {
+              type: typeMetadata.validationType
+            } as TypeValidatorPayloadRenderData;
           }
 
           if (
@@ -182,9 +191,10 @@ export const buildValidationFromClassMetadata = ({
           } as TypeValidatorPayloadRenderData;
         };
 
+        const value = buildTypeValidatorPayload(typeMetadata).typeDescription;
         validatorPayload.push({
           property: 'typeDescription',
-          value: JSON.stringify(buildTypeValidatorPayload(typeMetadata).typeDescription, null, 2),
+          value: typeof value === 'string' ? value : JSON.stringify(value, null, 2),
           type: 'object'
         });
       }
@@ -334,16 +344,7 @@ const addImportsForCustomValidator = ({
   // Case #1: inline function
   if (func.match(/^(async\s*){0,1}function\s*[(]{1}/) || func.match(/^(async\s*){0,1}.+(=>).+/)) {
     // Find all possible entities, which may be imported
-    const re = /\w+/gm;
-    const listOfPossibleImports: string[] = [];
-    let m;
-
-    do {
-      m = re.exec(func);
-      if (m) {
-        listOfPossibleImports.push(...m);
-      }
-    } while (m);
+    const listOfPossibleImports = findAllMatches(/\w+/gm, func);
 
     // For each found entity -> try to add import
     listOfPossibleImports.forEach((possibleImport) => {

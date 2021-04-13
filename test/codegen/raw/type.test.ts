@@ -1,3 +1,4 @@
+import { ClassFieldBasicTypeMetadata } from './../../../src/codegen/parse/model';
 import { readAllOutputFiles } from './../../utils/output';
 import { removeGeneratedValidators } from '../../utils/output';
 import { createValidators } from './../../../src/codegen/index';
@@ -38,8 +39,9 @@ describe('codegen/raw/type', () => {
           if (index === 0) {
             expect(className).toBe('ClassWithNonPrimitiveProperty');
 
-            fields.forEach(({ name: fieldName, type, optional }) => {
+            fields.forEach(({ name: fieldName, type: _type, optional }) => {
               if (fieldName === 'someProperty') {
+                const type = _type as ClassFieldBasicTypeMetadata;
                 expect(optional).toBeTruthy();
                 expect(type.name).toBe('SomeNonPrimitiveStructure');
                 expect(type.referencePath).toBe(fileName);
@@ -50,8 +52,9 @@ describe('codegen/raw/type', () => {
           if (index === 1) {
             expect(className).toBe('ClassWithEnumProperty');
 
-            fields.forEach(({ name: fieldName, type, optional }) => {
+            fields.forEach(({ name: fieldName, type: _type, optional }) => {
               if (fieldName === 'someProperty') {
+                const type = _type as ClassFieldBasicTypeMetadata;
                 expect(optional).toBeTruthy();
                 expect(type.name).toBe('SomeEnum');
                 expect(type.referencePath).toBe(fileName);

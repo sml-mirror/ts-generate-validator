@@ -1,5 +1,4 @@
 import { TypeValidation } from './../decorators/index';
-import { decoratorNameToValidationItemData } from './../codegen/prepare/validationItem';
 import { ValidationError } from './../codegen/utils/error';
 import { AllowedCommonValidators } from './../localization/model';
 import { PartialValidationConfig } from '../../src/config/model';
@@ -131,9 +130,12 @@ export const typeValidator: TypeValidator = ({
 
   if (!primitiveValidationTypes.includes(type as any)) {
     throw new Error(
-      `Unexpected type to check - "${type}" (expected one of: ${decoratorNameToValidationItemData[
-        TypeValidation.name
-      ].allowedValidationTypes
+      `Unexpected type to check - "${type}" (expected one of: ${[
+        ...primitiveValidationTypes,
+        ValidationType.array,
+        ValidationType.union,
+        ValidationType.nested
+      ]
         .map((t) => `"${t}"`)
         .join(', ')})`
     );

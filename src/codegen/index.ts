@@ -1,9 +1,10 @@
+import { setupFilters } from './view/setupFilters';
 import { outError } from './utils/error';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as mkdirp from 'mkdirp';
 import * as prettier from 'prettier';
-import { render, configure } from 'nunjucks';
+import { configure } from 'nunjucks';
 import { getAllFiles } from './utils/getAllFiles';
 import { getCodegenConfig } from './../config/codegen';
 import { prepareDataForRender } from './prepare';
@@ -28,7 +29,8 @@ const _createValidators = async (): Promise<void> => {
   const dataForRender = prepareDataForRender(inputFilesMetadata, config);
 
   const viewsFolder = path.resolve(__dirname, 'view/');
-  configure(viewsFolder, { autoescape: false, trimBlocks: false });
+  const nsEnv = configure(viewsFolder, { autoescape: false, trimBlocks: false });
+  setupFilters(nsEnv);
 
   const prettierConfig = (await prettier.resolveConfig(process.cwd())) ?? {};
   prettierConfig.parser = 'typescript';
@@ -38,7 +40,7 @@ const _createValidators = async (): Promise<void> => {
       return;
     }
 
-    let content = render('validationsTemplate.njk', dataItem);
+    let content = nsEnv.render('validationsTemplate.njk', dataItem);
     if (!content || !content.trim()) {
       return;
     }

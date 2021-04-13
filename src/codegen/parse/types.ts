@@ -45,37 +45,37 @@ export const getValidationTypeByTypeModel = (
 ): ClassFieldTypeMetadata => {
   if (typeModel.typeKind === TypeKind.BASIC) {
     const _typeModel = typeModel as BasicType;
-    let validationType = ValidationType.unknown;
-    let referencePath: string | undefined;
+    const typeMetadata: ClassFieldTypeMetadata = {
+      validationType: ValidationType.unknown,
+      name: _typeModel.typeName
+    };
+    // let validationType = ValidationType.unknown;
+    // let referencePath: string | undefined;
 
     if (primitiveValidationTypes.includes(_typeModel.typeName as any)) {
-      validationType = <PrimitiveValidationType>_typeModel.typeName;
+      typeMetadata.validationType = <PrimitiveValidationType>_typeModel.typeName;
     }
 
     const notSupportedTypes = ['undefined', 'symbol', 'function', 'object'];
     if (notSupportedTypes.includes(_typeModel.typeName) || _typeModel.typeName === 'mock') {
-      validationType = ValidationType.notSupported;
+      typeMetadata.validationType = ValidationType.notSupported;
     }
 
-    if (validationType === ValidationType.unknown) {
-      referencePath = findExternalPathForCustomType(_typeModel.typeName, imports);
+    if (typeMetadata.validationType === ValidationType.unknown) {
+      let referencePath = findExternalPathForCustomType(_typeModel.typeName, imports);
 
       if (!referencePath ?? _typeModel.modulePath) {
         referencePath = path.resolve(_typeModel.modulePath);
       }
 
       if (referencePath) {
-        referencePath = normalizePath(path.relative(process.cwd(), referencePath));
+        typeMetadata.referencePath = normalizePath(path.relative(process.cwd(), referencePath));
       }
 
       onCustomTypeFound();
     }
 
-    return {
-      validationType,
-      name: _typeModel.typeName,
-      referencePath
-    };
+    return typeMetadata;
   }
 
   if (typeModel.typeKind === TypeKind.ARRAY) {

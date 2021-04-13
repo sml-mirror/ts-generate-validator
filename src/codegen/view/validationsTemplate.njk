@@ -27,7 +27,7 @@ export const {{ validation.name }}: GeneratedValidation = {% if validation.async
       config,
       context,
       {% for vArg in item.validatorPayload %}
-      {{ vArg.property }}: {% if vArg.type === 'string' %}'{{ vArg.value }}'{% else %}{{ vArg.value }}{% endif %},
+      {{ vArg.property }}: {% if vArg.type === 'string' %}'{{ vArg.value }}'{% else %}{{ vArg.value | typeDescFilter(vArg.property) }}{% endif %},
       {% endfor %}
     });
     {% endfor %}

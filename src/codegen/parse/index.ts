@@ -81,6 +81,10 @@ export const resolveCustomTypes = ({
     const fieldTypeMetadata = metadata[fileIndex].classes[classIndex].fields[fieldIndex].type;
 
     const resolveBasicType = (typeMetadata: ClassFieldBasicTypeMetadata): void => {
+      if (typeMetadata.validationType !== ValidationType.unknown) {
+        return;
+      }
+
       // Trying to fix empty referencePath -> set to current file with model class
       if (!typeMetadata.referencePath) {
         typeMetadata.referencePath = metadata[fileIndex].name;

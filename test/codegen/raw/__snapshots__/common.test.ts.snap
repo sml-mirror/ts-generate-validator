@@ -25,14 +25,19 @@ import {
   TypeValidatorOnNestedPropertyType,
   TypeValidatorOnNullPropertyType,
   TypeValidatorOnImportedEnumPropertyType,
+  TypeValidatorOnUnionPropertyType,
+  TypeValidatorOnUnionWithNestedPropertyType,
+  TypeValidatorOnArrayPropertyType,
+  TypeValidatorOnUnionWithArrayPropertyType,
+  TypeValidatorOnArrayOfNestedTypePropertyType,
   CustomValidatorFailed,
-  CutomValidatorSuccess,
-  CutomValidatorOnNonPrimitiveStructure,
-  CutomValidatorSuccessAsync,
-  CutomValidatorImported,
+  CustomValidatorSuccess,
+  CustomValidatorOnNonPrimitiveStructure,
+  CustomValidatorSuccessAsync,
+  CustomValidatorImported,
   customValidationFuncExported,
-  CutomValidatorExported,
-  CutomValidatorWhichUsesImportedEntity,
+  CustomValidatorExported,
+  CustomValidatorWhichUsesImportedEntity,
   IgnoreValidationForNonPrimitiveProperty,
   IgnoreValidationForPrimitiveProperty,
   IgnoreValidationForPrimitivePropertyWithOtherDecorators,
@@ -44,9 +49,7 @@ import {
 
 import { UserType } from './../../../../../user/type/model';
 
-import { customValidationFuncImported, someEntityUsedInCustomValidator } from './../../../customValidationFunc';
-
-import { ValidationError } from './../../../../../../../src';
+import { customValidationFuncImported } from './../../../customValidationFunc';
 
 export const typeValidatorWithCustomMessageValidator: GeneratedValidation = <
   D extends Data = typeof TypeValidatorWithCustomMessage,
@@ -109,7 +112,7 @@ export const typeValidatorOnNestedPropertyTypeValidator: GeneratedValidation = <
 
       customMessage: 'type custom message',
 
-      typeDescription: customValidatorFailedValidator,
+      typeDescription: customValidatorSuccessValidator,
 
       type: 'nested'
     });
@@ -208,6 +211,245 @@ export const typeValidatorOnImportedEnumPropertyTypeValidator: GeneratedValidati
   }
 };
 
+export const typeValidatorOnUnionPropertyTypeValidator: GeneratedValidation = <
+  D extends Data = typeof TypeValidatorOnUnionPropertyType,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig,
+  context?: C
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
+
+      typeDescription: [
+        {
+          type: 'string'
+        },
+        {
+          type: 'number'
+        },
+        {
+          type: 'null'
+        }
+      ],
+
+      type: 'union'
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
+
+export const typeValidatorOnUnionWithNestedPropertyTypeValidator: GeneratedValidation = <
+  D extends Data = typeof TypeValidatorOnUnionWithNestedPropertyType,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig,
+  context?: C
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
+
+      typeDescription: [
+        {
+          type: 'nested',
+          typeDescription: customValidatorFailedValidator
+        },
+        {
+          type: 'number'
+        },
+        {
+          type: 'null'
+        }
+      ],
+
+      type: 'union'
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
+
+export const typeValidatorOnArrayPropertyTypeValidator: GeneratedValidation = <
+  D extends Data = typeof TypeValidatorOnArrayPropertyType,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig,
+  context?: C
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
+
+      typeDescription: {
+        type: 'string'
+      },
+
+      type: 'array'
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
+
+export const typeValidatorOnUnionWithArrayPropertyTypeValidator: GeneratedValidation = <
+  D extends Data = typeof TypeValidatorOnUnionWithArrayPropertyType,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig,
+  context?: C
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
+
+      typeDescription: [
+        {
+          type: 'null'
+        },
+        {
+          type: 'number'
+        },
+        {
+          type: 'array',
+          typeDescription: {
+            type: 'string'
+          }
+        }
+      ],
+
+      type: 'union'
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
+
+export const typeValidatorOnArrayOfNestedTypePropertyTypeValidator: GeneratedValidation = <
+  D extends Data = typeof TypeValidatorOnArrayOfNestedTypePropertyType,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig,
+  context?: C
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
+
+      typeDescription: {
+        type: 'nested',
+        typeDescription: customValidatorSuccessValidator
+      },
+
+      type: 'array'
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
+
 export const customValidatorFailedValidator: GeneratedValidation = <
   D extends Data = typeof CustomValidatorFailed,
   C extends UserContext = UserContext
@@ -258,8 +500,8 @@ export const customValidatorFailedValidator: GeneratedValidation = <
   }
 };
 
-export const cutomValidatorSuccessValidator: GeneratedValidation = <
-  D extends Data = typeof CutomValidatorSuccess,
+export const customValidatorSuccessValidator: GeneratedValidation = <
+  D extends Data = typeof CustomValidatorSuccess,
   C extends UserContext = UserContext
 >(
   data: D,
@@ -306,8 +548,8 @@ export const cutomValidatorSuccessValidator: GeneratedValidation = <
   }
 };
 
-export const cutomValidatorOnNonPrimitiveStructureValidator: GeneratedValidation = <
-  D extends Data = typeof CutomValidatorOnNonPrimitiveStructure,
+export const customValidatorOnNonPrimitiveStructureValidator: GeneratedValidation = <
+  D extends Data = typeof CustomValidatorOnNonPrimitiveStructure,
   C extends UserContext = UserContext
 >(
   data: D,
@@ -344,8 +586,8 @@ export const cutomValidatorOnNonPrimitiveStructureValidator: GeneratedValidation
   }
 };
 
-export const cutomValidatorSuccessAsyncValidator: GeneratedValidation = async <
-  D extends Data = typeof CutomValidatorSuccessAsync,
+export const customValidatorSuccessAsyncValidator: GeneratedValidation = async <
+  D extends Data = typeof CustomValidatorSuccessAsync,
   C extends UserContext = UserContext
 >(
   data: D,
@@ -392,8 +634,8 @@ export const cutomValidatorSuccessAsyncValidator: GeneratedValidation = async <
   }
 };
 
-export const cutomValidatorImportedValidator: GeneratedValidation = <
-  D extends Data = typeof CutomValidatorImported,
+export const customValidatorImportedValidator: GeneratedValidation = <
+  D extends Data = typeof CustomValidatorImported,
   C extends UserContext = UserContext
 >(
   data: D,
@@ -440,8 +682,8 @@ export const cutomValidatorImportedValidator: GeneratedValidation = <
   }
 };
 
-export const cutomValidatorExportedValidator: GeneratedValidation = <
-  D extends Data = typeof CutomValidatorExported,
+export const customValidatorExportedValidator: GeneratedValidation = <
+  D extends Data = typeof CustomValidatorExported,
   C extends UserContext = UserContext
 >(
   data: D,
@@ -488,8 +730,8 @@ export const cutomValidatorExportedValidator: GeneratedValidation = <
   }
 };
 
-export const cutomValidatorWhichUsesImportedEntityValidator: GeneratedValidation = <
-  D extends Data = typeof CutomValidatorWhichUsesImportedEntity,
+export const customValidatorWhichUsesImportedEntityValidator: GeneratedValidation = <
+  D extends Data = typeof CustomValidatorWhichUsesImportedEntity,
   C extends UserContext = UserContext
 >(
   data: D,
@@ -854,7 +1096,7 @@ Array [
         "path": "ts-generate-validator",
       },
       Object {
-        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnNestedPropertyType, TypeValidatorOnNullPropertyType, TypeValidatorOnImportedEnumPropertyType, CustomValidatorFailed, CutomValidatorSuccess, CutomValidatorOnNonPrimitiveStructure, CutomValidatorSuccessAsync, CutomValidatorImported, customValidationFuncExported, CutomValidatorExported, CutomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
+        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnNestedPropertyType, TypeValidatorOnNullPropertyType, TypeValidatorOnImportedEnumPropertyType, TypeValidatorOnUnionPropertyType, TypeValidatorOnUnionWithNestedPropertyType, TypeValidatorOnArrayPropertyType, TypeValidatorOnUnionWithArrayPropertyType, TypeValidatorOnArrayOfNestedTypePropertyType, CustomValidatorFailed, CustomValidatorSuccess, CustomValidatorOnNonPrimitiveStructure, CustomValidatorSuccessAsync, CustomValidatorImported, customValidationFuncExported, CustomValidatorExported, CustomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
         "path": "./../../../model",
       },
       Object {
@@ -862,12 +1104,8 @@ Array [
         "path": "./../../../../../user/type/model",
       },
       Object {
-        "clauses": "customValidationFuncImported, someEntityUsedInCustomValidator",
+        "clauses": "customValidationFuncImported",
         "path": "./../../../customValidationFunc",
-      },
-      Object {
-        "clauses": "ValidationError",
-        "path": "./../../../../../../../src",
       },
     ],
     "validations": Array [
@@ -909,7 +1147,7 @@ Array [
               Object {
                 "property": "typeDescription",
                 "type": "object",
-                "value": "customValidatorFailedValidator",
+                "value": "customValidatorSuccessValidator",
               },
               Object {
                 "property": "type",
@@ -971,6 +1209,160 @@ Array [
             "validatorName": "typeValidator",
             "validatorPayload": Array [
               Object {
+                "property": "typeDescription",
+                "type": "object",
+                "value": "[
+  {
+    \\"type\\": \\"string\\"
+  },
+  {
+    \\"type\\": \\"number\\"
+  },
+  {
+    \\"type\\": \\"null\\"
+  }
+]",
+              },
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "union",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "TypeValidatorOnUnionPropertyType",
+        "name": "typeValidatorOnUnionPropertyTypeValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "typeDescription",
+                "type": "object",
+                "value": "[
+  {
+    \\"type\\": \\"nested\\",
+    \\"typeDescription\\": \\"customValidatorFailedValidator\\"
+  },
+  {
+    \\"type\\": \\"number\\"
+  },
+  {
+    \\"type\\": \\"null\\"
+  }
+]",
+              },
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "union",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "TypeValidatorOnUnionWithNestedPropertyType",
+        "name": "typeValidatorOnUnionWithNestedPropertyTypeValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "typeDescription",
+                "type": "object",
+                "value": "{
+  \\"type\\": \\"string\\"
+}",
+              },
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "array",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "TypeValidatorOnArrayPropertyType",
+        "name": "typeValidatorOnArrayPropertyTypeValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "typeDescription",
+                "type": "object",
+                "value": "[
+  {
+    \\"type\\": \\"null\\"
+  },
+  {
+    \\"type\\": \\"number\\"
+  },
+  {
+    \\"type\\": \\"array\\",
+    \\"typeDescription\\": {
+      \\"type\\": \\"string\\"
+    }
+  }
+]",
+              },
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "union",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "TypeValidatorOnUnionWithArrayPropertyType",
+        "name": "typeValidatorOnUnionWithArrayPropertyTypeValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "typeDescription",
+                "type": "object",
+                "value": "{
+  \\"type\\": \\"nested\\",
+  \\"typeDescription\\": \\"customValidatorSuccessValidator\\"
+}",
+              },
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "array",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "TypeValidatorOnArrayOfNestedTypePropertyType",
+        "name": "typeValidatorOnArrayOfNestedTypePropertyTypeValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
                 "property": "type",
                 "type": "string",
                 "value": "number",
@@ -1022,8 +1414,8 @@ Array [
             ],
           },
         ],
-        "modelClassName": "CutomValidatorSuccess",
-        "name": "cutomValidatorSuccessValidator",
+        "modelClassName": "CustomValidatorSuccess",
+        "name": "customValidatorSuccessValidator",
       },
       Object {
         "async": false,
@@ -1041,8 +1433,8 @@ Array [
             ],
           },
         ],
-        "modelClassName": "CutomValidatorOnNonPrimitiveStructure",
-        "name": "cutomValidatorOnNonPrimitiveStructureValidator",
+        "modelClassName": "CustomValidatorOnNonPrimitiveStructure",
+        "name": "customValidatorOnNonPrimitiveStructureValidator",
       },
       Object {
         "async": true,
@@ -1071,8 +1463,8 @@ Array [
             ],
           },
         ],
-        "modelClassName": "CutomValidatorSuccessAsync",
-        "name": "cutomValidatorSuccessAsyncValidator",
+        "modelClassName": "CustomValidatorSuccessAsync",
+        "name": "customValidatorSuccessAsyncValidator",
       },
       Object {
         "async": false,
@@ -1101,8 +1493,8 @@ Array [
             ],
           },
         ],
-        "modelClassName": "CutomValidatorImported",
-        "name": "cutomValidatorImportedValidator",
+        "modelClassName": "CustomValidatorImported",
+        "name": "customValidatorImportedValidator",
       },
       Object {
         "async": false,
@@ -1131,8 +1523,8 @@ Array [
             ],
           },
         ],
-        "modelClassName": "CutomValidatorExported",
-        "name": "cutomValidatorExportedValidator",
+        "modelClassName": "CustomValidatorExported",
+        "name": "customValidatorExportedValidator",
       },
       Object {
         "async": false,
@@ -1165,8 +1557,8 @@ Array [
             ],
           },
         ],
-        "modelClassName": "CutomValidatorWhichUsesImportedEntity",
-        "name": "cutomValidatorWhichUsesImportedEntityValidator",
+        "modelClassName": "CustomValidatorWhichUsesImportedEntity",
+        "name": "customValidatorWhichUsesImportedEntityValidator",
       },
       Object {
         "async": false,
@@ -1401,7 +1793,7 @@ Array [
             "name": "someProperty",
             "optional": true,
             "type": Object {
-              "name": "CustomValidatorFailed",
+              "name": "CustomValidatorSuccess",
               "referencePath": "model.ts",
               "validationType": "nested",
             },
@@ -1459,6 +1851,156 @@ Array [
         ],
         "fields": Array [
           Object {
+            "decorators": Array [],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "unionTypes": Array [
+                Object {
+                  "name": "string",
+                  "validationType": "string",
+                },
+                Object {
+                  "name": "number",
+                  "validationType": "number",
+                },
+                Object {
+                  "name": "null",
+                  "validationType": "null",
+                },
+              ],
+              "validationType": "union",
+            },
+          },
+        ],
+        "name": "TypeValidatorOnUnionPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "unionTypes": Array [
+                Object {
+                  "name": "CustomValidatorFailed",
+                  "referencePath": "model.ts",
+                  "validationType": "nested",
+                },
+                Object {
+                  "name": "number",
+                  "validationType": "number",
+                },
+                Object {
+                  "name": "null",
+                  "validationType": "null",
+                },
+              ],
+              "validationType": "union",
+            },
+          },
+        ],
+        "name": "TypeValidatorOnUnionWithNestedPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "arrayOf": Object {
+                "name": "string",
+                "validationType": "string",
+              },
+              "validationType": "array",
+            },
+          },
+        ],
+        "name": "TypeValidatorOnArrayPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "unionTypes": Array [
+                Object {
+                  "name": "null",
+                  "validationType": "null",
+                },
+                Object {
+                  "name": "number",
+                  "validationType": "number",
+                },
+                Object {
+                  "arrayOf": Object {
+                    "name": "string",
+                    "validationType": "string",
+                  },
+                  "validationType": "array",
+                },
+              ],
+              "validationType": "union",
+            },
+          },
+        ],
+        "name": "TypeValidatorOnUnionWithArrayPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "arrayOf": Object {
+                "name": "CustomValidatorSuccess",
+                "referencePath": "model.ts",
+                "validationType": "nested",
+              },
+              "validationType": "array",
+            },
+          },
+        ],
+        "name": "TypeValidatorOnArrayOfNestedTypePropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
             "decorators": Array [
               Object {
                 "arguments": Array [
@@ -1504,7 +2046,7 @@ Array [
             },
           },
         ],
-        "name": "CutomValidatorSuccess",
+        "name": "CustomValidatorSuccess",
       },
       Object {
         "decorators": Array [
@@ -1527,12 +2069,11 @@ Array [
             "optional": true,
             "type": Object {
               "name": "mock",
-              "referencePath": "model.ts",
               "validationType": "notSupported",
             },
           },
         ],
-        "name": "CutomValidatorOnNonPrimitiveStructure",
+        "name": "CustomValidatorOnNonPrimitiveStructure",
       },
       Object {
         "decorators": Array [
@@ -1559,7 +2100,7 @@ Array [
             },
           },
         ],
-        "name": "CutomValidatorSuccessAsync",
+        "name": "CustomValidatorSuccessAsync",
       },
       Object {
         "decorators": Array [
@@ -1586,7 +2127,7 @@ Array [
             },
           },
         ],
-        "name": "CutomValidatorImported",
+        "name": "CustomValidatorImported",
       },
       Object {
         "decorators": Array [
@@ -1613,7 +2154,7 @@ Array [
             },
           },
         ],
-        "name": "CutomValidatorExported",
+        "name": "CustomValidatorExported",
       },
       Object {
         "decorators": Array [
@@ -1644,7 +2185,7 @@ Array [
             },
           },
         ],
-        "name": "CutomValidatorWhichUsesImportedEntity",
+        "name": "CustomValidatorWhichUsesImportedEntity",
       },
       Object {
         "decorators": Array [
@@ -1903,166 +2444,6 @@ Array [
   },
   Object {
     "classes": Array [],
-    "functions": Array [
-      Object {
-        "isExported": true,
-        "name": "typeValidatorWithCustomMessageValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "typeValidatorOnNestedPropertyTypeValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "typeValidatorOnNullPropertyTypeValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "typeValidatorOnImportedEnumPropertyTypeValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "customValidatorFailedValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "customValidationFunction",
-      },
-      Object {
-        "isExported": true,
-        "name": "cutomValidatorSuccessValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "customValidationFunction",
-      },
-      Object {
-        "isExported": true,
-        "name": "cutomValidatorOnNonPrimitiveStructureValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "customValidationFunction",
-      },
-      Object {
-        "isExported": true,
-        "name": "cutomValidatorSuccessAsyncValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "customValidationFunction",
-      },
-      Object {
-        "isExported": true,
-        "name": "cutomValidatorImportedValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "cutomValidatorExportedValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "cutomValidatorWhichUsesImportedEntityValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "customValidationFunction",
-      },
-      Object {
-        "isExported": true,
-        "name": "ignoreValidationForNonPrimitivePropertyValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "ignoreValidationForPrimitivePropertyValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "ignoreValidationForPrimitivePropertyWithOtherDecoratorsValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "equalValidatorWithDefaultMessageValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "equalValidatorWithCustomMessageValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "equalValidatorForBooleanValidator",
-      },
-      Object {
-        "isExported": true,
-        "name": "equalToValidatorWithDefaultMessageValidator",
-      },
-    ],
-    "imports": Array [
-      Object {
-        "absPath": "ts-generate-validator",
-        "clauses": Array [
-          "GeneratedValidation",
-          "ValidationConfig",
-          "ValidationError",
-          "ValidationException",
-          "Data",
-          "UserContext",
-          "getConfig",
-          "mergeDeep",
-          "typeValidator",
-          "customValidator",
-          "equalValidator",
-          "equalToValidator",
-        ],
-      },
-      Object {
-        "absPath": "model",
-        "clauses": Array [
-          "TypeValidatorWithCustomMessage",
-          "TypeValidatorOnNestedPropertyType",
-          "TypeValidatorOnNullPropertyType",
-          "TypeValidatorOnImportedEnumPropertyType",
-          "CustomValidatorFailed",
-          "CutomValidatorSuccess",
-          "CutomValidatorOnNonPrimitiveStructure",
-          "CutomValidatorSuccessAsync",
-          "CutomValidatorImported",
-          "customValidationFuncExported",
-          "CutomValidatorExported",
-          "CutomValidatorWhichUsesImportedEntity",
-          "IgnoreValidationForNonPrimitiveProperty",
-          "IgnoreValidationForPrimitiveProperty",
-          "IgnoreValidationForPrimitivePropertyWithOtherDecorators",
-          "EqualValidatorWithDefaultMessage",
-          "EqualValidatorWithCustomMessage",
-          "EqualValidatorForBoolean",
-          "EqualToValidatorWithDefaultMessage",
-        ],
-      },
-      Object {
-        "absPath": "../../user/type/model",
-        "clauses": Array [
-          "UserType",
-        ],
-      },
-      Object {
-        "absPath": "customValidationFunc",
-        "clauses": Array [
-          "customValidationFuncImported",
-          "someEntityUsedInCustomValidator",
-        ],
-      },
-      Object {
-        "absPath": "../../../../src",
-        "clauses": Array [
-          "ValidationError",
-        ],
-      },
-    ],
-    "name": "src/generated/validators/model.ts",
-  },
-  Object {
-    "classes": Array [],
     "functions": Array [],
     "imports": Array [],
     "name": "../../user/type/model",
@@ -2184,18 +2565,6 @@ Array [
       },
     ],
     "name": "../../../../src/decorators",
-  },
-  Object {
-    "classes": Array [],
-    "functions": Array [],
-    "imports": Array [],
-    "name": "../../../../src",
-  },
-  Object {
-    "classes": Array [],
-    "functions": Array [],
-    "imports": Array [],
-    "name": "../../user/type/model",
   },
   Object {
     "classes": Array [],
