@@ -1,4 +1,4 @@
-import { cutFileExt, hasFileExt, isPackagePath, normalizeFileExt } from './../../utils/path';
+import { cutFileExt, hasFileExt, isPackagePath, normalizeFileExt, normalizePath } from './../../utils/path';
 import { IgnoreValidation } from './../../decorators/index';
 import { IssueError, ErrorInFile } from './../utils/error';
 import { ValidationType } from './../../validators/model';
@@ -226,7 +226,7 @@ const buildImportsMetadata = (nodes: ImportNode[]): ImportMetadata[] => {
   return nodes.map(({ clauses, absPathString }) => {
     return {
       clauses,
-      absPath: path.relative(process.cwd(), path.resolve(absPathString))
+      absPath: normalizePath(path.relative(process.cwd(), path.resolve(absPathString)))
     };
   });
 };

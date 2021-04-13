@@ -47,6 +47,8 @@ import {
   EqualToValidatorWithDefaultMessage
 } from './../../../model';
 
+import { customValidatorSuccessValidator, customValidatorFailedValidator } from './model';
+
 import { UserType } from './../../../../../user/type/model';
 
 import { customValidationFuncImported } from './../../../customValidationFunc';
@@ -1098,6 +1100,10 @@ Array [
       Object {
         "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnNestedPropertyType, TypeValidatorOnNullPropertyType, TypeValidatorOnImportedEnumPropertyType, TypeValidatorOnUnionPropertyType, TypeValidatorOnUnionWithNestedPropertyType, TypeValidatorOnArrayPropertyType, TypeValidatorOnUnionWithArrayPropertyType, TypeValidatorOnArrayOfNestedTypePropertyType, CustomValidatorFailed, CustomValidatorSuccess, CustomValidatorOnNonPrimitiveStructure, CustomValidatorSuccessAsync, CustomValidatorImported, customValidationFuncExported, CustomValidatorExported, CustomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
         "path": "./../../../model",
+      },
+      Object {
+        "clauses": "customValidatorSuccessValidator, customValidatorFailedValidator",
+        "path": "./model",
       },
       Object {
         "clauses": "UserType",
