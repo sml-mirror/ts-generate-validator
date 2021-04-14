@@ -2,7 +2,7 @@ import { outWarning } from './../utils/error';
 import { Environment } from 'nunjucks';
 
 export const setupFilters = (nsEnv: Environment): void => {
-  nsEnv.addFilter('typeDescFilter', (str: string, property: string) => {
+  nsEnv.addFilter('validatorPayloadValueFilter', (str: string, property: string) => {
     if (property !== 'typeDescription') {
       return str;
     }

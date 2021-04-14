@@ -49,8 +49,6 @@ export const getValidationTypeByTypeModel = (
       validationType: ValidationType.unknown,
       name: _typeModel.typeName
     };
-    // let validationType = ValidationType.unknown;
-    // let referencePath: string | undefined;
 
     if (primitiveValidationTypes.includes(_typeModel.typeName as any)) {
       typeMetadata.validationType = <PrimitiveValidationType>_typeModel.typeName;

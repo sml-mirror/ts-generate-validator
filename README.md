@@ -189,9 +189,11 @@ userValidator(data, { stopAtFirstError: true });
 
 ### Для свойств классов
 
-- **all types**
+- **all supported types** _(смотрите [поддерживаемые типы](#поддерживаемые-типы))_
 
   - `@TypeValidation(message: Message)` - заменяет стандартное сообщение об ошибке для валидатора типа.
+
+- **all types**
 
   - `@CustomValidation(validator: CustomValidator, message: Message)` - добавляет к свойству пользовательскую функцию-валидатор, которая принимает в качестве **первого аргумента** объект со следующими свойствами:
 
@@ -220,7 +222,7 @@ userValidator(data, { stopAtFirstError: true });
 
   - `@IgnoreValidation` - помечает свойство как игнорируемое в функции-валидаторе - оно не будет проверяться на соответствие типу, а любые примененные декораторы для дополнительной валидацией будут проигнорированы.
 
-- **number**
+- **number, number[]**
 
   - `@MinValidation(threshold: number, message?: Message)` - добавляет валидатор, который проверяет число на соответствие минимальному значению `threshold`(включительно).
 
@@ -242,7 +244,7 @@ userValidator(data, { stopAtFirstError: true });
 
   - `@EqualToValidation(propName: string, message?: Message)` - добавляет валидатор, который проверяет соответствие числа значению, содержащемуся в свойстве `propName`.
 
-- **string**
+- **string, string[]**
 
   - `@TrimValidation(message?: Message)` - добавляет валидатор, который проверяет отсутствие пробелов в начале и конце строки.
 

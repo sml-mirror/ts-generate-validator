@@ -1,7 +1,13 @@
 import { ValidationError } from './../codegen/utils/error';
 import { BaseValidator, ThresholdValidator, MatchValidator } from './model';
 
-export const trimValidator: BaseValidator = ({ property, propertyName, customMessage, config }) => {
+export const trimValidator: BaseValidator = (payload) => {
+  const { property, propertyName, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p) => trimValidator({ ...payload, property: p }));
+  }
+
   const msgFromConfig = config.messages?.string.trim;
 
   // https://stackoverflow.com/questions/38934328/regex-match-a-string-without-leading-and-trailing-spaces
@@ -11,7 +17,13 @@ export const trimValidator: BaseValidator = ({ property, propertyName, customMes
   }
 };
 
-export const lowercaseValidator: BaseValidator = ({ property, propertyName, customMessage, config }) => {
+export const lowercaseValidator: BaseValidator = (payload) => {
+  const { property, propertyName, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p) => lowercaseValidator({ ...payload, property: p }));
+  }
+
   const msgFromConfig = config.messages?.string.lowercase;
 
   if (String(property) !== String(property).toLocaleLowerCase()) {
@@ -20,7 +32,13 @@ export const lowercaseValidator: BaseValidator = ({ property, propertyName, cust
   }
 };
 
-export const uppercaseValidator: BaseValidator = ({ property, propertyName, customMessage, config }) => {
+export const uppercaseValidator: BaseValidator = (payload) => {
+  const { property, propertyName, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p) => uppercaseValidator({ ...payload, property: p }));
+  }
+
   const msgFromConfig = config.messages?.string.uppercase;
 
   if (String(property) !== String(property).toLocaleUpperCase()) {
@@ -29,13 +47,13 @@ export const uppercaseValidator: BaseValidator = ({ property, propertyName, cust
   }
 };
 
-export const minLengthValidator: ThresholdValidator = ({
-  property,
-  propertyName,
-  threshold,
-  customMessage,
-  config
-}) => {
+export const minLengthValidator: ThresholdValidator = (payload) => {
+  const { property, propertyName, threshold, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p) => minLengthValidator({ ...payload, property: p }));
+  }
+
   const msgFromConfig = config.messages?.string.minLength;
 
   if (String(property).length < threshold) {
@@ -46,13 +64,13 @@ export const minLengthValidator: ThresholdValidator = ({
   }
 };
 
-export const maxLengthValidator: ThresholdValidator = ({
-  property,
-  propertyName,
-  threshold,
-  customMessage,
-  config
-}) => {
+export const maxLengthValidator: ThresholdValidator = (payload) => {
+  const { property, propertyName, threshold, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p) => maxLengthValidator({ ...payload, property: p }));
+  }
+
   const msgFromConfig = config.messages?.string.maxLength;
 
   if (String(property).length > threshold) {
@@ -63,7 +81,13 @@ export const maxLengthValidator: ThresholdValidator = ({
   }
 };
 
-export const emailValidator: BaseValidator = ({ property, propertyName, config, customMessage }) => {
+export const emailValidator: BaseValidator = (payload) => {
+  const { property, propertyName, config, customMessage } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p) => emailValidator({ ...payload, property: p }));
+  }
+
   const msgFromConfig = config.messages?.string.email;
 
   if (!String(property).match(config.emailRegExp)) {
@@ -72,7 +96,13 @@ export const emailValidator: BaseValidator = ({ property, propertyName, config, 
   }
 };
 
-export const urlValidator: BaseValidator = ({ property, propertyName, customMessage, config }) => {
+export const urlValidator: BaseValidator = (payload) => {
+  const { property, propertyName, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p) => urlValidator({ ...payload, property: p }));
+  }
+
   const msgFromConfig = config.messages?.string.url;
 
   // https://github.com/jquense/yup/blob/master/src/string.ts
@@ -84,7 +114,13 @@ export const urlValidator: BaseValidator = ({ property, propertyName, customMess
   }
 };
 
-export const matchValidator: MatchValidator = ({ property, propertyName, regexp, customMessage, config }) => {
+export const matchValidator: MatchValidator = (payload) => {
+  const { property, propertyName, regexp, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p) => matchValidator({ ...payload, property: p }));
+  }
+
   const msgFromConfig = config.messages?.string.match;
 
   if (!String(property).match(regexp)) {

@@ -1,7 +1,13 @@
 import { ValidationError } from './../codegen/utils/error';
 import { ThresholdValidator, BaseValidator, DependOnValidator } from './model';
 
-export const minValidator: ThresholdValidator = ({ property, propertyName, threshold, customMessage, config }) => {
+export const minValidator: ThresholdValidator = (payload) => {
+  const { property, propertyName, threshold, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p) => minValidator({ ...payload, property: p }));
+  }
+
   const msgFromConfig = config.messages?.number.min;
 
   if (property < threshold) {
@@ -10,7 +16,13 @@ export const minValidator: ThresholdValidator = ({ property, propertyName, thres
   }
 };
 
-export const maxValidator: ThresholdValidator = ({ property, propertyName, threshold, customMessage, config }) => {
+export const maxValidator: ThresholdValidator = (payload) => {
+  const { property, propertyName, threshold, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p) => maxValidator({ ...payload, property: p }));
+  }
+
   const msgFromConfig = config.messages?.number.max;
 
   if (property > threshold) {
@@ -19,7 +31,13 @@ export const maxValidator: ThresholdValidator = ({ property, propertyName, thres
   }
 };
 
-export const negativeValidator: BaseValidator = ({ property, propertyName, customMessage, config }) => {
+export const negativeValidator: BaseValidator = (payload) => {
+  const { property, propertyName, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p) => negativeValidator({ ...payload, property: p }));
+  }
+
   const msgFromConfig = config.messages?.number.negative;
 
   if (property >= 0) {
@@ -28,7 +46,13 @@ export const negativeValidator: BaseValidator = ({ property, propertyName, custo
   }
 };
 
-export const positiveValidator: BaseValidator = ({ property, propertyName, customMessage, config }) => {
+export const positiveValidator: BaseValidator = (payload) => {
+  const { property, propertyName, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p) => positiveValidator({ ...payload, property: p }));
+  }
+
   const msgFromConfig = config.messages?.number.positive;
 
   if (property < 0) {
@@ -37,7 +61,13 @@ export const positiveValidator: BaseValidator = ({ property, propertyName, custo
   }
 };
 
-export const integerValidator: BaseValidator = ({ property, propertyName, customMessage, config }) => {
+export const integerValidator: BaseValidator = (payload) => {
+  const { property, propertyName, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p) => integerValidator({ ...payload, property: p }));
+  }
+
   const msgFromConfig = config.messages?.number.integer;
 
   if (property % 1 !== 0) {
@@ -46,7 +76,13 @@ export const integerValidator: BaseValidator = ({ property, propertyName, custom
   }
 };
 
-export const floatValidator: BaseValidator = ({ property, propertyName, customMessage, config }) => {
+export const floatValidator: BaseValidator = (payload) => {
+  const { property, propertyName, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p) => floatValidator({ ...payload, property: p }));
+  }
+
   const msgFromConfig = config.messages?.number.float;
 
   if (property % 1 === 0) {
@@ -55,14 +91,13 @@ export const floatValidator: BaseValidator = ({ property, propertyName, customMe
   }
 };
 
-export const lessThanValidator: DependOnValidator = ({
-  property,
-  propertyName,
-  data,
-  targetPropertyName,
-  customMessage,
-  config
-}) => {
+export const lessThanValidator: DependOnValidator = (payload) => {
+  const { property, propertyName, data, targetPropertyName, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p) => lessThanValidator({ ...payload, property: p }));
+  }
+
   const msgFromConfig = config.messages?.number.lessThan;
 
   if (property >= data[targetPropertyName]) {
@@ -71,14 +106,13 @@ export const lessThanValidator: DependOnValidator = ({
   }
 };
 
-export const moreThanValidator: DependOnValidator = ({
-  property,
-  propertyName,
-  data,
-  targetPropertyName,
-  customMessage,
-  config
-}) => {
+export const moreThanValidator: DependOnValidator = (payload) => {
+  const { property, propertyName, data, targetPropertyName, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p) => moreThanValidator({ ...payload, property: p }));
+  }
+
   const msgFromConfig = config.messages?.number.moreThan;
 
   if (property <= data[targetPropertyName]) {
