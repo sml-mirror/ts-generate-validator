@@ -362,8 +362,9 @@ const addImportsForCustomValidator = ({
     listOfPossibleImports.forEach((possibleImport) => {
       const matchedImportMetadata = inputFileImportsMetadata.find((im) => im.clauses.some((c) => c === possibleImport));
       if (matchedImportMetadata) {
-        const isPackageName = !isFile(normalizeFileExt(path.resolve(inputFilePath, matchedImportMetadata.absPath)));
-        const importPath = isPackageName ? matchedImportMetadata.absPath : path.resolve(matchedImportMetadata.absPath);
+        const resolvedPath = path.resolve(process.cwd(), matchedImportMetadata.absPath);
+        const isPackageName = !isFile(normalizeFileExt(resolvedPath));
+        const importPath = isPackageName ? matchedImportMetadata.absPath : resolvedPath;
         onImportAdd(importPath, possibleImport, isPackageName);
       }
     });
