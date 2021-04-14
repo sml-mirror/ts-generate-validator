@@ -1,3 +1,4 @@
+import { normalizeFileExt, isFile } from './../../utils/path';
 import { findAllMatches } from './../utils/regexp';
 import { buildOutputFileName, buildOutputFilePath } from './index';
 import { escapeString } from './../utils/string';
@@ -192,18 +193,28 @@ export const buildValidationFromClassMetadata = ({
           } as TypeValidatorPayloadRenderData;
         };
 
-        const value = buildTypeValidatorPayload(typeMetadata).typeDescription;
+        const { type, typeDescription } = buildTypeValidatorPayload(typeMetadata);
+        let value = typeof typeDescription === 'string' ? typeDescription : JSON.stringify(typeDescription, null, 2);
+        if (type === ValidationType.array) {
+          value = `${value} as TypeValidatorPayload`;
+          addImport(pkg.name, 'TypeValidatorPayload', true);
+        }
+        if (type === ValidationType.union) {
+          value = `${value} as TypeValidatorPayload[]`;
+          addImport(pkg.name, 'TypeValidatorPayload', true);
+        }
+
         validatorPayload.push({
           property: 'typeDescription',
-          value: typeof value === 'string' ? value : JSON.stringify(value, null, 2),
+          value,
           type: 'object'
         });
       }
 
       validatorPayload.push({
         property: 'type',
-        value: typeMetadata.validationType,
-        type: 'string'
+        value: `ValidationType.${typeMetadata.validationType}`,
+        type: 'object'
       });
 
       addImport(pkg.name, typeValidator.name, true);
@@ -351,7 +362,9 @@ const addImportsForCustomValidator = ({
     listOfPossibleImports.forEach((possibleImport) => {
       const matchedImportMetadata = inputFileImportsMetadata.find((im) => im.clauses.some((c) => c === possibleImport));
       if (matchedImportMetadata) {
-        onImportAdd(path.resolve(matchedImportMetadata.absPath), possibleImport);
+        const isPackageName = !isFile(normalizeFileExt(path.resolve(inputFilePath, matchedImportMetadata.absPath)));
+        const importPath = isPackageName ? matchedImportMetadata.absPath : path.resolve(matchedImportMetadata.absPath);
+        onImportAdd(importPath, possibleImport, isPackageName);
       }
     });
 

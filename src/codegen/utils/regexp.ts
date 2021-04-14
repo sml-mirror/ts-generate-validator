@@ -3,7 +3,7 @@ export const findAllMatches = (re: RegExp, src: string): string[] => {
   let result;
 
   do {
-    const result = re.exec(src);
+    result = re.exec(src);
     if (result) {
       matches.push(...result);
     }

@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .ts",
     "fix": "npm run lint -- --fix",
     "test": "jest",
-    "build": "tsc --resolveJsonModule --outDir dist src/bin.ts && shx cp -r ./src/codegen/view ./dist/src/codegen/ && shx mv ./dist/src/* ./dist/ && shx rm -f ./dist/package.json && shx rm -rf ./dist/src",
+    "build": "shx rm -rf ./dist && tsc --resolveJsonModule --outDir dist src/bin.ts && shx cp -r ./src/codegen/view ./dist/src/codegen/ && shx mv ./dist/src/* ./dist/ && shx rm -f ./dist/package.json && shx rm -rf ./dist/src",
     "bin": "node dist/bin.js"
   },
   "repository": {
