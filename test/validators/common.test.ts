@@ -122,6 +122,76 @@ describe('common validators', () => {
         return true;
       })
     ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        typeValidator({
+          property: ['a', 'b', 'c'],
+          type: ValidationType.array,
+          typeDescription: {
+            type: ValidationType.number
+          },
+          config,
+          data: { test: ['a', 'b', 'c'] },
+          propertyName: 'test'
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        typeValidator({
+          property: ['a', 'b', 'c'],
+          type: ValidationType.array,
+          typeDescription: {
+            type: ValidationType.string
+          },
+          config,
+          data: { test: ['a', 'b', 'c'] },
+          propertyName: 'test'
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        typeValidator({
+          property: 'a',
+          type: ValidationType.union,
+          typeDescription: [
+            {
+              type: ValidationType.boolean
+            },
+            {
+              type: ValidationType.number
+            }
+          ],
+          config,
+          data: { test: 'a' },
+          propertyName: 'test'
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        typeValidator({
+          property: 5,
+          type: ValidationType.union,
+          typeDescription: [
+            {
+              type: ValidationType.string
+            },
+            {
+              type: ValidationType.number
+            }
+          ],
+          config,
+          data: { test: 5 },
+          propertyName: 'test'
+        });
+      })
+    ).not.toThrowError();
   });
 
   test('equal validator', () => {
@@ -140,8 +210,33 @@ describe('common validators', () => {
     expect(
       jest.fn(() => {
         equalValidator({
+          property: [testData[propertyName]],
+          value: [testData[notEqualPropertyName]],
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        equalValidator({
           property: testData[propertyName],
           value: testData[propertyName],
+          config,
+          data: testData,
+          propertyName
+        });
+        return true;
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        equalValidator({
+          property: [testData[propertyName]],
+          value: [testData[propertyName]],
           config,
           data: testData,
           propertyName
@@ -167,6 +262,18 @@ describe('common validators', () => {
     expect(
       jest.fn(() => {
         equalToValidator({
+          property: [24],
+          targetPropertyName: 'abc',
+          config,
+          data: { abc: ['24'] },
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        equalToValidator({
           property: testData[propertyName],
           targetPropertyName: equalPropertyName,
           config,
@@ -174,6 +281,18 @@ describe('common validators', () => {
           propertyName
         });
         return true;
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        equalToValidator({
+          property: [24],
+          targetPropertyName: 'abc',
+          config,
+          data: { abc: [24] },
+          propertyName
+        });
       })
     ).not.toThrowError();
   });

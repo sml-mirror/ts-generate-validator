@@ -1,3 +1,4 @@
+import { ClassFieldBasicTypeMetadata } from './../../../src/codegen/parse/model';
 // import { prepareDataForRender } from './../../../src/codegen/prepare/index';
 import { ValidationType } from '../../../src/validators/model';
 import { parseInputFiles } from '../../../src/codegen/parse/index';
@@ -38,7 +39,7 @@ describe('codegen/raw/string', () => {
             fields.forEach(({ name: fieldName, type, optional, decorators }) => {
               if (fieldName === 'someProperty') {
                 expect(optional).toBeFalsy();
-                expect(type.referencePath).toBe(undefined);
+                expect((type as ClassFieldBasicTypeMetadata).referencePath).toBe(undefined);
                 expect(type.validationType).toBe(ValidationType.string);
                 const trimDecoratorIndex = decorators.findIndex(({ name }) => name === 'TrimValidation');
                 expect(trimDecoratorIndex).toBeGreaterThanOrEqual(0);
@@ -54,7 +55,7 @@ describe('codegen/raw/string', () => {
             fields.forEach(({ name: fieldName, type, optional, decorators }) => {
               if (fieldName === 'someProperty') {
                 expect(optional).toBeFalsy();
-                expect(type.referencePath).toBe(undefined);
+                expect((type as ClassFieldBasicTypeMetadata).referencePath).toBe(undefined);
                 expect(type.validationType).toBe(ValidationType.string);
                 const trimDecoratorIndex = decorators.findIndex(({ name }) => name === 'TrimValidation');
                 expect(trimDecoratorIndex).toBeGreaterThanOrEqual(0);
@@ -68,7 +69,7 @@ describe('codegen/raw/string', () => {
             fields.forEach(({ name: fieldName, type, optional, decorators }) => {
               if (fieldName === 'someProperty') {
                 expect(optional).toBeFalsy();
-                expect(type.referencePath).toBe(undefined);
+                expect((type as ClassFieldBasicTypeMetadata).referencePath).toBe(undefined);
                 expect(type.validationType).toBe(ValidationType.string);
                 const trimDecoratorIndex = decorators.findIndex(({ name }) => name === 'MinLengthValidation');
                 expect(trimDecoratorIndex).toBeGreaterThanOrEqual(0);
@@ -82,7 +83,7 @@ describe('codegen/raw/string', () => {
             fields.forEach(({ name: fieldName, type, optional, decorators }) => {
               if (fieldName === 'someProperty') {
                 expect(optional).toBeFalsy();
-                expect(type.referencePath).toBe(undefined);
+                expect((type as ClassFieldBasicTypeMetadata).referencePath).toBe(undefined);
                 expect(type.validationType).toBe(ValidationType.string);
                 const trimDecoratorIndex = decorators.findIndex(({ name }) => name === 'MatchValidation');
                 expect(trimDecoratorIndex).toBeGreaterThanOrEqual(0);

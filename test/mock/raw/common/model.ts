@@ -24,7 +24,7 @@ export class TypeValidatorWithCustomMessage {
 @Validation
 export class TypeValidatorOnNestedPropertyType {
   @TypeValidation('type custom message')
-  public someProperty?: CustomValidatorFailed;
+  public someProperty?: CustomValidatorSuccess;
 }
 
 @Validation
@@ -35,6 +35,31 @@ export class TypeValidatorOnNullPropertyType {
 @Validation
 export class TypeValidatorOnImportedEnumPropertyType {
   public someProperty?: UserType;
+}
+
+@Validation
+export class TypeValidatorOnUnionPropertyType {
+  public someProperty: string | number | null = null;
+}
+
+@Validation
+export class TypeValidatorOnUnionWithNestedPropertyType {
+  public someProperty: CustomValidatorFailed | number | null = null;
+}
+
+@Validation
+export class TypeValidatorOnArrayPropertyType {
+  public someProperty: string[] = [];
+}
+
+@Validation
+export class TypeValidatorOnUnionWithArrayPropertyType {
+  public someProperty: null | number | string[] = null;
+}
+
+@Validation
+export class TypeValidatorOnArrayOfNestedTypePropertyType {
+  public someProperty: CustomValidatorSuccess[] = [];
 }
 
 /**
@@ -49,25 +74,25 @@ export class CustomValidatorFailed {
 }
 
 @Validation
-export class CutomValidatorSuccess {
+export class CustomValidatorSuccess {
   @CustomValidation(() => undefined)
   public someProperty?: number;
 }
 
 @Validation
-export class CutomValidatorOnNonPrimitiveStructure {
+export class CustomValidatorOnNonPrimitiveStructure {
   @CustomValidation(() => undefined)
   public someProperty?: Record<string, any> & { a: number };
 }
 
 @Validation
-export class CutomValidatorSuccessAsync {
+export class CustomValidatorSuccessAsync {
   @CustomValidation(async (): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), 300)))
   public someProperty?: number;
 }
 
 @Validation
-export class CutomValidatorImported {
+export class CustomValidatorImported {
   @CustomValidation(customValidationFuncImported)
   public someProperty?: number;
 }
@@ -75,13 +100,13 @@ export class CutomValidatorImported {
 export const customValidationFuncExported = (): void => undefined;
 
 @Validation
-export class CutomValidatorExported {
+export class CustomValidatorExported {
   @CustomValidation(customValidationFuncExported)
   public someProperty?: number;
 }
 
 @Validation
-export class CutomValidatorWhichUsesImportedEntity {
+export class CustomValidatorWhichUsesImportedEntity {
   @CustomValidation(({ property, propertyName }) => {
     if (property !== someEntityUsedInCustomValidator) {
       throw new ValidationError(propertyName as string, 'some error message');

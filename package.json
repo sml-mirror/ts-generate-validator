@@ -1,6 +1,6 @@
 {
   "name": "ts-generate-validator",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Task to generate validation functions to check whether JSON data conforms to a schema described as typescript classes",
   "main": "src/index.ts",
   "bin": {
@@ -58,7 +58,7 @@
     "nunjucks": "3.2.3",
     "path": "0.12.7",
     "prettier": "2.2.1",
-    "ts-file-parser": "0.0.18"
+    "ts-file-parser": "0.0.20"
   },
   "husky": {
     "hooks": {

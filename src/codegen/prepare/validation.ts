@@ -1,14 +1,15 @@
+import { findAllMatches } from './../utils/regexp';
 import { buildOutputFileName, buildOutputFilePath } from './index';
 import { escapeString } from './../utils/string';
 import { decoratorNameToValidationItemData } from './validationItem';
 import { handleError, ErrorInFile, IssueError } from './../utils/error';
-import { ValidationType } from './../../validators/model';
+import { ValidationType, primitiveValidationTypes } from './../../validators/model';
 import { requiredOneOfValidator, typeValidator } from './../../validators/common';
 import { RequiredOneOfValidation, CustomValidation, IgnoreValidation, TypeValidation } from './../../decorators/index';
 import { PreparedValidationItem, PreparedValidatorPayloadItem } from './model';
 import { PreparedValidation } from './model';
-import { ClassMetadata, ImportMetadata, FunctionMetadata } from './../parse/model';
-import { CodegenConfig } from './../../config/model';
+import { ClassMetadata, FunctionMetadata, ClassFieldTypeMetadata, ImportMetadata } from './../parse/model';
+import { CodegenConfig, SeverityLevel } from './../../config/model';
 import * as pkg from '../../../package.json';
 import * as path from 'path';
 import { Arg } from 'ts-file-parser';
@@ -77,18 +78,6 @@ export const buildValidationFromClassMetadata = ({
       return;
     }
 
-    // Not supported validation
-    if (typeMetadata.validationType === ValidationType.notSupported) {
-      if (!decorators.find(({ name: decoratorName }) => decoratorName === CustomValidation.name)) {
-        const error = new ErrorInFile(
-          `Failed to create validation for "${cls.name}.${fieldName}". Type "${typeMetadata.name}" is not supported. Change field type or add "${IgnoreValidation.name}" decorator.`,
-          clsFileName
-        );
-        handleError(error.message, config.unknownPropertySeverityLevel);
-        return;
-      }
-    }
-
     // Type validation
     const { allowedValidationTypes } = decoratorNameToValidationItemData[TypeValidation.name];
     if (allowedValidationTypes.includes(typeMetadata.validationType)) {
@@ -104,31 +93,109 @@ export const buildValidationFromClassMetadata = ({
           type: 'string'
         });
       }
-      if (
-        typeMetadata.validationType === ValidationType.enum ||
-        typeMetadata.validationType === ValidationType.nested
-      ) {
-        if (!typeMetadata.referencePath || !typeMetadata.name) {
-          throw new IssueError(
-            `Failed to create validation for "${cls.name}.${fieldName}" -> "${typeMetadata.validationType}" validation type requires "referencePath" and "name" filled in metadata, but some of them is empty.`
-          );
-        }
 
-        const refPath = typeMetadata.referencePath;
-        const importPath =
-          typeMetadata.validationType === ValidationType.nested
-            ? `${buildOutputFilePath({ inputFileName: refPath, config })}/${buildOutputFileName(refPath)}`
-            : refPath;
-        const typeDescription =
-          typeMetadata.validationType === ValidationType.nested
-            ? getValidationName(typeMetadata.name)
-            : typeMetadata.name;
+      if (!primitiveValidationTypes.includes(typeMetadata.validationType as any)) {
+        type TypeValidatorPayloadRenderData =
+          | {
+              type: Exclude<
+                ValidationType,
+                ValidationType.enum | ValidationType.nested | ValidationType.array | ValidationType.union
+              >;
+              typeDescription: undefined;
+            }
+          | {
+              type: ValidationType.enum;
+              typeDescription: string;
+            }
+          | {
+              type: ValidationType.nested;
+              typeDescription: string;
+            }
+          | {
+              type: ValidationType.array;
+              typeDescription: TypeValidatorPayloadRenderData;
+            }
+          | {
+              type: ValidationType.union;
+              typeDescription: TypeValidatorPayloadRenderData[];
+            };
+        const buildTypeValidatorPayload = (typeMetadata: ClassFieldTypeMetadata): TypeValidatorPayloadRenderData => {
+          // Not supported validation
+          if (typeMetadata.validationType === ValidationType.notSupported) {
+            let severityLevel = config.unknownPropertySeverityLevel;
 
-        addImport(path.resolve(importPath), typeDescription, false);
+            if (decorators.find(({ name: decoratorName }) => decoratorName === CustomValidation.name)) {
+              severityLevel = Math.min(severityLevel, SeverityLevel.warning);
+            }
 
+            const error = new ErrorInFile(
+              `Failed to create validation for "${cls.name}.${fieldName}". Type "${typeMetadata.name}" is not supported. Change field type or add "${IgnoreValidation.name}" decorator.`,
+              clsFileName
+            );
+            handleError(error.message, severityLevel);
+
+            return {
+              type: typeMetadata.validationType
+            } as TypeValidatorPayloadRenderData;
+          }
+
+          if (typeMetadata.validationType === ValidationType.array) {
+            return {
+              type: ValidationType.array,
+              typeDescription: buildTypeValidatorPayload(typeMetadata.arrayOf)
+            };
+          }
+
+          if (typeMetadata.validationType === ValidationType.union) {
+            return {
+              type: ValidationType.union,
+              typeDescription: typeMetadata.unionTypes.map(buildTypeValidatorPayload)
+            };
+          }
+
+          if (primitiveValidationTypes.includes(typeMetadata.validationType as any)) {
+            return {
+              type: typeMetadata.validationType
+            } as TypeValidatorPayloadRenderData;
+          }
+
+          if (!typeMetadata.referencePath || !typeMetadata.name) {
+            throw new IssueError(
+              `Failed to create validation for "${cls.name}.${fieldName}" -> "${typeMetadata.validationType}" validation type requires "referencePath" and "name" filled in metadata, but some of them is empty.`
+            );
+          }
+
+          if (
+            typeMetadata.validationType !== ValidationType.enum &&
+            typeMetadata.validationType !== ValidationType.nested
+          ) {
+            throw new IssueError(
+              `Failed to create validation for "${cls.name}.${fieldName}" -> "${typeMetadata.validationType}" can't be handled by "buildTypeValidatorPayload" method.`
+            );
+          }
+
+          const refPath = typeMetadata.referencePath;
+          const importPath =
+            typeMetadata.validationType === ValidationType.nested
+              ? `${buildOutputFilePath({ inputFileName: refPath, config })}/${buildOutputFileName(refPath)}`
+              : refPath;
+          const typeDescription =
+            typeMetadata.validationType === ValidationType.nested
+              ? getValidationName(typeMetadata.name)
+              : typeMetadata.name;
+
+          addImport(path.resolve(importPath), typeDescription, false);
+
+          return {
+            type: typeMetadata.validationType,
+            typeDescription
+          } as TypeValidatorPayloadRenderData;
+        };
+
+        const value = buildTypeValidatorPayload(typeMetadata).typeDescription;
         validatorPayload.push({
           property: 'typeDescription',
-          value: typeDescription,
+          value: typeof value === 'string' ? value : JSON.stringify(value, null, 2),
           type: 'object'
         });
       }
@@ -173,7 +240,26 @@ export const buildValidationFromClassMetadata = ({
       ];
 
       // Decorator misused
-      if (!allowedValidationTypes.includes(typeMetadata.validationType) && decoratorName !== CustomValidation.name) {
+      let isDecoratorAllowed = allowedValidationTypes.includes(typeMetadata.validationType);
+      if (
+        isDecoratorAllowed &&
+        typeMetadata.validationType === ValidationType.array &&
+        allowedValidationTypes.length === 2
+      ) {
+        if (
+          allowedValidationTypes.includes(ValidationType.string) &&
+          typeMetadata.arrayOf?.validationType !== ValidationType.string
+        ) {
+          isDecoratorAllowed = false;
+        }
+        if (
+          allowedValidationTypes.includes(ValidationType.number) &&
+          typeMetadata.arrayOf?.validationType !== ValidationType.number
+        ) {
+          isDecoratorAllowed = false;
+        }
+      }
+      if (!isDecoratorAllowed) {
         throw new ErrorInFile(
           `Decorator "${validatorName}" can't be used on "${cls.name}.${fieldName}" of type "${
             typeMetadata.validationType
@@ -259,18 +345,9 @@ const addImportsForCustomValidator = ({
   // Case #1: inline function
   if (func.match(/^(async\s*){0,1}function\s*[(]{1}/) || func.match(/^(async\s*){0,1}.+(=>).+/)) {
     // Find all possible entities, which may be imported
-    const re = /\w+/gm;
-    const listOfPossibleImports: string[] = [];
-    let m;
+    const listOfPossibleImports = findAllMatches(/\w+/gm, func);
 
-    do {
-      m = re.exec(func);
-      if (m) {
-        listOfPossibleImports.push(...m);
-      }
-    } while (m);
-
-    // For each found entity -> add import
+    // For each found entity -> try to add import
     listOfPossibleImports.forEach((possibleImport) => {
       const matchedImportMetadata = inputFileImportsMetadata.find((im) => im.clauses.some((c) => c === possibleImport));
       if (matchedImportMetadata) {
@@ -281,7 +358,7 @@ const addImportsForCustomValidator = ({
     return;
   }
 
-  // Case #2: function in model file
+  // Case #2: function in same model file
   const foundFuncMeta = inputFileFunctionsMetadata.find(({ name }) => name === func);
   if (foundFuncMeta) {
     if (foundFuncMeta.isExported) {

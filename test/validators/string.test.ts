@@ -39,6 +39,17 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         trimValidator({
+          property: [' lorem ipsum'],
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        trimValidator({
           property: 'lorem ipsum ',
           config,
           data: testData,
@@ -50,7 +61,29 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         trimValidator({
+          property: ['lorem ipsum '],
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        trimValidator({
           property: 'lorem ipsum',
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        trimValidator({
+          property: ['lorem ipsum'],
           config,
           data: testData,
           propertyName
@@ -74,6 +107,17 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         lowercaseValidator({
+          property: ['LOREM IPSUM'],
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        lowercaseValidator({
           property: 'loRem ipsUm',
           config,
           data: testData,
@@ -85,7 +129,29 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         lowercaseValidator({
+          property: ['loRem ipsUm'],
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        lowercaseValidator({
           property: 'lorem ipsum',
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        lowercaseValidator({
+          property: ['lorem ipsum'],
           config,
           data: testData,
           propertyName
@@ -109,6 +175,17 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         uppercaseValidator({
+          property: ['lorem ipsum'],
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        uppercaseValidator({
           property: 'LorEm ipsuM',
           config,
           data: testData,
@@ -120,7 +197,29 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         uppercaseValidator({
+          property: ['LorEm ipsuM'],
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        uppercaseValidator({
           property: 'LOREM IPSUM',
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        uppercaseValidator({
+          property: ['LOREM IPSUM'],
           config,
           data: testData,
           propertyName
@@ -145,6 +244,18 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         minLengthValidator({
+          property: ['lorem'],
+          threshold: 10,
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        minLengthValidator({
           property: 'lorem ipsum',
           threshold: 11,
           config,
@@ -157,7 +268,31 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         minLengthValidator({
+          property: ['lorem ipsum'],
+          threshold: 11,
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        minLengthValidator({
           property: 'lorem ipsum',
+          threshold: 6,
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        minLengthValidator({
+          property: ['lorem ipsum'],
           threshold: 6,
           config,
           data: testData,
@@ -183,6 +318,18 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         maxLengthValidator({
+          property: ['lorem'],
+          threshold: 4,
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        maxLengthValidator({
           property: 'lorem ipsum',
           threshold: 11,
           config,
@@ -195,7 +342,31 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         maxLengthValidator({
+          property: ['lorem ipsum'],
+          threshold: 11,
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        maxLengthValidator({
           property: 'lorem ipsum',
+          threshold: 16,
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        maxLengthValidator({
+          property: ['lorem ipsum'],
           threshold: 16,
           config,
           data: testData,
@@ -220,6 +391,17 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         emailValidator({
+          property: ['lorem'],
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        emailValidator({
           property: 'lorem@dawdaw',
           config,
           data: testData,
@@ -231,7 +413,29 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         emailValidator({
+          property: ['lorem@dawdaw'],
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        emailValidator({
           property: 'john@gmail.com',
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        emailValidator({
+          property: ['john@gmail.com'],
           config,
           data: testData,
           propertyName
@@ -255,7 +459,29 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         urlValidator({
+          property: ['lorem'],
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        urlValidator({
           property: 'example.ru',
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        urlValidator({
+          property: ['example.ru'],
           config,
           data: testData,
           propertyName
@@ -277,7 +503,29 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         urlValidator({
+          property: ['https://google.com'],
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        urlValidator({
           property: '//www.github.com/',
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        urlValidator({
+          property: ['//www.github.com/'],
           config,
           data: testData,
           propertyName
@@ -302,7 +550,31 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         matchValidator({
+          property: ['lorem'],
+          regexp: /^lorem ipsum$/,
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        matchValidator({
           property: 'lorem ipsum',
+          regexp: /^lorem ipsum$/,
+          config,
+          data: testData,
+          propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        matchValidator({
+          property: ['lorem ipsum'],
           regexp: /^lorem ipsum$/,
           config,
           data: testData,

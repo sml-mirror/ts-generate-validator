@@ -1,4 +1,4 @@
-import { cutFileExt, hasFileExt, isPackagePath, normalizeFileExt } from './../../utils/path';
+import { cutFileExt, hasFileExt, isPackagePath, normalizeFileExt, normalizePath } from './../../utils/path';
 import { IgnoreValidation } from './../../decorators/index';
 import { IssueError, ErrorInFile } from './../utils/error';
 import { ValidationType } from './../../validators/model';
@@ -8,6 +8,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {
   InputFileMetadata,
+  ClassFieldTypeMetadata,
+  ClassFieldBasicTypeMetadata,
   CustomTypeEntry,
   EnumDictionary,
   ImportMetadata,
@@ -78,47 +80,65 @@ export const resolveCustomTypes = ({
   customTypeEntries.forEach(({ fileIndex, classIndex, fieldIndex }) => {
     const fieldTypeMetadata = metadata[fileIndex].classes[classIndex].fields[fieldIndex].type;
 
-    // Trying to fix empty referencePath -> set to current file with model class
-    if (!fieldTypeMetadata.referencePath) {
-      fieldTypeMetadata.referencePath = metadata[fileIndex].name;
-    }
-
-    const { referencePath, name: typeName } = fieldTypeMetadata;
-    if (!referencePath || !typeName) {
-      fieldTypeMetadata.validationType = ValidationType.notSupported;
-      return;
-    }
-
-    if (enumDictionary[referencePath]?.includes(typeName)) {
-      fieldTypeMetadata.validationType = ValidationType.enum;
-      return;
-    }
-
-    const metadataItemWithNestedClass = metadata.find(({ name: fileName, classes }) => {
-      let fileNameMatched = true;
-
-      const fileNameHasExt = hasFileExt(fileName);
-      const refPathHasExt = hasFileExt(referencePath);
-
-      if (fileNameHasExt === refPathHasExt) {
-        fileNameMatched = fileName === referencePath;
-      } else {
-        fileNameMatched = cutFileExt(fileName) === cutFileExt(referencePath);
+    const resolveBasicType = (typeMetadata: ClassFieldBasicTypeMetadata): void => {
+      if (typeMetadata.validationType !== ValidationType.unknown) {
+        return;
       }
 
-      if (!fileNameMatched) {
-        return false;
+      // Trying to fix empty referencePath -> set to current file with model class
+      if (!typeMetadata.referencePath) {
+        typeMetadata.referencePath = metadata[fileIndex].name;
       }
 
-      return Boolean(classes.find(({ name: className }) => className === typeName));
-    });
-    if (metadataItemWithNestedClass) {
-      fieldTypeMetadata.validationType = ValidationType.nested;
-      fieldTypeMetadata.referencePath = metadataItemWithNestedClass.name;
-      return;
-    }
+      const { referencePath, name: typeName } = typeMetadata;
+      if (!referencePath || !typeName) {
+        typeMetadata.validationType = ValidationType.notSupported;
+        return;
+      }
 
-    fieldTypeMetadata.validationType = ValidationType.notSupported;
+      if (enumDictionary[referencePath]?.includes(typeName)) {
+        typeMetadata.validationType = ValidationType.enum;
+        return;
+      }
+
+      const metadataItemWithNestedClass = metadata.find(({ name: fileName, classes }) => {
+        let fileNameMatched = true;
+
+        const fileNameHasExt = hasFileExt(fileName);
+        const refPathHasExt = hasFileExt(referencePath);
+
+        if (fileNameHasExt === refPathHasExt) {
+          fileNameMatched = fileName === referencePath;
+        } else {
+          fileNameMatched = cutFileExt(fileName) === cutFileExt(referencePath);
+        }
+
+        if (!fileNameMatched) {
+          return false;
+        }
+
+        return Boolean(classes.find(({ name: className }) => className === typeName));
+      });
+      if (metadataItemWithNestedClass) {
+        typeMetadata.validationType = ValidationType.nested;
+        typeMetadata.referencePath = metadataItemWithNestedClass.name;
+        return;
+      }
+
+      typeMetadata.validationType = ValidationType.notSupported;
+    };
+
+    const resolveAnyType = (typeMetadata: ClassFieldTypeMetadata): void => {
+      if (typeMetadata.validationType === ValidationType.array) {
+        return resolveAnyType(typeMetadata.arrayOf);
+      }
+      if (typeMetadata.validationType === ValidationType.union) {
+        return typeMetadata.unionTypes.forEach(resolveAnyType);
+      }
+      return resolveBasicType(typeMetadata);
+    };
+
+    resolveAnyType(fieldTypeMetadata);
   });
 };
 
@@ -134,41 +154,71 @@ export const validateNestedClasses = ({
     const baseClassPath = metadata[fileIndex].name;
     const fieldTypeMetadata = metadata[fileIndex].classes[classIndex].fields[fieldIndex].type;
 
-    if (fieldTypeMetadata.validationType !== ValidationType.nested) {
-      return;
-    }
-
-    const checkNestedClasses = (className: string, classPath: string) => {
-      if (className === baseClassName && classPath === baseClassPath) {
-        const fieldName = metadata[fileIndex].classes[classIndex].fields[fieldIndex].name;
-        throw new ErrorInFile(
-          `Class "${baseClassName}" has circular dependency in field "${fieldName}" with type "${fieldTypeMetadata.name}". Сircular dependencies are not allowed because they lead to infinite validation. Change field type or add "@${IgnoreValidation.name}" decorator.`,
-          baseClassPath
-        );
+    const checkBasicType = (typeMetadata: ClassFieldBasicTypeMetadata): void => {
+      if (typeMetadata.validationType !== ValidationType.nested) {
+        return;
       }
 
-      const fileMetadata = metadata.find(({ name: filePath }) => filePath === classPath);
-      if (!fileMetadata) {
-        throw new IssueError(
-          `Referenced file metadata not found for nested class "${className}" (referenced file path: "${classPath}").`
-        );
-      }
-
-      const classMetadata = fileMetadata.classes.find(({ name }) => name === className);
-      if (!classMetadata) {
-        throw new IssueError(`Metadata not found for nested class "${className}" in file metadata "${classPath}").`);
-      }
-
-      classMetadata.fields.forEach(({ type: { name, validationType, referencePath } }) => {
-        if (validationType === ValidationType.nested && name && referencePath) {
-          checkNestedClasses(name, referencePath);
+      const checkNestedClasses = (className: string, classPath: string) => {
+        if (className === baseClassName && classPath === baseClassPath) {
+          const fieldName = metadata[fileIndex].classes[classIndex].fields[fieldIndex].name;
+          throw new ErrorInFile(
+            `Class "${baseClassName}" has circular dependency in field "${fieldName}" with type "${typeMetadata.name}". Сircular dependencies are not allowed because they lead to infinite validation. Change field type or add "@${IgnoreValidation.name}" decorator.`,
+            baseClassPath
+          );
         }
-      });
+
+        const _fileMetadata = metadata.find(({ name: filePath }) => filePath === classPath);
+        if (!_fileMetadata) {
+          throw new IssueError(
+            `Referenced file metadata not found for nested class "${className}" (referenced file path: "${classPath}").`
+          );
+        }
+
+        const _classMetadata = _fileMetadata.classes.find(({ name }) => name === className);
+        if (!_classMetadata) {
+          throw new IssueError(`Metadata not found for nested class "${className}" in file metadata "${classPath}").`);
+        }
+
+        _classMetadata.fields.forEach(({ type: _fieldTypeMetadata }) => {
+          const _checkBasicType = (_typeMetadata: ClassFieldBasicTypeMetadata): void => {
+            const { name: _name, validationType: _validationType, referencePath: _referencePath } = _typeMetadata;
+
+            if (_validationType === ValidationType.nested && _name && _referencePath) {
+              checkNestedClasses(_name, _referencePath);
+            }
+          };
+
+          const _checkAnyType = (_typeMetadata: ClassFieldTypeMetadata): void => {
+            if (_typeMetadata.validationType === ValidationType.array) {
+              return _checkAnyType(_typeMetadata.arrayOf);
+            }
+            if (_typeMetadata.validationType === ValidationType.union) {
+              return _typeMetadata.unionTypes.forEach(_checkAnyType);
+            }
+            return _checkBasicType(_typeMetadata);
+          };
+
+          _checkAnyType(_fieldTypeMetadata);
+        });
+      };
+
+      if (typeMetadata.name && typeMetadata.referencePath) {
+        checkNestedClasses(typeMetadata.name, typeMetadata.referencePath);
+      }
     };
 
-    if (fieldTypeMetadata.name && fieldTypeMetadata.referencePath) {
-      checkNestedClasses(fieldTypeMetadata.name, fieldTypeMetadata.referencePath);
-    }
+    const checkAnyType = (typeMetadata: ClassFieldTypeMetadata): void => {
+      if (typeMetadata.validationType === ValidationType.array) {
+        return checkAnyType(typeMetadata.arrayOf);
+      }
+      if (typeMetadata.validationType === ValidationType.union) {
+        return typeMetadata.unionTypes.forEach(checkAnyType);
+      }
+      return checkBasicType(typeMetadata);
+    };
+
+    checkAnyType(fieldTypeMetadata);
   });
 };
 
@@ -176,7 +226,7 @@ const buildImportsMetadata = (nodes: ImportNode[]): ImportMetadata[] => {
   return nodes.map(({ clauses, absPathString }) => {
     return {
       clauses,
-      absPath: path.relative(process.cwd(), path.resolve(absPathString))
+      absPath: normalizePath(path.relative(process.cwd(), path.resolve(absPathString)))
     };
   });
 };

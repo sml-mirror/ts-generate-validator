@@ -1,57 +1,102 @@
+import { PrimitiveValidationType } from './../../validators/model';
 import { normalizePath } from './../../utils/path';
 import * as path from 'path';
-import { FieldModel, BasicType, ImportNode } from 'ts-file-parser';
+import { FieldModel, ImportNode, TypeKind, UnionType, ArrayType, BasicType } from 'ts-file-parser';
 import { ValidationType } from '../../validators/model';
 import { ClassFieldTypeMetadata } from './model';
 import { primitiveValidationTypes } from '../../validators/model';
+
+type TypeModel = BasicType | ArrayType | UnionType;
 
 export const buildFieldTypeMetadata = (
   field: FieldModel,
   onCustomTypeFound: () => void,
   imports: ImportNode[]
 ): ClassFieldTypeMetadata => {
-  const fieldType = field.type as BasicType | null;
-  const type: ClassFieldTypeMetadata = {
-    validationType: ValidationType.unknown
-  };
+  let typeModel = field.type as TypeModel;
+  let onCustomTypeFoundCalled = false;
 
-  if (fieldType) {
-    const typeName = fieldType.typeName ?? 'undefined';
-    type.name = typeName;
-    type.validationType = getValidationTypeByTypeName(typeName);
+  if (!typeModel) {
+    if (field.valueConstraint.isCallConstraint) {
+      return {
+        validationType: ValidationType.notSupported,
+        name: 'function'
+      };
+    }
 
-    if (type.validationType === ValidationType.unknown) {
-      const externalPath = findExternalPathForCustomType(typeName, imports);
-      const resultPath = externalPath ?? (fieldType.modulePath ? path.resolve(fieldType.modulePath) : undefined);
+    typeModel = {
+      typeKind: TypeKind.BASIC,
+      typeName: typeof field.valueConstraint.value
+    } as BasicType;
+  }
 
-      if (resultPath) {
-        type.referencePath = normalizePath(path.relative(process.cwd(), resultPath));
+  return getValidationTypeByTypeModel(typeModel, imports, () => {
+    if (!onCustomTypeFoundCalled) {
+      onCustomTypeFound();
+      onCustomTypeFoundCalled = true;
+    }
+  });
+};
+
+export const getValidationTypeByTypeModel = (
+  typeModel: TypeModel,
+  imports: ImportNode[],
+  onCustomTypeFound: () => void
+): ClassFieldTypeMetadata => {
+  if (typeModel.typeKind === TypeKind.BASIC) {
+    const _typeModel = typeModel as BasicType;
+    const typeMetadata: ClassFieldTypeMetadata = {
+      validationType: ValidationType.unknown,
+      name: _typeModel.typeName
+    };
+
+    if (primitiveValidationTypes.includes(_typeModel.typeName as any)) {
+      typeMetadata.validationType = <PrimitiveValidationType>_typeModel.typeName;
+    }
+
+    const notSupportedTypes = ['undefined', 'symbol', 'function', 'object'];
+    if (notSupportedTypes.includes(_typeModel.typeName) || _typeModel.typeName === 'mock') {
+      typeMetadata.validationType = ValidationType.notSupported;
+    }
+
+    if (typeMetadata.validationType === ValidationType.unknown) {
+      let referencePath = findExternalPathForCustomType(_typeModel.typeName, imports);
+
+      if (!referencePath ?? _typeModel.modulePath) {
+        referencePath = path.resolve(_typeModel.modulePath);
+      }
+
+      if (referencePath) {
+        typeMetadata.referencePath = normalizePath(path.relative(process.cwd(), referencePath));
       }
 
       onCustomTypeFound();
     }
-  } else {
-    if (!field.valueConstraint.isCallConstraint) {
-      const typeName = typeof field.valueConstraint.value;
-      type.name = typeName;
-      type.validationType = getValidationTypeByTypeName(typeName);
-    }
+
+    return typeMetadata;
   }
 
-  return type;
-};
-
-export const getValidationTypeByTypeName = (typeName: string): ValidationType => {
-  if (primitiveValidationTypes.includes(typeName as any)) {
-    return <ValidationType>typeName;
+  if (typeModel.typeKind === TypeKind.ARRAY) {
+    const _typeModel = typeModel as ArrayType;
+    return {
+      validationType: ValidationType.array,
+      arrayOf: getValidationTypeByTypeModel(_typeModel.base as TypeModel, imports, onCustomTypeFound)
+    };
   }
 
-  const notSupportedTypes = ['undefined', 'symbol', 'function', 'object'];
-  if (notSupportedTypes.includes(typeName)) {
-    return ValidationType.notSupported;
+  if (typeModel.typeKind === TypeKind.UNION) {
+    const _typeModel = typeModel as UnionType;
+    return {
+      validationType: ValidationType.union,
+      unionTypes: _typeModel.options.map((opt) => {
+        return getValidationTypeByTypeModel(opt as TypeModel, imports, onCustomTypeFound);
+      })
+    };
   }
 
-  return ValidationType.unknown;
+  return {
+    validationType: ValidationType.notSupported
+  };
 };
 
 export const findExternalPathForCustomType = (typeName: string, imports: ImportNode[]): string | undefined => {

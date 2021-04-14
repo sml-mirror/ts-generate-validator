@@ -1,3 +1,4 @@
+import { TypeValidation } from './../decorators/index';
 import { ValidationError } from './../codegen/utils/error';
 import { AllowedCommonValidators } from './../localization/model';
 import { PartialValidationConfig } from '../../src/config/model';
@@ -5,6 +6,7 @@ import { IssueError } from './../codegen/utils/error';
 import { getEnumValues } from './../utils/enum';
 import {
   TypeValidator,
+  TypeValidatorPayload,
   CustomValidator,
   primitiveValidationTypes,
   EqualValidator,
@@ -44,10 +46,63 @@ export const typeValidator: TypeValidator = ({
   typeDescription,
   context,
   customMessage,
-  config
+  config,
+  ...rest
 }) => {
   const propertyType = property === null ? 'null' : typeof property;
   const msgFromConfig = getMessageFromConfig(type, CommonValidator.type, config);
+
+  if (type === ValidationType.union) {
+    if (!typeDescription || !Array.isArray(typeDescription)) {
+      throw new IssueError(
+        `Error: "typeDescription" is invalid or not provided for union type validation (propertyName: "${propertyName}")`
+      );
+    }
+
+    for (const unionTypeDesc of typeDescription) {
+      try {
+        typeValidator({
+          property,
+          propertyName,
+          type: unionTypeDesc.type,
+          typeDescription: unionTypeDesc.typeDescription,
+          context,
+          customMessage,
+          config,
+          ...rest
+        } as Parameters<TypeValidator>[0]);
+        // If validation succeed -> return
+        return;
+      } catch (err) {
+        // Do nothing
+      }
+    }
+
+    const defaultMessage = `Must be one of the following types: ${typeDescription
+      .map((desc) => desc.type)
+      .join(', ')}. But recieved property value is none of them.`;
+    throw new ValidationError(propertyName, customMessage ?? msgFromConfig ?? defaultMessage);
+  }
+
+  if (type === ValidationType.array) {
+    if (!property || !Array.isArray(property)) {
+      const defaultMessage = `Must be an array, but received value type is "${propertyType}"`;
+      throw new ValidationError(propertyName, customMessage ?? msgFromConfig ?? defaultMessage);
+    }
+
+    return property.forEach((item) =>
+      typeValidator({
+        property: item,
+        propertyName,
+        type: (typeDescription as TypeValidatorPayload).type,
+        typeDescription: (typeDescription as TypeValidatorPayload).typeDescription,
+        context,
+        customMessage,
+        config,
+        ...rest
+      } as Parameters<TypeValidator>[0])
+    );
+  }
 
   if (type === ValidationType.enum) {
     if (!typeDescription || typeof typeDescription !== 'object') {
@@ -75,7 +130,12 @@ export const typeValidator: TypeValidator = ({
 
   if (!primitiveValidationTypes.includes(type as any)) {
     throw new Error(
-      `Unexpected type to check - "${type}" (expected one of: ${primitiveValidationTypes
+      `Unexpected type to check - "${type}" (expected one of: ${[
+        ...primitiveValidationTypes,
+        ValidationType.array,
+        ValidationType.union,
+        ValidationType.nested
+      ]
         .map((t) => `"${t}"`)
         .join(', ')})`
     );
@@ -96,7 +156,13 @@ export const customValidator: CustomValidator = ({ customValidationFunction, ...
   customValidationFunction({ ...rest });
 };
 
-export const equalValidator: EqualValidator = ({ property, propertyName, value, customMessage, config }) => {
+export const equalValidator: EqualValidator = (payload) => {
+  const { property, propertyName, value, customMessage, config } = payload;
+
+  if (property && Array.isArray(property) && value && Array.isArray(value) && property.length === value.length) {
+    return property.forEach((p, i) => equalValidator({ ...payload, property: p, value: value[i] }));
+  }
+
   const msgFromConfig = getMessageFromConfig(typeof property, CommonValidator.equal, config);
 
   if (property !== value) {
@@ -105,14 +171,21 @@ export const equalValidator: EqualValidator = ({ property, propertyName, value, 
   }
 };
 
-export const equalToValidator: DependOnValidator = ({
-  property,
-  propertyName,
-  targetPropertyName,
-  data,
-  customMessage,
-  config
-}) => {
+export const equalToValidator: DependOnValidator = (payload) => {
+  const { property, propertyName, targetPropertyName, data, customMessage, config } = payload;
+
+  if (
+    property &&
+    Array.isArray(property) &&
+    data[targetPropertyName] &&
+    Array.isArray(data[targetPropertyName]) &&
+    property.length === data[targetPropertyName].length
+  ) {
+    return property.forEach((p, i) =>
+      equalToValidator({ ...payload, property: p, data: { [targetPropertyName]: data[targetPropertyName][i] } })
+    );
+  }
+
   const msgFromConfig = getMessageFromConfig(typeof property, CommonValidator.equalTo, config);
 
   if (property !== data[targetPropertyName]) {

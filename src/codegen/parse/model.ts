@@ -6,11 +6,26 @@ export interface InputFileDesc {
   parseClasses: boolean;
 }
 
-export interface ClassFieldTypeMetadata {
-  validationType: ValidationType;
+export type ClassFieldBasicTypeMetadata = {
+  validationType: Exclude<ValidationType, ValidationType.array | ValidationType.union>;
   referencePath?: string;
   name?: string;
-}
+};
+
+export type ClassFieldArrayTypeMetadata = {
+  validationType: ValidationType.array;
+  arrayOf: ClassFieldTypeMetadata;
+};
+
+export type ClassFieldUnionTypeMetadata = {
+  validationType: ValidationType.union;
+  unionTypes: ClassFieldTypeMetadata[];
+};
+
+export type ClassFieldTypeMetadata =
+  | ClassFieldBasicTypeMetadata
+  | ClassFieldArrayTypeMetadata
+  | ClassFieldUnionTypeMetadata;
 
 export interface ClassFieldMetadata {
   name: string;

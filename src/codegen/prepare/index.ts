@@ -23,14 +23,18 @@ export const prepareDataForRender = (
 
     const importMap = buildBaseImportMap();
     const handleImportAdd = (targetPath: string, clause: string, isPackageName?: boolean): void => {
-      const importPathAbs = path.relative(process.cwd(), targetPath);
-
-      if (filePathAbs === importPathAbs) {
-        return;
-      }
-
       isPackageName = isPackageName ?? isPackagePath(targetPath);
-      const importPath = isPackageName ? targetPath : normalizeImportPathForFile(filePath, targetPath);
+      let importPath = targetPath;
+
+      if (!isPackageName) {
+        const importPathAbs = normalizePath(path.relative(process.cwd(), importPath));
+
+        if (filePathAbs === importPathAbs) {
+          return;
+        }
+
+        importPath = normalizeImportPathForFile(filePath, targetPath);
+      }
 
       if (!importMap[importPath]) {
         importMap[importPath] = {};
