@@ -90,7 +90,7 @@ export const typeValidator: TypeValidator = ({
       throw new ValidationError(propertyName, customMessage ?? msgFromConfig ?? defaultMessage);
     }
 
-    property.forEach((item) =>
+    return property.forEach((item) =>
       typeValidator({
         property: item,
         propertyName,
@@ -156,7 +156,13 @@ export const customValidator: CustomValidator = ({ customValidationFunction, ...
   customValidationFunction({ ...rest });
 };
 
-export const equalValidator: EqualValidator = ({ property, propertyName, value, customMessage, config }) => {
+export const equalValidator: EqualValidator = (payload) => {
+  const { property, propertyName, value, customMessage, config } = payload;
+
+  if (property && Array.isArray(property) && value && Array.isArray(value) && property.length === value.length) {
+    return property.forEach((p, i) => equalValidator({ ...payload, property: p, value: value[i] }));
+  }
+
   const msgFromConfig = getMessageFromConfig(typeof property, CommonValidator.equal, config);
 
   if (property !== value) {
@@ -165,14 +171,21 @@ export const equalValidator: EqualValidator = ({ property, propertyName, value, 
   }
 };
 
-export const equalToValidator: DependOnValidator = ({
-  property,
-  propertyName,
-  targetPropertyName,
-  data,
-  customMessage,
-  config
-}) => {
+export const equalToValidator: DependOnValidator = (payload) => {
+  const { property, propertyName, targetPropertyName, data, customMessage, config } = payload;
+
+  if (
+    property &&
+    Array.isArray(property) &&
+    data[targetPropertyName] &&
+    Array.isArray(data[targetPropertyName]) &&
+    property.length === data[targetPropertyName].length
+  ) {
+    return property.forEach((p, i) =>
+      equalToValidator({ ...payload, property: p, data: { [targetPropertyName]: data[targetPropertyName][i] } })
+    );
+  }
+
   const msgFromConfig = getMessageFromConfig(typeof property, CommonValidator.equalTo, config);
 
   if (property !== data[targetPropertyName]) {

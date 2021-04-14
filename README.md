@@ -222,13 +222,17 @@ userValidator(data, { stopAtFirstError: true });
 
   - `@IgnoreValidation` - помечает свойство как игнорируемое в функции-валидаторе - оно не будет проверяться на соответствие типу, а любые примененные декораторы для дополнительной валидацией будут проигнорированы.
 
+- **boolean, number, string, null, enum, union(boolean, number, string, null), array(boolean, number, string, null)**
+
+  - `@EqualValidation(value: number, message?: Message)` - добавляет валидатор, который проверяет соответствие значения свойства - значению, переданному в первом аргументе.
+
+  - `@EqualToValidation(propName: string, message?: Message)` - добавляет валидатор, который проверяет соответствие значения свойства, на котором был использован декоратор - свойству, содержащемуся в свойстве `propName`.
+
 - **number, number[]**
 
   - `@MinValidation(threshold: number, message?: Message)` - добавляет валидатор, который проверяет число на соответствие минимальному значению `threshold`(включительно).
 
   - `@MaxValidation(threshold: number, message?: Message)` - добавляет валидатор, который проверяет число на соответствие максимальному значению `threshold`(включительно).
-
-  - `@EqualValidation(value: number, message?: Message)` - добавляет валидатор, который проверяет соответствие числа значению, переданному в первом аргументе.
 
   - `@NegativeValidation(message?: Message)` - добавляет валидатор, который проверяет - является ли число отрицательным.
 
@@ -241,8 +245,6 @@ userValidator(data, { stopAtFirstError: true });
   - `@LessThanValidation(propName: string, message?: Message)` - добавляет валидатор, который проверяет - является ли число меньшим, чем число в свойстве `propName`.
 
   - `@MoreThanValidation(propName: string, message?: Message)` - добавляет валидатор, который проверяет - является ли число большим, чем число в свойстве `propName`.
-
-  - `@EqualToValidation(propName: string, message?: Message)` - добавляет валидатор, который проверяет соответствие числа значению, содержащемуся в свойстве `propName`.
 
 - **string, string[]**
 
