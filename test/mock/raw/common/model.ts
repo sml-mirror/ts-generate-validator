@@ -33,6 +33,11 @@ export class TypeValidatorOnNullPropertyType {
 }
 
 @Validation
+export class TypeValidatorOnNullPropertyWithoutType {
+  public someProperty = null;
+}
+
+@Validation
 export class TypeValidatorOnImportedEnumPropertyType {
   public someProperty?: UserType;
 }
