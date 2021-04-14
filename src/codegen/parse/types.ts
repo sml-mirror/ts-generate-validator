@@ -24,9 +24,11 @@ export const buildFieldTypeMetadata = (
       };
     }
 
+    const typeName = field.valueConstraint.value === null ? ValidationType.null : typeof field.valueConstraint.value;
+
     typeModel = {
       typeKind: TypeKind.BASIC,
-      typeName: typeof field.valueConstraint.value
+      typeName
     } as BasicType;
   }
 

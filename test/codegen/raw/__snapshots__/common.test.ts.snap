@@ -24,6 +24,7 @@ import {
   TypeValidatorWithCustomMessage,
   TypeValidatorOnNestedPropertyType,
   TypeValidatorOnNullPropertyType,
+  TypeValidatorOnNullPropertyWithoutType,
   TypeValidatorOnImportedEnumPropertyType,
   TypeValidatorOnUnionPropertyType,
   TypeValidatorOnUnionWithNestedPropertyType,
@@ -135,6 +136,44 @@ export const typeValidatorOnNestedPropertyTypeValidator: GeneratedValidation = <
 
 export const typeValidatorOnNullPropertyTypeValidator: GeneratedValidation = <
   D extends Data = typeof TypeValidatorOnNullPropertyType,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: ValidationConfig,
+  context?: C
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+
+  try {
+    typeValidator({
+      property: data?.someProperty,
+      propertyName: 'someProperty',
+      data,
+      config,
+      context,
+
+      type: 'null'
+    });
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      throw err;
+    }
+
+    errors.push(err);
+
+    if (config.stopAtFirstError) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
+
+export const typeValidatorOnNullPropertyWithoutTypeValidator: GeneratedValidation = <
+  D extends Data = typeof TypeValidatorOnNullPropertyWithoutType,
   C extends UserContext = UserContext
 >(
   data: D,
@@ -1096,7 +1135,7 @@ Array [
         "path": "ts-generate-validator",
       },
       Object {
-        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnNestedPropertyType, TypeValidatorOnNullPropertyType, TypeValidatorOnImportedEnumPropertyType, TypeValidatorOnUnionPropertyType, TypeValidatorOnUnionWithNestedPropertyType, TypeValidatorOnArrayPropertyType, TypeValidatorOnUnionWithArrayPropertyType, TypeValidatorOnArrayOfNestedTypePropertyType, CustomValidatorFailed, CustomValidatorSuccess, CustomValidatorOnNonPrimitiveStructure, CustomValidatorSuccessAsync, CustomValidatorImported, customValidationFuncExported, CustomValidatorExported, CustomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
+        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnNestedPropertyType, TypeValidatorOnNullPropertyType, TypeValidatorOnNullPropertyWithoutType, TypeValidatorOnImportedEnumPropertyType, TypeValidatorOnUnionPropertyType, TypeValidatorOnUnionWithNestedPropertyType, TypeValidatorOnArrayPropertyType, TypeValidatorOnUnionWithArrayPropertyType, TypeValidatorOnArrayOfNestedTypePropertyType, CustomValidatorFailed, CustomValidatorSuccess, CustomValidatorOnNonPrimitiveStructure, CustomValidatorSuccessAsync, CustomValidatorImported, customValidationFuncExported, CustomValidatorExported, CustomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
         "path": "./../../../model",
       },
       Object {
@@ -1177,6 +1216,24 @@ Array [
         ],
         "modelClassName": "TypeValidatorOnNullPropertyType",
         "name": "typeValidatorOnNullPropertyTypeValidator",
+      },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "string",
+                "value": "null",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "TypeValidatorOnNullPropertyWithoutType",
+        "name": "typeValidatorOnNullPropertyWithoutTypeValidator",
       },
       Object {
         "async": false,
@@ -1820,6 +1877,26 @@ Array [
           },
         ],
         "name": "TypeValidatorOnNullPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "null",
+              "validationType": "null",
+            },
+          },
+        ],
+        "name": "TypeValidatorOnNullPropertyWithoutType",
       },
       Object {
         "decorators": Array [
