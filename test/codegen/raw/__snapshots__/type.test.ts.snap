@@ -10,6 +10,7 @@ import {
   ValidationConfig,
   ValidationError,
   ValidationException,
+  ValidationType,
   Data,
   UserContext,
   getConfig,
@@ -73,7 +74,7 @@ export const classWithEnumPropertyValidator: GeneratedValidation = <
 
       typeDescription: SomeEnum,
 
-      type: 'enum'
+      type: ValidationType.enum
     });
   } catch (err) {
     if (!(err instanceof ValidationError)) {
@@ -101,7 +102,7 @@ Array [
     "filePath": "src/generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, Data, UserContext, getConfig, mergeDeep, typeValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, ValidationType, Data, UserContext, getConfig, mergeDeep, typeValidator",
         "path": "ts-generate-validator",
       },
       Object {
@@ -130,8 +131,8 @@ Array [
               },
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "enum",
+                "type": "object",
+                "value": "ValidationType.enum",
               },
             ],
           },

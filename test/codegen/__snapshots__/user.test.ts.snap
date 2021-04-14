@@ -10,6 +10,7 @@ import {
   ValidationConfig,
   ValidationError,
   ValidationException,
+  ValidationType,
   Data,
   UserContext,
   getConfig,
@@ -63,7 +64,7 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
 
     minLengthValidator({
@@ -101,7 +102,7 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
 
     minLengthValidator({
@@ -145,7 +146,7 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
       config,
       context,
 
-      type: 'number'
+      type: ValidationType.number
     });
 
     minValidator({
@@ -183,7 +184,7 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
       config,
       context,
 
-      type: 'number'
+      type: ValidationType.number
     });
 
     lessThanValidator({
@@ -211,7 +212,7 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
       config,
       context,
 
-      type: 'boolean'
+      type: ValidationType.boolean
     });
 
     equalValidator({
@@ -231,7 +232,7 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
 
     emailValidator({
@@ -249,7 +250,7 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
 
     matchValidator({
@@ -269,7 +270,7 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
 
     urlValidator({
@@ -287,7 +288,7 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
 
     lowercaseValidator({
@@ -325,7 +326,7 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
 
     uppercaseValidator({
@@ -343,7 +344,7 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
       config,
       context,
 
-      type: 'number'
+      type: ValidationType.number
     });
 
     floatValidator({
@@ -363,7 +364,7 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
 
       typeDescription: UserType,
 
-      type: 'enum'
+      type: ValidationType.enum
     });
   } catch (err) {
     if (!(err instanceof ValidationError)) {
@@ -391,7 +392,7 @@ Array [
     "filePath": "src/generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, Data, UserContext, getConfig, mergeDeep, requiredOneOfValidator, typeValidator, minLengthValidator, maxLengthValidator, trimValidator, minValidator, maxValidator, integerValidator, lessThanValidator, positiveValidator, equalValidator, emailValidator, matchValidator, urlValidator, lowercaseValidator, uppercaseValidator, floatValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, ValidationType, Data, UserContext, getConfig, mergeDeep, requiredOneOfValidator, typeValidator, minLengthValidator, maxLengthValidator, trimValidator, minValidator, maxValidator, integerValidator, lessThanValidator, positiveValidator, equalValidator, emailValidator, matchValidator, urlValidator, lowercaseValidator, uppercaseValidator, floatValidator",
         "path": "ts-generate-validator",
       },
       Object {
@@ -424,8 +425,8 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
@@ -465,8 +466,8 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
@@ -522,8 +523,8 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "number",
+                "type": "object",
+                "value": "ValidationType.number",
               },
             ],
           },
@@ -563,8 +564,8 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "number",
+                "type": "object",
+                "value": "ValidationType.number",
               },
             ],
           },
@@ -592,8 +593,8 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "boolean",
+                "type": "object",
+                "value": "ValidationType.boolean",
               },
             ],
           },
@@ -615,8 +616,8 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
@@ -632,8 +633,8 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
@@ -655,8 +656,8 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
@@ -672,8 +673,8 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
@@ -713,8 +714,8 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
@@ -730,8 +731,8 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "number",
+                "type": "object",
+                "value": "ValidationType.number",
               },
             ],
           },
@@ -752,8 +753,8 @@ Array [
               },
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "enum",
+                "type": "object",
+                "value": "ValidationType.enum",
               },
             ],
           },

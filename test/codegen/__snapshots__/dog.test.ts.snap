@@ -10,6 +10,7 @@ import {
   ValidationConfig,
   ValidationError,
   ValidationException,
+  ValidationType,
   Data,
   UserContext,
   getConfig,
@@ -43,7 +44,7 @@ export const dogValidator: GeneratedValidation = <D extends Data = typeof Dog, C
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
 
     minLengthValidator({
@@ -73,7 +74,7 @@ export const dogValidator: GeneratedValidation = <D extends Data = typeof Dog, C
       config,
       context,
 
-      type: 'number'
+      type: ValidationType.number
     });
 
     minValidator({
@@ -117,7 +118,7 @@ export const dogValidator: GeneratedValidation = <D extends Data = typeof Dog, C
       config,
       context,
 
-      type: 'number'
+      type: ValidationType.number
     });
 
     lessThanValidator({
@@ -141,7 +142,7 @@ export const dogValidator: GeneratedValidation = <D extends Data = typeof Dog, C
 
       typeDescription: userValidator,
 
-      type: 'nested'
+      type: ValidationType.nested
     });
   } catch (err) {
     if (!(err instanceof ValidationError)) {
@@ -172,6 +173,7 @@ import {
   ValidationConfig,
   ValidationError,
   ValidationException,
+  ValidationType,
   Data,
   UserContext,
   getConfig,
@@ -197,7 +199,7 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
 
     typeValidator({
@@ -207,7 +209,7 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
   } catch (err) {
     if (!(err instanceof ValidationError)) {
@@ -235,7 +237,7 @@ Array [
     "filePath": "src/generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, Data, UserContext, getConfig, mergeDeep, typeValidator, minLengthValidator, maxLengthValidator, minValidator, maxValidator, integerValidator, lessThanValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, ValidationType, Data, UserContext, getConfig, mergeDeep, typeValidator, minLengthValidator, maxLengthValidator, minValidator, maxValidator, integerValidator, lessThanValidator",
         "path": "ts-generate-validator",
       },
       Object {
@@ -257,8 +259,8 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
@@ -292,8 +294,8 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "number",
+                "type": "object",
+                "value": "ValidationType.number",
               },
             ],
           },
@@ -349,8 +351,8 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "number",
+                "type": "object",
+                "value": "ValidationType.number",
               },
             ],
           },
@@ -382,8 +384,8 @@ Array [
               },
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "nested",
+                "type": "object",
+                "value": "ValidationType.nested",
               },
             ],
           },
@@ -398,7 +400,7 @@ Array [
     "filePath": "src/generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, Data, UserContext, getConfig, mergeDeep, typeValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, ValidationType, Data, UserContext, getConfig, mergeDeep, typeValidator",
         "path": "ts-generate-validator",
       },
       Object {
@@ -416,8 +418,8 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
@@ -427,8 +429,8 @@ Array [
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
