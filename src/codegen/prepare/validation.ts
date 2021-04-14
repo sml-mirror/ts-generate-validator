@@ -9,7 +9,7 @@ import { RequiredOneOfValidation, CustomValidation, IgnoreValidation, TypeValida
 import { PreparedValidationItem, PreparedValidatorPayloadItem } from './model';
 import { PreparedValidation } from './model';
 import { ClassMetadata, FunctionMetadata, ClassFieldTypeMetadata, ImportMetadata } from './../parse/model';
-import { CodegenConfig } from './../../config/model';
+import { CodegenConfig, SeverityLevel } from './../../config/model';
 import * as pkg from '../../../package.json';
 import * as path from 'path';
 import { Arg } from 'ts-file-parser';
@@ -78,18 +78,6 @@ export const buildValidationFromClassMetadata = ({
       return;
     }
 
-    // Not supported validation
-    if (typeMetadata.validationType === ValidationType.notSupported) {
-      if (!decorators.find(({ name: decoratorName }) => decoratorName === CustomValidation.name)) {
-        const error = new ErrorInFile(
-          `Failed to create validation for "${cls.name}.${fieldName}". Type "${typeMetadata.name}" is not supported. Change field type or add "${IgnoreValidation.name}" decorator.`,
-          clsFileName
-        );
-        handleError(error.message, config.unknownPropertySeverityLevel);
-        return;
-      }
-    }
-
     // Type validation
     const { allowedValidationTypes } = decoratorNameToValidationItemData[TypeValidation.name];
     if (allowedValidationTypes.includes(typeMetadata.validationType)) {
@@ -132,6 +120,25 @@ export const buildValidationFromClassMetadata = ({
               typeDescription: TypeValidatorPayloadRenderData[];
             };
         const buildTypeValidatorPayload = (typeMetadata: ClassFieldTypeMetadata): TypeValidatorPayloadRenderData => {
+          // Not supported validation
+          if (typeMetadata.validationType === ValidationType.notSupported) {
+            let severityLevel = config.unknownPropertySeverityLevel;
+
+            if (decorators.find(({ name: decoratorName }) => decoratorName === CustomValidation.name)) {
+              severityLevel = Math.min(severityLevel, SeverityLevel.warning);
+            }
+
+            const error = new ErrorInFile(
+              `Failed to create validation for "${cls.name}.${fieldName}". Type "${typeMetadata.name}" is not supported. Change field type or add "${IgnoreValidation.name}" decorator.`,
+              clsFileName
+            );
+            handleError(error.message, severityLevel);
+
+            return {
+              type: typeMetadata.validationType
+            } as TypeValidatorPayloadRenderData;
+          }
+
           if (typeMetadata.validationType === ValidationType.array) {
             return {
               type: ValidationType.array,
@@ -156,12 +163,6 @@ export const buildValidationFromClassMetadata = ({
             throw new IssueError(
               `Failed to create validation for "${cls.name}.${fieldName}" -> "${typeMetadata.validationType}" validation type requires "referencePath" and "name" filled in metadata, but some of them is empty.`
             );
-          }
-
-          if (typeMetadata.validationType === ValidationType.notSupported) {
-            return {
-              type: typeMetadata.validationType
-            } as TypeValidatorPayloadRenderData;
           }
 
           if (

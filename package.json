@@ -1,6 +1,6 @@
 {
   "name": "ts-generate-validator",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Task to generate validation functions to check whether JSON data conforms to a schema described as typescript classes",
   "main": "src/index.ts",
   "bin": {
