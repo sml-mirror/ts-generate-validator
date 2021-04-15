@@ -60,6 +60,7 @@ export interface BaseValidatorPayload<D extends Data, P extends keyof D, C exten
   property: D[P];
   propertyName: P;
   data: D;
+  optional?: boolean;
   config: ValidationConfig;
   context?: C;
   customMessage?: Message;
@@ -148,6 +149,7 @@ export type EqualValidator<
 
 export type DependOnValidatorPayload<D extends Data> = {
   targetPropertyName: keyof D;
+  allowUndefined?: boolean;
 };
 
 export type DependOnValidator<

@@ -83,6 +83,18 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         trimValidator({
+          property: undefined,
+          optional: true,
+          config,
+          data: { a: undefined },
+          propertyName: 'a'
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        trimValidator({
           property: ['lorem ipsum'],
           config,
           data: testData,
@@ -144,6 +156,18 @@ describe('string validators', () => {
           config,
           data: testData,
           propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        lowercaseValidator({
+          property: undefined,
+          optional: true,
+          config,
+          data: { a: undefined },
+          propertyName: 'a'
         });
       })
     ).not.toThrowError();
@@ -219,6 +243,18 @@ describe('string validators', () => {
     expect(
       jest.fn(() => {
         uppercaseValidator({
+          property: undefined,
+          optional: true,
+          config,
+          data: { a: undefined },
+          propertyName: 'a'
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        uppercaseValidator({
           property: ['LOREM IPSUM'],
           config,
           data: testData,
@@ -261,6 +297,19 @@ describe('string validators', () => {
           config,
           data: testData,
           propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        minLengthValidator({
+          property: undefined,
+          threshold: 11,
+          optional: true,
+          config,
+          data: { a: undefined },
+          propertyName: 'a'
         });
       })
     ).not.toThrowError();
@@ -335,6 +384,19 @@ describe('string validators', () => {
           config,
           data: testData,
           propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        maxLengthValidator({
+          property: undefined,
+          threshold: 11,
+          optional: true,
+          config,
+          data: { a: undefined },
+          propertyName: 'a'
         });
       })
     ).not.toThrowError();
@@ -428,6 +490,18 @@ describe('string validators', () => {
           config,
           data: testData,
           propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        emailValidator({
+          property: undefined,
+          optional: true,
+          config,
+          data: { a: undefined },
+          propertyName: 'a'
         });
       })
     ).not.toThrowError();
@@ -567,6 +641,19 @@ describe('string validators', () => {
           config,
           data: testData,
           propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        matchValidator({
+          property: undefined,
+          regexp: /^lorem ipsum$/,
+          optional: true,
+          config,
+          data: { a: undefined },
+          propertyName: 'a'
         });
       })
     ).not.toThrowError();

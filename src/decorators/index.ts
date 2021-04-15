@@ -63,13 +63,14 @@ export const CustomValidation = (validator: CustomValidationFunction) => emptyDe
 // @ts-ignore
 export const IgnoreValidation = (...args: any[]) => args[0];
 
+type EqualToValue = string | number | boolean | null | EqualToValue[];
 /**
  * Checks if property matches the value passed in the first argument
  * @param threshold maximum allowed property value
  * @param message error message
  */
 // @ts-ignore
-export const EqualValidation = (value: string | number | boolean, message?: Message) => emptyDecorator;
+export const EqualValidation = (value: EqualToValue, message?: Message) => emptyDecorator;
 
 /**
  * Checks if property value is equal to another property value
@@ -77,7 +78,7 @@ export const EqualValidation = (value: string | number | boolean, message?: Mess
  * @param message error message
  */
 // @ts-ignore
-export const EqualToValidation = (propName: string, message?: Message) => emptyDecorator;
+export const EqualToValidation = (propName: string, allowUndefined?: boolean, message?: Message) => emptyDecorator;
 
 /**
  * Number
@@ -133,7 +134,7 @@ export const FloatValidation = (message?: Message) => emptyDecorator;
  * @param message error message
  */
 // @ts-ignore
-export const LessThanValidation = (propName: string, message?: Message) => emptyDecorator;
+export const LessThanValidation = (propName: string, allowUndefined?: boolean, message?: Message) => emptyDecorator;
 
 /**
  * Checks if property value is more than another property value
@@ -141,7 +142,7 @@ export const LessThanValidation = (propName: string, message?: Message) => empty
  * @param message error message
  */
 // @ts-ignore
-export const MoreThanValidation = (propName: string, message?: Message) => emptyDecorator;
+export const MoreThanValidation = (propName: string, allowUndefined?: boolean, message?: Message) => emptyDecorator;
 
 /**
  * String

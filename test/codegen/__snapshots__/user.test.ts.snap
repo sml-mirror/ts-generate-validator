@@ -8,8 +8,10 @@ exports[`codegen/user create validators: generated validators at "src/generated/
 import {
   GeneratedValidation,
   ValidationConfig,
+  PartialValidationConfig,
   ValidationError,
   ValidationException,
+  ValidationType,
   Data,
   UserContext,
   getConfig,
@@ -39,8 +41,9 @@ import { User } from './../../../model';
 
 export const userValidator: GeneratedValidation = <D extends Data = typeof User, C extends UserContext = UserContext>(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -48,8 +51,9 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
   try {
     requiredOneOfValidator({
       property: data?.email,
-      propertyName: 'email',
+      propertyName: \`\${propNamePrefix}email\`,
       data,
+
       config,
       context,
 
@@ -58,18 +62,20 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
 
     typeValidator({
       property: data?.name,
-      propertyName: 'name',
+      propertyName: \`\${propNamePrefix}name\`,
       data,
+      optional: false,
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
 
     minLengthValidator({
       property: data?.name,
-      propertyName: 'name',
+      propertyName: \`\${propNamePrefix}name\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -78,8 +84,9 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
 
     maxLengthValidator({
       property: data?.name,
-      propertyName: 'name',
+      propertyName: \`\${propNamePrefix}name\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -88,26 +95,29 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
 
     trimValidator({
       property: data?.name,
-      propertyName: 'name',
+      propertyName: \`\${propNamePrefix}name\`,
       data,
+      optional: false,
       config,
       context
     });
 
     typeValidator({
       property: data?.surname,
-      propertyName: 'surname',
+      propertyName: \`\${propNamePrefix}surname\`,
       data,
+      optional: false,
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
 
     minLengthValidator({
       property: data?.surname,
-      propertyName: 'surname',
+      propertyName: \`\${propNamePrefix}surname\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -118,8 +128,9 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
 
     maxLengthValidator({
       property: data?.surname,
-      propertyName: 'surname',
+      propertyName: \`\${propNamePrefix}surname\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -130,8 +141,9 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
 
     trimValidator({
       property: data?.surname,
-      propertyName: 'surname',
+      propertyName: \`\${propNamePrefix}surname\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -140,18 +152,20 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
 
     typeValidator({
       property: data?.age,
-      propertyName: 'age',
+      propertyName: \`\${propNamePrefix}age\`,
       data,
+      optional: false,
       config,
       context,
 
-      type: 'number'
+      type: ValidationType.number
     });
 
     minValidator({
       property: data?.age,
-      propertyName: 'age',
+      propertyName: \`\${propNamePrefix}age\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -160,8 +174,9 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
 
     maxValidator({
       property: data?.age,
-      propertyName: 'age',
+      propertyName: \`\${propNamePrefix}age\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -170,26 +185,29 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
 
     integerValidator({
       property: data?.age,
-      propertyName: 'age',
+      propertyName: \`\${propNamePrefix}age\`,
       data,
+      optional: false,
       config,
       context
     });
 
     typeValidator({
       property: data?.workExperience,
-      propertyName: 'workExperience',
+      propertyName: \`\${propNamePrefix}workExperience\`,
       data,
+      optional: false,
       config,
       context,
 
-      type: 'number'
+      type: ValidationType.number
     });
 
     lessThanValidator({
       property: data?.workExperience,
-      propertyName: 'workExperience',
+      propertyName: \`\${propNamePrefix}workExperience\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -198,26 +216,29 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
 
     positiveValidator({
       property: data?.workExperience,
-      propertyName: 'workExperience',
+      propertyName: \`\${propNamePrefix}workExperience\`,
       data,
+      optional: false,
       config,
       context
     });
 
     typeValidator({
       property: data?.isActive,
-      propertyName: 'isActive',
+      propertyName: \`\${propNamePrefix}isActive\`,
       data,
+      optional: false,
       config,
       context,
 
-      type: 'boolean'
+      type: ValidationType.boolean
     });
 
     equalValidator({
       property: data?.isActive,
-      propertyName: 'isActive',
+      propertyName: \`\${propNamePrefix}isActive\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -226,36 +247,40 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
 
     typeValidator({
       property: data?.email,
-      propertyName: 'email',
+      propertyName: \`\${propNamePrefix}email\`,
       data,
+      optional: true,
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
 
     emailValidator({
       property: data?.email,
-      propertyName: 'email',
+      propertyName: \`\${propNamePrefix}email\`,
       data,
+      optional: true,
       config,
       context
     });
 
     typeValidator({
       property: data?.phone,
-      propertyName: 'phone',
+      propertyName: \`\${propNamePrefix}phone\`,
       data,
+      optional: true,
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
 
     matchValidator({
       property: data?.phone,
-      propertyName: 'phone',
+      propertyName: \`\${propNamePrefix}phone\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -264,44 +289,49 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
 
     typeValidator({
       property: data?.website,
-      propertyName: 'website',
+      propertyName: \`\${propNamePrefix}website\`,
       data,
+      optional: true,
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
 
     urlValidator({
       property: data?.website,
-      propertyName: 'website',
+      propertyName: \`\${propNamePrefix}website\`,
       data,
+      optional: true,
       config,
       context
     });
 
     typeValidator({
       property: data?.nickname,
-      propertyName: 'nickname',
+      propertyName: \`\${propNamePrefix}nickname\`,
       data,
+      optional: false,
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
 
     lowercaseValidator({
       property: data?.nickname,
-      propertyName: 'nickname',
+      propertyName: \`\${propNamePrefix}nickname\`,
       data,
+      optional: false,
       config,
       context
     });
 
     minLengthValidator({
       property: data?.nickname,
-      propertyName: 'nickname',
+      propertyName: \`\${propNamePrefix}nickname\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -310,8 +340,9 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
 
     maxLengthValidator({
       property: data?.nickname,
-      propertyName: 'nickname',
+      propertyName: \`\${propNamePrefix}nickname\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -320,50 +351,55 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
 
     typeValidator({
       property: data?.cardHolderName,
-      propertyName: 'cardHolderName',
+      propertyName: \`\${propNamePrefix}cardHolderName\`,
       data,
+      optional: false,
       config,
       context,
 
-      type: 'string'
+      type: ValidationType.string
     });
 
     uppercaseValidator({
       property: data?.cardHolderName,
-      propertyName: 'cardHolderName',
+      propertyName: \`\${propNamePrefix}cardHolderName\`,
       data,
+      optional: false,
       config,
       context
     });
 
     typeValidator({
       property: data?.insuranceRatio,
-      propertyName: 'insuranceRatio',
+      propertyName: \`\${propNamePrefix}insuranceRatio\`,
       data,
+      optional: false,
       config,
       context,
 
-      type: 'number'
+      type: ValidationType.number
     });
 
     floatValidator({
       property: data?.insuranceRatio,
-      propertyName: 'insuranceRatio',
+      propertyName: \`\${propNamePrefix}insuranceRatio\`,
       data,
+      optional: false,
       config,
       context
     });
 
     typeValidator({
       property: data?.userType,
-      propertyName: 'userType',
+      propertyName: \`\${propNamePrefix}userType\`,
       data,
+      optional: true,
       config,
       context,
 
       typeDescription: UserType,
 
-      type: 'enum'
+      type: ValidationType.enum
     });
   } catch (err) {
     if (!(err instanceof ValidationError)) {
@@ -391,7 +427,7 @@ Array [
     "filePath": "src/generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, Data, UserContext, getConfig, mergeDeep, requiredOneOfValidator, typeValidator, minLengthValidator, maxLengthValidator, trimValidator, minValidator, maxValidator, integerValidator, lessThanValidator, positiveValidator, equalValidator, emailValidator, matchValidator, urlValidator, lowercaseValidator, uppercaseValidator, floatValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, PartialValidationConfig, ValidationError, ValidationException, ValidationType, Data, UserContext, getConfig, mergeDeep, requiredOneOfValidator, typeValidator, minLengthValidator, maxLengthValidator, trimValidator, minValidator, maxValidator, integerValidator, lessThanValidator, positiveValidator, equalValidator, emailValidator, matchValidator, urlValidator, lowercaseValidator, uppercaseValidator, floatValidator",
         "path": "ts-generate-validator",
       },
       Object {
@@ -419,18 +455,20 @@ Array [
             ],
           },
           Object {
+            "optional": false,
             "propertyName": "name",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "name",
             "validatorName": "minLengthValidator",
             "validatorPayload": Array [
@@ -443,6 +481,7 @@ Array [
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "name",
             "validatorName": "maxLengthValidator",
             "validatorPayload": Array [
@@ -455,23 +494,26 @@ Array [
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "name",
             "validatorName": "trimValidator",
             "validatorPayload": Array [],
           },
           Object {
+            "optional": false,
             "propertyName": "surname",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "surname",
             "validatorName": "minLengthValidator",
             "validatorPayload": Array [
@@ -489,6 +531,7 @@ Array [
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "surname",
             "validatorName": "maxLengthValidator",
             "validatorPayload": Array [
@@ -506,6 +549,7 @@ Array [
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "surname",
             "validatorName": "trimValidator",
             "validatorPayload": Array [
@@ -517,18 +561,20 @@ Array [
             ],
           },
           Object {
+            "optional": false,
             "propertyName": "age",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "number",
+                "type": "object",
+                "value": "ValidationType.number",
               },
             ],
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "age",
             "validatorName": "minValidator",
             "validatorPayload": Array [
@@ -541,6 +587,7 @@ Array [
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "age",
             "validatorName": "maxValidator",
             "validatorPayload": Array [
@@ -553,23 +600,26 @@ Array [
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "age",
             "validatorName": "integerValidator",
             "validatorPayload": Array [],
           },
           Object {
+            "optional": false,
             "propertyName": "workExperience",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "number",
+                "type": "object",
+                "value": "ValidationType.number",
               },
             ],
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "workExperience",
             "validatorName": "lessThanValidator",
             "validatorPayload": Array [
@@ -582,23 +632,26 @@ Array [
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "workExperience",
             "validatorName": "positiveValidator",
             "validatorPayload": Array [],
           },
           Object {
+            "optional": false,
             "propertyName": "isActive",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "boolean",
+                "type": "object",
+                "value": "ValidationType.boolean",
               },
             ],
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "isActive",
             "validatorName": "equalValidator",
             "validatorPayload": Array [
@@ -610,35 +663,39 @@ Array [
             ],
           },
           Object {
+            "optional": true,
             "propertyName": "email",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
           Object {
             "async": false,
+            "optional": true,
             "propertyName": "email",
             "validatorName": "emailValidator",
             "validatorPayload": Array [],
           },
           Object {
+            "optional": true,
             "propertyName": "phone",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
           Object {
             "async": false,
+            "optional": true,
             "propertyName": "phone",
             "validatorName": "matchValidator",
             "validatorPayload": Array [
@@ -650,41 +707,46 @@ Array [
             ],
           },
           Object {
+            "optional": true,
             "propertyName": "website",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
           Object {
             "async": false,
+            "optional": true,
             "propertyName": "website",
             "validatorName": "urlValidator",
             "validatorPayload": Array [],
           },
           Object {
+            "optional": false,
             "propertyName": "nickname",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "nickname",
             "validatorName": "lowercaseValidator",
             "validatorPayload": Array [],
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "nickname",
             "validatorName": "minLengthValidator",
             "validatorPayload": Array [
@@ -697,6 +759,7 @@ Array [
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "nickname",
             "validatorName": "maxLengthValidator",
             "validatorPayload": Array [
@@ -708,40 +771,45 @@ Array [
             ],
           },
           Object {
+            "optional": false,
             "propertyName": "cardHolderName",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "string",
+                "type": "object",
+                "value": "ValidationType.string",
               },
             ],
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "cardHolderName",
             "validatorName": "uppercaseValidator",
             "validatorPayload": Array [],
           },
           Object {
+            "optional": false,
             "propertyName": "insuranceRatio",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "number",
+                "type": "object",
+                "value": "ValidationType.number",
               },
             ],
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "insuranceRatio",
             "validatorName": "floatValidator",
             "validatorPayload": Array [],
           },
           Object {
+            "optional": true,
             "propertyName": "userType",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -752,8 +820,8 @@ Array [
               },
               Object {
                 "property": "type",
-                "type": "string",
-                "value": "enum",
+                "type": "object",
+                "value": "ValidationType.enum",
               },
             ],
           },

@@ -1,3 +1,4 @@
+import { normalizeFileExt, isFile } from './../../utils/path';
 import { findAllMatches } from './../utils/regexp';
 import { buildOutputFileName, buildOutputFilePath } from './index';
 import { escapeString } from './../utils/string';
@@ -71,7 +72,7 @@ export const buildValidationFromClassMetadata = ({
   });
 
   cls.fields.forEach((clsFieldMetadata) => {
-    const { name: fieldName, type: typeMetadata, decorators } = clsFieldMetadata;
+    const { name: fieldName, type: typeMetadata, decorators, optional } = clsFieldMetadata;
 
     // Ignore validation
     if (decorators.find(({ name: decoratorName }) => decoratorName === IgnoreValidation.name)) {
@@ -192,18 +193,28 @@ export const buildValidationFromClassMetadata = ({
           } as TypeValidatorPayloadRenderData;
         };
 
-        const value = buildTypeValidatorPayload(typeMetadata).typeDescription;
+        const { type, typeDescription } = buildTypeValidatorPayload(typeMetadata);
+        let value = typeof typeDescription === 'string' ? typeDescription : JSON.stringify(typeDescription, null, 2);
+        if (type === ValidationType.array) {
+          value = `${value} as TypeValidatorPayload`;
+          addImport(pkg.name, 'TypeValidatorPayload', true);
+        }
+        if (type === ValidationType.union) {
+          value = `${value} as TypeValidatorPayload[]`;
+          addImport(pkg.name, 'TypeValidatorPayload', true);
+        }
+
         validatorPayload.push({
           property: 'typeDescription',
-          value: typeof value === 'string' ? value : JSON.stringify(value, null, 2),
+          value,
           type: 'object'
         });
       }
 
       validatorPayload.push({
         property: 'type',
-        value: typeMetadata.validationType,
-        type: 'string'
+        value: `ValidationType.${typeMetadata.validationType}`,
+        type: 'object'
       });
 
       addImport(pkg.name, typeValidator.name, true);
@@ -211,6 +222,7 @@ export const buildValidationFromClassMetadata = ({
       items.push({
         propertyName: fieldName,
         validatorName: typeValidator.name,
+        optional,
         validatorPayload
       });
     }
@@ -287,11 +299,16 @@ export const buildValidationFromClassMetadata = ({
       items.push({
         propertyName: fieldName,
         validatorName,
+        optional,
         async: isAsync,
         validatorPayload: args.map((arg, index) => {
           const property = validatorArgumentNames[index];
           let type = '';
           let value = arg.toString();
+
+          if (property === 'allowUndefined' && arg === undefined) {
+            value = 'false';
+          }
 
           if (property === 'value') {
             type = typeMetadata.validationType;
@@ -351,7 +368,10 @@ const addImportsForCustomValidator = ({
     listOfPossibleImports.forEach((possibleImport) => {
       const matchedImportMetadata = inputFileImportsMetadata.find((im) => im.clauses.some((c) => c === possibleImport));
       if (matchedImportMetadata) {
-        onImportAdd(path.resolve(matchedImportMetadata.absPath), possibleImport);
+        const resolvedPath = path.resolve(process.cwd(), matchedImportMetadata.absPath);
+        const isPackageName = !isFile(normalizeFileExt(resolvedPath));
+        const importPath = isPackageName ? matchedImportMetadata.absPath : resolvedPath;
+        onImportAdd(importPath, possibleImport, isPackageName);
       }
     });
 

@@ -97,7 +97,7 @@ try {
 } catch (exception) {
   if (exception instanceof ValidationException) {
     console.log(`Неправильный формат данных`);
-    exception.errors.map(({ field, message }) => `[${field}] - ${message}`).forEach(console.log);
+    exception.errors.map(({ field, message }) => `[${field}] - ${message}`).forEach((msg) => console.log(msg));
   } else {
     throw exception;
   }
@@ -212,7 +212,7 @@ userValidator(data, { stopAtFirstError: true });
     ```typescript
     import { ValidationError } from 'ts-generate-validator';
 
-    ({ propeerty, propertyName }) => {
+    ({ property, propertyName }) => {
       const allowedValues = [1, 4, 9];
       if (!allowedValues.includes(property)) {
         throw new ValidationError(propertyName, 'is invalid');
@@ -224,7 +224,7 @@ userValidator(data, { stopAtFirstError: true });
 
 - **boolean, number, string, null, enum, union(boolean, number, string, null), array(boolean, number, string, null)**
 
-  - `@EqualValidation(value: number, message?: Message)` - добавляет валидатор, который проверяет соответствие значения свойства - значению, переданному в первом аргументе.
+  - `@EqualValidation(value: EqualToValue, message?: Message)` - добавляет валидатор, который проверяет соответствие значения свойства - значению, переданному в первом аргументе (в первом аргументе допускаются любые уровни вложенности в массивах).
 
   - `@EqualToValidation(propName: string, message?: Message)` - добавляет валидатор, который проверяет соответствие значения свойства, на котором был использован декоратор - свойству, содержащемуся в свойстве `propName`.
 
@@ -263,10 +263,6 @@ userValidator(data, { stopAtFirstError: true });
   - `@UrlValidation(message?: Message)` - добавляет валидатор, который проверяет - является ли строка корректным url адресом.
 
   - `@MatchValidation(regexp: RegExp, message?: Message)` - добавляет валидатор, который проверяет строку на соответствие регулярному выражению, переданному в первом аргументе.
-
-  - `@EqualValidation(value: string, message?: Message)` - добавляет валидатор, который проверяет - соответствует ли строка значению, переданному в первом аргументе.
-
-  - `@EqualToValidation(propName: string, message?: Message)` - добавляет валидатор, который проверяет - соответствует ли строка значению, содержащемуся в свойстве `propName`.
 
 ## Поддерживаемые типы
 

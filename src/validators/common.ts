@@ -1,4 +1,3 @@
-import { TypeValidation } from './../decorators/index';
 import { ValidationError } from './../codegen/utils/error';
 import { AllowedCommonValidators } from './../localization/model';
 import { PartialValidationConfig } from '../../src/config/model';
@@ -44,11 +43,16 @@ export const typeValidator: TypeValidator = ({
   propertyName,
   type,
   typeDescription,
+  optional,
   context,
   customMessage,
   config,
   ...rest
 }) => {
+  if (optional && property === undefined) {
+    return;
+  }
+
   const propertyType = property === null ? 'null' : typeof property;
   const msgFromConfig = getMessageFromConfig(type, CommonValidator.type, config);
 
@@ -90,10 +94,10 @@ export const typeValidator: TypeValidator = ({
       throw new ValidationError(propertyName, customMessage ?? msgFromConfig ?? defaultMessage);
     }
 
-    return property.forEach((item) =>
+    return property.forEach((item, index) =>
       typeValidator({
         property: item,
-        propertyName,
+        propertyName: `${propertyName}[${index}]`,
         type: (typeDescription as TypeValidatorPayload).type,
         typeDescription: (typeDescription as TypeValidatorPayload).typeDescription,
         context,
@@ -110,10 +114,10 @@ export const typeValidator: TypeValidator = ({
     }
 
     const possibleValues = getEnumValues(typeDescription);
-    if (!possibleValues.includes(property)) {
+    if (!possibleValues.includes(String(property))) {
       const defaultMessage = `Must be a "${type}" member. Received value is "${property}" (expected one of: ${possibleValues.join(
         ', '
-      )}`;
+      )})`;
       throw new ValidationError(propertyName, customMessage ?? msgFromConfig ?? defaultMessage);
     }
     return;
@@ -124,12 +128,12 @@ export const typeValidator: TypeValidator = ({
       throw new IssueError(`Type description for "${type}" type not provided.`);
     }
 
-    typeDescription(property, config, context);
+    typeDescription(property, config, context, `${propertyName}.`);
     return;
   }
 
   if (!primitiveValidationTypes.includes(type as any)) {
-    throw new Error(
+    throw new IssueError(
       `Unexpected type to check - "${type}" (expected one of: ${[
         ...primitiveValidationTypes,
         ValidationType.array,
@@ -153,14 +157,30 @@ export const typeValidator: TypeValidator = ({
 };
 
 export const customValidator: CustomValidator = ({ customValidationFunction, ...rest }) => {
+  if (rest.optional && rest.property === undefined) {
+    return;
+  }
+
   customValidationFunction({ ...rest });
 };
 
 export const equalValidator: EqualValidator = (payload) => {
-  const { property, propertyName, value, customMessage, config } = payload;
+  const { property, propertyName, value, customMessage, config, optional } = payload;
 
-  if (property && Array.isArray(property) && value && Array.isArray(value) && property.length === value.length) {
-    return property.forEach((p, i) => equalValidator({ ...payload, property: p, value: value[i] }));
+  if (optional && property === undefined) {
+    return;
+  }
+
+  if (property && Array.isArray(property)) {
+    const valueIsArray = value && Array.isArray(value);
+    return property.forEach((p, i) =>
+      equalValidator({
+        ...payload,
+        property: p,
+        propertyName: `${propertyName}[${i}]`,
+        value: valueIsArray ? value[i] : value
+      })
+    );
   }
 
   const msgFromConfig = getMessageFromConfig(typeof property, CommonValidator.equal, config);
@@ -172,17 +192,21 @@ export const equalValidator: EqualValidator = (payload) => {
 };
 
 export const equalToValidator: DependOnValidator = (payload) => {
-  const { property, propertyName, targetPropertyName, data, customMessage, config } = payload;
+  const { property, propertyName, targetPropertyName, data, customMessage, config, allowUndefined } = payload;
 
-  if (
-    property &&
-    Array.isArray(property) &&
-    data[targetPropertyName] &&
-    Array.isArray(data[targetPropertyName]) &&
-    property.length === data[targetPropertyName].length
-  ) {
+  if (property === undefined && allowUndefined) {
+    return;
+  }
+
+  if (property && Array.isArray(property)) {
+    const targetIsArray = data[targetPropertyName] && Array.isArray(data[targetPropertyName]);
     return property.forEach((p, i) =>
-      equalToValidator({ ...payload, property: p, data: { [targetPropertyName]: data[targetPropertyName][i] } })
+      equalToValidator({
+        ...payload,
+        property: p,
+        propertyName: `${propertyName}[${i}]`,
+        data: { [targetPropertyName]: targetIsArray ? data[targetPropertyName][i] : data[targetPropertyName] }
+      })
     );
   }
 

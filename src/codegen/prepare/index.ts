@@ -23,6 +23,10 @@ export const prepareDataForRender = (
 
     const importMap = buildBaseImportMap();
     const handleImportAdd = (targetPath: string, clause: string, isPackageName?: boolean): void => {
+      if (isClauseExistsInImportsMap(clause, importMap)) {
+        return;
+      }
+
       isPackageName = isPackageName ?? isPackagePath(targetPath);
       let importPath = targetPath;
 
@@ -76,6 +80,12 @@ export const prepareDataForRender = (
   return preparedData;
 };
 
+const isClauseExistsInImportsMap = (targetClause: string, importMap: PreparedImportMap): boolean => {
+  return Object.values(importMap).some((clauses) =>
+    Object.entries(clauses).some(([clause, isActive]) => isActive && clause === targetClause)
+  );
+};
+
 const normalizeImportPathForFile = (filePath: string, importPath: string): string => {
   let resultPath = normalizePath(path.relative(filePath, importPath));
   if (!resultPath.startsWith('./')) {
@@ -107,8 +117,10 @@ const buildBaseImportMap = (): PreparedImportMap => {
   map[pkg.name] = {
     GeneratedValidation: true,
     ValidationConfig: true,
+    PartialValidationConfig: true,
     ValidationError: true,
     ValidationException: true,
+    ValidationType: true,
     Data: true,
     UserContext: true,
     getConfig: true,

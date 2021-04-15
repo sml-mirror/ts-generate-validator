@@ -20,7 +20,7 @@ export class Dog {
   @IntegerValidation('age must be an integer value')
   public age = 0;
 
-  @LessThanValidation('age', `dog can't be owned by anyone longer than his age`)
+  @LessThanValidation('age', false, `dog can't be owned by anyone longer than his age`)
   public ownedYears = 0;
 
   public owner?: User;

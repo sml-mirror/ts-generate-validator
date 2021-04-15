@@ -14,6 +14,14 @@ export const isDir = (rawPath: string): boolean => {
   }
 };
 
+export const isFile = (rawPath: string): boolean => {
+  try {
+    return fs.existsSync(rawPath);
+  } catch (err) {
+    return false;
+  }
+};
+
 export const cutFileExt = (file: string): string => {
   return file.replace(/\.[^/.]+$/, '');
 };
@@ -30,7 +38,7 @@ export const normalizeFileExt = (filePathAbs: string): string => {
     filePath = `${filePath}/index`;
   }
 
-  if (isDir(filePath) || hasFileExt(filePath) || fs.existsSync(filePath)) {
+  if (isDir(filePath) || fs.existsSync(filePath)) {
     return filePathAbs;
   }
 
