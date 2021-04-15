@@ -70,6 +70,19 @@ describe('number validators', () => {
     expect(
       jest.fn(() => {
         minValidator({
+          property: undefined,
+          threshold: 24,
+          config,
+          optional: true,
+          data: { a: undefined },
+          propertyName: 'a'
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        minValidator({
           property: [testData[propertyName]],
           threshold: 24,
           config,
@@ -137,6 +150,19 @@ describe('number validators', () => {
           config,
           data: testData,
           propertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        maxValidator({
+          property: undefined,
+          threshold: 24,
+          config,
+          optional: true,
+          data: { a: undefined },
+          propertyName: 'a'
         });
       })
     ).not.toThrowError();
@@ -237,6 +263,18 @@ describe('number validators', () => {
     expect(
       jest.fn(() => {
         negativeValidator({
+          property: undefined,
+          optional: true,
+          config,
+          data: { a: undefined },
+          propertyName: 'a'
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        negativeValidator({
           property: [testData[negativePropertyName]],
           config,
           data: testData,
@@ -276,6 +314,18 @@ describe('number validators', () => {
           config,
           data: testData,
           propertyName: nullPropertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        positiveValidator({
+          property: undefined,
+          config,
+          optional: true,
+          data: { a: undefined },
+          propertyName: 'a'
         });
       })
     ).not.toThrowError();
@@ -351,6 +401,18 @@ describe('number validators', () => {
     expect(
       jest.fn(() => {
         integerValidator({
+          property: undefined,
+          optional: true,
+          config,
+          data: { a: undefined },
+          propertyName: 'a'
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        integerValidator({
           property: [testData[propertyName]],
           config,
           data: testData,
@@ -390,6 +452,18 @@ describe('number validators', () => {
           config,
           data: testData,
           propertyName: floatPropertyName
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        floatValidator({
+          property: undefined,
+          optional: true,
+          config,
+          data: { a: undefined },
+          propertyName: 'a'
         });
       })
     ).not.toThrowError();
@@ -470,6 +544,32 @@ describe('number validators', () => {
     expect(
       jest.fn(() => {
         lessThanValidator({
+          property: undefined,
+          targetPropertyName: 'b',
+          optional: true,
+          config,
+          data: { a: undefined, b: 5 },
+          propertyName: 'a'
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        lessThanValidator({
+          property: undefined,
+          targetPropertyName: 'b',
+          allowUndefined: true,
+          config,
+          data: { a: undefined, b: 5 },
+          propertyName: 'a'
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        lessThanValidator({
           property: [testData[propertyName]],
           targetPropertyName: moreThanPropertyName,
           config,
@@ -520,14 +620,28 @@ describe('number validators', () => {
     expect(
       jest.fn(() => {
         moreThanValidator({
-          property: [testData[propertyName]],
-          targetPropertyName: equalPropertyName,
+          property: undefined,
+          targetPropertyName: 'b',
+          optional: true,
           config,
-          data: testData,
-          propertyName
+          data: { a: undefined, b: 5 },
+          propertyName: 'a'
         });
       })
     ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        moreThanValidator({
+          property: undefined,
+          targetPropertyName: 'b',
+          allowUndefined: true,
+          config,
+          data: { a: undefined, b: 5 },
+          propertyName: 'a'
+        });
+      })
+    ).not.toThrowError();
 
     expect(
       jest.fn(() => {

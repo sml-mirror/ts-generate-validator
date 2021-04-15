@@ -12,8 +12,9 @@ export const {{ validation.name }}: GeneratedValidation = {% if validation.async
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -22,8 +23,9 @@ export const {{ validation.name }}: GeneratedValidation = {% if validation.async
     {% for item in validation.items %}
     {% if item.async %}await {% endif %}{{ item.validatorName }}({
       property: data?.{{ item.propertyName }},
-      propertyName: '{{ item.propertyName }}',
+      propertyName: `${propNamePrefix}{{ item.propertyName }}`,
       data,
+      {% if item.optional !== undefined %}optional: {{ item.optional }},{% endif %}
       config,
       context,
       {% for vArg in item.validatorPayload %}

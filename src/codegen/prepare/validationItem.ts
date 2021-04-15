@@ -90,7 +90,7 @@ export const decoratorNameToValidationItemData: {
   },
   [EqualToValidation.name]: {
     validatorName: equalToValidator.name,
-    validatorArgumentNames: ['targetPropertyName', 'customMessage'],
+    validatorArgumentNames: ['targetPropertyName', 'allowUndefined', 'customMessage'],
     allowedValidationTypes: [
       ...primitiveValidationTypes,
       ValidationType.enum,
@@ -133,12 +133,12 @@ export const decoratorNameToValidationItemData: {
   },
   [LessThanValidation.name]: {
     validatorName: lessThanValidator.name,
-    validatorArgumentNames: ['targetPropertyName', 'customMessage'],
+    validatorArgumentNames: ['targetPropertyName', 'allowUndefined', 'customMessage'],
     allowedValidationTypes: [ValidationType.number, ValidationType.array]
   },
   [MoreThanValidation.name]: {
     validatorName: moreThanValidator.name,
-    validatorArgumentNames: ['targetPropertyName', 'customMessage'],
+    validatorArgumentNames: ['targetPropertyName', 'allowUndefined', 'customMessage'],
     allowedValidationTypes: [ValidationType.number, ValidationType.array]
   },
   /**

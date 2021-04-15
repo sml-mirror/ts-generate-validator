@@ -117,6 +117,7 @@ const buildBaseImportMap = (): PreparedImportMap => {
   map[pkg.name] = {
     GeneratedValidation: true,
     ValidationConfig: true,
+    PartialValidationConfig: true,
     ValidationError: true,
     ValidationException: true,
     ValidationType: true,

@@ -2,10 +2,16 @@ import { ValidationError } from './../codegen/utils/error';
 import { BaseValidator, ThresholdValidator, MatchValidator } from './model';
 
 export const trimValidator: BaseValidator = (payload) => {
-  const { property, propertyName, customMessage, config } = payload;
+  const { property, propertyName, customMessage, config, optional } = payload;
+
+  if (optional && property === undefined) {
+    return;
+  }
 
   if (property && Array.isArray(property)) {
-    return property.forEach((p) => trimValidator({ ...payload, property: p }));
+    return property.forEach((p, i) =>
+      trimValidator({ ...payload, property: p, propertyName: `${propertyName}[${i}]` })
+    );
   }
 
   const msgFromConfig = config.messages?.string.trim;
@@ -18,10 +24,16 @@ export const trimValidator: BaseValidator = (payload) => {
 };
 
 export const lowercaseValidator: BaseValidator = (payload) => {
-  const { property, propertyName, customMessage, config } = payload;
+  const { property, propertyName, customMessage, config, optional } = payload;
+
+  if (optional && property === undefined) {
+    return;
+  }
 
   if (property && Array.isArray(property)) {
-    return property.forEach((p) => lowercaseValidator({ ...payload, property: p }));
+    return property.forEach((p, i) =>
+      lowercaseValidator({ ...payload, property: p, propertyName: `${propertyName}[${i}]` })
+    );
   }
 
   const msgFromConfig = config.messages?.string.lowercase;
@@ -33,10 +45,16 @@ export const lowercaseValidator: BaseValidator = (payload) => {
 };
 
 export const uppercaseValidator: BaseValidator = (payload) => {
-  const { property, propertyName, customMessage, config } = payload;
+  const { property, propertyName, customMessage, config, optional } = payload;
+
+  if (optional && property === undefined) {
+    return;
+  }
 
   if (property && Array.isArray(property)) {
-    return property.forEach((p) => uppercaseValidator({ ...payload, property: p }));
+    return property.forEach((p, i) =>
+      uppercaseValidator({ ...payload, property: p, propertyName: `${propertyName}[${i}]` })
+    );
   }
 
   const msgFromConfig = config.messages?.string.uppercase;
@@ -48,10 +66,16 @@ export const uppercaseValidator: BaseValidator = (payload) => {
 };
 
 export const minLengthValidator: ThresholdValidator = (payload) => {
-  const { property, propertyName, threshold, customMessage, config } = payload;
+  const { property, propertyName, threshold, customMessage, config, optional } = payload;
+
+  if (optional && property === undefined) {
+    return;
+  }
 
   if (property && Array.isArray(property)) {
-    return property.forEach((p) => minLengthValidator({ ...payload, property: p }));
+    return property.forEach((p, i) =>
+      minLengthValidator({ ...payload, property: p, propertyName: `${propertyName}[${i}]` })
+    );
   }
 
   const msgFromConfig = config.messages?.string.minLength;
@@ -65,10 +89,16 @@ export const minLengthValidator: ThresholdValidator = (payload) => {
 };
 
 export const maxLengthValidator: ThresholdValidator = (payload) => {
-  const { property, propertyName, threshold, customMessage, config } = payload;
+  const { property, propertyName, threshold, customMessage, config, optional } = payload;
+
+  if (optional && property === undefined) {
+    return;
+  }
 
   if (property && Array.isArray(property)) {
-    return property.forEach((p) => maxLengthValidator({ ...payload, property: p }));
+    return property.forEach((p, i) =>
+      maxLengthValidator({ ...payload, property: p, propertyName: `${propertyName}[${i}]` })
+    );
   }
 
   const msgFromConfig = config.messages?.string.maxLength;
@@ -82,10 +112,16 @@ export const maxLengthValidator: ThresholdValidator = (payload) => {
 };
 
 export const emailValidator: BaseValidator = (payload) => {
-  const { property, propertyName, config, customMessage } = payload;
+  const { property, propertyName, config, customMessage, optional } = payload;
+
+  if (optional && property === undefined) {
+    return;
+  }
 
   if (property && Array.isArray(property)) {
-    return property.forEach((p) => emailValidator({ ...payload, property: p }));
+    return property.forEach((p, i) =>
+      emailValidator({ ...payload, property: p, propertyName: `${propertyName}[${i}]` })
+    );
   }
 
   const msgFromConfig = config.messages?.string.email;
@@ -97,10 +133,14 @@ export const emailValidator: BaseValidator = (payload) => {
 };
 
 export const urlValidator: BaseValidator = (payload) => {
-  const { property, propertyName, customMessage, config } = payload;
+  const { property, propertyName, customMessage, config, optional } = payload;
+
+  if (optional && property === undefined) {
+    return;
+  }
 
   if (property && Array.isArray(property)) {
-    return property.forEach((p) => urlValidator({ ...payload, property: p }));
+    return property.forEach((p, i) => urlValidator({ ...payload, property: p, propertyName: `${propertyName}[${i}]` }));
   }
 
   const msgFromConfig = config.messages?.string.url;
@@ -115,10 +155,16 @@ export const urlValidator: BaseValidator = (payload) => {
 };
 
 export const matchValidator: MatchValidator = (payload) => {
-  const { property, propertyName, regexp, customMessage, config } = payload;
+  const { property, propertyName, regexp, customMessage, config, optional } = payload;
+
+  if (optional && property === undefined) {
+    return;
+  }
 
   if (property && Array.isArray(property)) {
-    return property.forEach((p) => matchValidator({ ...payload, property: p }));
+    return property.forEach((p, i) =>
+      matchValidator({ ...payload, property: p, propertyName: `${propertyName}[${i}]` })
+    );
   }
 
   const msgFromConfig = config.messages?.string.match;

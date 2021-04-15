@@ -51,8 +51,7 @@ export class ValidationError extends Error {
   field: string;
 
   constructor(field: string, message: Message) {
-    const errMessage = `${message}\n\nIt seems like "${pkg.name}" issue. Please, report this to ${pkg.bugs.url}.`;
-    super(errMessage);
+    super(message);
     this.field = field;
     // Set the prototype explicitly
     // https://stackoverflow.com/a/41429145/3151214

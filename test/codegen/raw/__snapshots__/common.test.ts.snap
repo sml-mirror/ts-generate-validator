@@ -8,6 +8,7 @@ exports[`codegen/raw/common create validators: generated validators at "src/gene
 import {
   GeneratedValidation,
   ValidationConfig,
+  PartialValidationConfig,
   ValidationError,
   ValidationException,
   ValidationType,
@@ -59,8 +60,9 @@ export const typeValidatorWithCustomMessageValidator: GeneratedValidation = <
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -68,8 +70,9 @@ export const typeValidatorWithCustomMessageValidator: GeneratedValidation = <
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -99,8 +102,9 @@ export const typeValidatorOnNestedPropertyTypeValidator: GeneratedValidation = <
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -108,8 +112,9 @@ export const typeValidatorOnNestedPropertyTypeValidator: GeneratedValidation = <
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -141,8 +146,9 @@ export const typeValidatorOnNullPropertyTypeValidator: GeneratedValidation = <
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -150,8 +156,9 @@ export const typeValidatorOnNullPropertyTypeValidator: GeneratedValidation = <
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -179,8 +186,9 @@ export const typeValidatorOnNullPropertyWithoutTypeValidator: GeneratedValidatio
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -188,8 +196,9 @@ export const typeValidatorOnNullPropertyWithoutTypeValidator: GeneratedValidatio
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -217,8 +226,9 @@ export const typeValidatorOnImportedEnumPropertyTypeValidator: GeneratedValidati
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -226,8 +236,9 @@ export const typeValidatorOnImportedEnumPropertyTypeValidator: GeneratedValidati
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -257,8 +268,9 @@ export const typeValidatorOnUnionPropertyTypeValidator: GeneratedValidation = <
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -266,8 +278,9 @@ export const typeValidatorOnUnionPropertyTypeValidator: GeneratedValidation = <
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -307,8 +320,9 @@ export const typeValidatorOnUnionWithNestedPropertyTypeValidator: GeneratedValid
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -316,8 +330,9 @@ export const typeValidatorOnUnionWithNestedPropertyTypeValidator: GeneratedValid
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -358,8 +373,9 @@ export const typeValidatorOnArrayPropertyTypeValidator: GeneratedValidation = <
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -367,8 +383,9 @@ export const typeValidatorOnArrayPropertyTypeValidator: GeneratedValidation = <
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -400,8 +417,9 @@ export const typeValidatorOnUnionWithArrayPropertyTypeValidator: GeneratedValida
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -409,8 +427,9 @@ export const typeValidatorOnUnionWithArrayPropertyTypeValidator: GeneratedValida
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -453,8 +472,9 @@ export const typeValidatorOnArrayOfNestedTypePropertyTypeValidator: GeneratedVal
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -462,8 +482,9 @@ export const typeValidatorOnArrayOfNestedTypePropertyTypeValidator: GeneratedVal
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -496,8 +517,9 @@ export const customValidatorFailedValidator: GeneratedValidation = <
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -505,8 +527,9 @@ export const customValidatorFailedValidator: GeneratedValidation = <
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -515,8 +538,9 @@ export const customValidatorFailedValidator: GeneratedValidation = <
 
     customValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -546,8 +570,9 @@ export const customValidatorSuccessValidator: GeneratedValidation = <
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -555,8 +580,9 @@ export const customValidatorSuccessValidator: GeneratedValidation = <
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -565,8 +591,9 @@ export const customValidatorSuccessValidator: GeneratedValidation = <
 
     customValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -594,8 +621,9 @@ export const customValidatorOnNonPrimitiveStructureValidator: GeneratedValidatio
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -603,8 +631,9 @@ export const customValidatorOnNonPrimitiveStructureValidator: GeneratedValidatio
   try {
     customValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -632,8 +661,9 @@ export const customValidatorSuccessAsyncValidator: GeneratedValidation = async <
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -641,8 +671,9 @@ export const customValidatorSuccessAsyncValidator: GeneratedValidation = async <
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -651,8 +682,9 @@ export const customValidatorSuccessAsyncValidator: GeneratedValidation = async <
 
     await customValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -680,8 +712,9 @@ export const customValidatorImportedValidator: GeneratedValidation = <
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -689,8 +722,9 @@ export const customValidatorImportedValidator: GeneratedValidation = <
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -699,8 +733,9 @@ export const customValidatorImportedValidator: GeneratedValidation = <
 
     customValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -728,8 +763,9 @@ export const customValidatorExportedValidator: GeneratedValidation = <
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -737,8 +773,9 @@ export const customValidatorExportedValidator: GeneratedValidation = <
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -747,8 +784,9 @@ export const customValidatorExportedValidator: GeneratedValidation = <
 
     customValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -776,8 +814,9 @@ export const customValidatorWhichUsesImportedEntityValidator: GeneratedValidatio
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -785,8 +824,9 @@ export const customValidatorWhichUsesImportedEntityValidator: GeneratedValidatio
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -795,8 +835,9 @@ export const customValidatorWhichUsesImportedEntityValidator: GeneratedValidatio
 
     customValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -828,8 +869,9 @@ export const ignoreValidationForNonPrimitivePropertyValidator: GeneratedValidati
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -857,8 +899,9 @@ export const ignoreValidationForPrimitivePropertyValidator: GeneratedValidation 
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -886,8 +929,9 @@ export const ignoreValidationForPrimitivePropertyWithOtherDecoratorsValidator: G
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -915,8 +959,9 @@ export const equalValidatorWithDefaultMessageValidator: GeneratedValidation = <
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -924,8 +969,9 @@ export const equalValidatorWithDefaultMessageValidator: GeneratedValidation = <
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -934,8 +980,9 @@ export const equalValidatorWithDefaultMessageValidator: GeneratedValidation = <
 
     equalValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -963,8 +1010,9 @@ export const equalValidatorWithCustomMessageValidator: GeneratedValidation = <
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -972,8 +1020,9 @@ export const equalValidatorWithCustomMessageValidator: GeneratedValidation = <
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -982,8 +1031,9 @@ export const equalValidatorWithCustomMessageValidator: GeneratedValidation = <
 
     equalValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -1013,8 +1063,9 @@ export const equalValidatorForBooleanValidator: GeneratedValidation = <
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -1022,8 +1073,9 @@ export const equalValidatorForBooleanValidator: GeneratedValidation = <
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -1032,8 +1084,9 @@ export const equalValidatorForBooleanValidator: GeneratedValidation = <
 
     equalValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -1061,8 +1114,9 @@ export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = 
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -1070,8 +1124,9 @@ export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = 
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -1080,8 +1135,9 @@ export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = 
 
     equalToValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -1090,8 +1146,9 @@ export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = 
 
     typeValidator({
       property: data?.someOtherProperty,
-      propertyName: 'someOtherProperty',
+      propertyName: \`\${propNamePrefix}someOtherProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -1100,8 +1157,9 @@ export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = 
 
     equalToValidator({
       property: data?.someOtherProperty,
-      propertyName: 'someOtherProperty',
+      propertyName: \`\${propNamePrefix}someOtherProperty\`,
       data,
+      optional: false,
       config,
       context,
 
@@ -1133,7 +1191,7 @@ Array [
     "filePath": "src/generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, ValidationType, Data, UserContext, getConfig, mergeDeep, typeValidator, TypeValidatorPayload, customValidator, equalValidator, equalToValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, PartialValidationConfig, ValidationError, ValidationException, ValidationType, Data, UserContext, getConfig, mergeDeep, typeValidator, TypeValidatorPayload, customValidator, equalValidator, equalToValidator",
         "path": "ts-generate-validator",
       },
       Object {
@@ -1154,6 +1212,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": false,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1177,6 +1236,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": true,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1205,6 +1265,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": false,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1223,6 +1284,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": false,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1241,6 +1303,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": true,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1264,6 +1327,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": false,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1297,6 +1361,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": false,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1331,6 +1396,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": false,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1356,6 +1422,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": false,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1392,6 +1459,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": false,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1418,6 +1486,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": true,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1430,6 +1499,7 @@ Array [
           },
           Object {
             "async": false,
+            "optional": true,
             "propertyName": "someProperty",
             "validatorName": "customValidator",
             "validatorPayload": Array [
@@ -1450,6 +1520,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": true,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1462,6 +1533,7 @@ Array [
           },
           Object {
             "async": false,
+            "optional": true,
             "propertyName": "someProperty",
             "validatorName": "customValidator",
             "validatorPayload": Array [
@@ -1481,6 +1553,7 @@ Array [
         "items": Array [
           Object {
             "async": false,
+            "optional": true,
             "propertyName": "someProperty",
             "validatorName": "customValidator",
             "validatorPayload": Array [
@@ -1499,6 +1572,7 @@ Array [
         "async": true,
         "items": Array [
           Object {
+            "optional": true,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1511,6 +1585,7 @@ Array [
           },
           Object {
             "async": true,
+            "optional": true,
             "propertyName": "someProperty",
             "validatorName": "customValidator",
             "validatorPayload": Array [
@@ -1529,6 +1604,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": true,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1541,6 +1617,7 @@ Array [
           },
           Object {
             "async": false,
+            "optional": true,
             "propertyName": "someProperty",
             "validatorName": "customValidator",
             "validatorPayload": Array [
@@ -1559,6 +1636,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": true,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1571,6 +1649,7 @@ Array [
           },
           Object {
             "async": false,
+            "optional": true,
             "propertyName": "someProperty",
             "validatorName": "customValidator",
             "validatorPayload": Array [
@@ -1589,6 +1668,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": true,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1601,6 +1681,7 @@ Array [
           },
           Object {
             "async": false,
+            "optional": true,
             "propertyName": "someProperty",
             "validatorName": "customValidator",
             "validatorPayload": Array [
@@ -1641,6 +1722,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": false,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1653,6 +1735,7 @@ Array [
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "someProperty",
             "validatorName": "equalValidator",
             "validatorPayload": Array [
@@ -1671,6 +1754,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": false,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1683,6 +1767,7 @@ Array [
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "someProperty",
             "validatorName": "equalValidator",
             "validatorPayload": Array [
@@ -1706,6 +1791,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": false,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1718,6 +1804,7 @@ Array [
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "someProperty",
             "validatorName": "equalValidator",
             "validatorPayload": Array [
@@ -1736,6 +1823,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": false,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1748,6 +1836,7 @@ Array [
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "someProperty",
             "validatorName": "equalToValidator",
             "validatorPayload": Array [
@@ -1759,6 +1848,7 @@ Array [
             ],
           },
           Object {
+            "optional": false,
             "propertyName": "someOtherProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [
@@ -1771,6 +1861,7 @@ Array [
           },
           Object {
             "async": false,
+            "optional": false,
             "propertyName": "someOtherProperty",
             "validatorName": "equalToValidator",
             "validatorPayload": Array [

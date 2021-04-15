@@ -8,6 +8,7 @@ exports[`codegen/raw/type create validators: generated validators at "src/genera
 import {
   GeneratedValidation,
   ValidationConfig,
+  PartialValidationConfig,
   ValidationError,
   ValidationException,
   ValidationType,
@@ -29,8 +30,9 @@ export const classWithNonPrimitivePropertyValidator: GeneratedValidation = <
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -58,8 +60,9 @@ export const classWithEnumPropertyValidator: GeneratedValidation = <
   C extends UserContext = UserContext
 >(
   data: D,
-  configArg?: ValidationConfig,
-  context?: C
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
@@ -67,8 +70,9 @@ export const classWithEnumPropertyValidator: GeneratedValidation = <
   try {
     typeValidator({
       property: data?.someProperty,
-      propertyName: 'someProperty',
+      propertyName: \`\${propNamePrefix}someProperty\`,
       data,
+      optional: true,
       config,
       context,
 
@@ -102,7 +106,7 @@ Array [
     "filePath": "src/generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, ValidationConfig, ValidationError, ValidationException, ValidationType, Data, UserContext, getConfig, mergeDeep, typeValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, PartialValidationConfig, ValidationError, ValidationException, ValidationType, Data, UserContext, getConfig, mergeDeep, typeValidator",
         "path": "ts-generate-validator",
       },
       Object {
@@ -121,6 +125,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
+            "optional": true,
             "propertyName": "someProperty",
             "validatorName": "typeValidator",
             "validatorPayload": Array [

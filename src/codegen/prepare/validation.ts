@@ -72,7 +72,7 @@ export const buildValidationFromClassMetadata = ({
   });
 
   cls.fields.forEach((clsFieldMetadata) => {
-    const { name: fieldName, type: typeMetadata, decorators } = clsFieldMetadata;
+    const { name: fieldName, type: typeMetadata, decorators, optional } = clsFieldMetadata;
 
     // Ignore validation
     if (decorators.find(({ name: decoratorName }) => decoratorName === IgnoreValidation.name)) {
@@ -222,6 +222,7 @@ export const buildValidationFromClassMetadata = ({
       items.push({
         propertyName: fieldName,
         validatorName: typeValidator.name,
+        optional,
         validatorPayload
       });
     }
@@ -298,11 +299,16 @@ export const buildValidationFromClassMetadata = ({
       items.push({
         propertyName: fieldName,
         validatorName,
+        optional,
         async: isAsync,
         validatorPayload: args.map((arg, index) => {
           const property = validatorArgumentNames[index];
           let type = '';
           let value = arg.toString();
+
+          if (property === 'allowUndefined' && arg === undefined) {
+            value = 'false';
+          }
 
           if (property === 'value') {
             type = typeMetadata.validationType;
