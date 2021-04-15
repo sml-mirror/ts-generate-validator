@@ -36,7 +36,7 @@ export const getCodegenConfig = (): CodegenConfig => {
   const sanitizedConfig = getSanitizedObjectCopy<PartialCodegenConfig>(configFromFile, codegenConfigKeys);
 
   if (sanitizedConfig.hasOwnProperty('inputPath')) {
-    if (typeof sanitizedConfig.inputPath !== 'string') {
+    if (typeof sanitizedConfig.inputPath !== 'string' || !sanitizedConfig.inputPath.trim()) {
       outWarning(
         `File "${configFileName}" has wrong configuration. Property "inputPath" is not a valid path. Using default value "${defaultCodegenConfig.inputPath}".`
       );
@@ -45,7 +45,7 @@ export const getCodegenConfig = (): CodegenConfig => {
   }
 
   if (sanitizedConfig.hasOwnProperty('outputPath')) {
-    if (typeof sanitizedConfig.outputPath !== 'string') {
+    if (typeof sanitizedConfig.outputPath !== 'string' || !sanitizedConfig.outputPath.trim()) {
       outWarning(
         `File "${configFileName}" has wrong configuration. Property "outputPath" is not a valid path. Using default value "${defaultCodegenConfig.outputPath}".`
       );
