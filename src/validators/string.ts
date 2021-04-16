@@ -14,7 +14,7 @@ export const trimValidator: BaseValidator = (payload) => {
     );
   }
 
-  const msgFromConfig = config.messages?.string.trim;
+  const msgFromConfig = config.messages?.string?.trim;
 
   // https://stackoverflow.com/questions/38934328/regex-match-a-string-without-leading-and-trailing-spaces
   if (property && !String(property).match(/^[A-Za-z0-9]+(?: +[A-Za-z0-9]+)*$/)) {
@@ -36,7 +36,7 @@ export const lowercaseValidator: BaseValidator = (payload) => {
     );
   }
 
-  const msgFromConfig = config.messages?.string.lowercase;
+  const msgFromConfig = config.messages?.string?.lowercase;
 
   if (String(property) !== String(property).toLocaleLowerCase()) {
     const defaultMessage = `Should not have uppercase letters, but received string has ("${property}")`;
@@ -57,7 +57,7 @@ export const uppercaseValidator: BaseValidator = (payload) => {
     );
   }
 
-  const msgFromConfig = config.messages?.string.uppercase;
+  const msgFromConfig = config.messages?.string?.uppercase;
 
   if (String(property) !== String(property).toLocaleUpperCase()) {
     const defaultMessage = `Should not have lowercase letters, but received string has ("${property}")`;
@@ -78,7 +78,7 @@ export const minLengthValidator: ThresholdValidator = (payload) => {
     );
   }
 
-  const msgFromConfig = config.messages?.string.minLength;
+  const msgFromConfig = config.messages?.string?.minLength;
 
   if (String(property).length < threshold) {
     const defaultMessage = `Should be longer than ${threshold} characters, but received string (${property}) contains only "${
@@ -101,7 +101,7 @@ export const maxLengthValidator: ThresholdValidator = (payload) => {
     );
   }
 
-  const msgFromConfig = config.messages?.string.maxLength;
+  const msgFromConfig = config.messages?.string?.maxLength;
 
   if (String(property).length > threshold) {
     const defaultMessage = `Should be no longer than ${threshold} characters, but received string (${property}) contains "${
@@ -124,7 +124,7 @@ export const emailValidator: BaseValidator = (payload) => {
     );
   }
 
-  const msgFromConfig = config.messages?.string.email;
+  const msgFromConfig = config.messages?.string?.email;
 
   if (!String(property).match(config.emailRegExp)) {
     const defaultMessage = `Must be a valid email, but received "${property}"`;
@@ -143,7 +143,7 @@ export const urlValidator: BaseValidator = (payload) => {
     return property.forEach((p, i) => urlValidator({ ...payload, property: p, propertyName: `${propertyName}[${i}]` }));
   }
 
-  const msgFromConfig = config.messages?.string.url;
+  const msgFromConfig = config.messages?.string?.url;
 
   // https://github.com/jquense/yup/blob/master/src/string.ts
   // eslint-disable-next-line no-useless-escape
@@ -167,7 +167,7 @@ export const matchValidator: MatchValidator = (payload) => {
     );
   }
 
-  const msgFromConfig = config.messages?.string.match;
+  const msgFromConfig = config.messages?.string?.match;
 
   if (!String(property).match(regexp)) {
     const defaultMessage = `Should match the pattern ${String(regexp)}, but received string ("${property}") not match`;
