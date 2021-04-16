@@ -29,12 +29,18 @@ const getMessageFromConfig = (
   return config?.messages?.[messageMapSection]?.[validatorName] ?? config?.messages?.common?.[validatorName];
 };
 
-export const requiredOneOfValidator: RequiredOneOfValidator = ({ data, fields, customMessage, config }) => {
-  const msgFromConfig = config.messages?.common.requiredOneOf;
+export const requiredOneOfValidator: RequiredOneOfValidator = ({
+  propertyName,
+  data,
+  fields,
+  customMessage,
+  config
+}) => {
+  const msgFromConfig = config.messages?.common?.requiredOneOf;
 
   if (!fields.find((field) => Boolean(data[field] !== undefined && data[field] !== null))) {
     const defaultMessage = `At least one of the fields must be filled, but all fields are empty (${fields.join(', ')})`;
-    throw new ValidationError(fields.join(', '), customMessage ?? msgFromConfig ?? defaultMessage);
+    throw new ValidationError(`${propertyName}(${fields.join('|')})`, customMessage ?? msgFromConfig ?? defaultMessage);
   }
 };
 

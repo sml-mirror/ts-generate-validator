@@ -37,138 +37,161 @@ export const dogValidator: GeneratedValidation = <D extends Data = typeof Dog, C
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.name,
+        propertyName: \`\${propNamePrefix}name\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.name,
-      propertyName: \`\${propNamePrefix}name\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.string
+      }),
 
-      type: ValidationType.string
-    });
+    () =>
+      minLengthValidator({
+        property: data?.name,
+        propertyName: \`\${propNamePrefix}name\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    minLengthValidator({
-      property: data?.name,
-      propertyName: \`\${propNamePrefix}name\`,
-      data,
-      optional: false,
-      config,
-      context,
+        threshold: 5
+      }),
 
-      threshold: 5
-    });
+    () =>
+      maxLengthValidator({
+        property: data?.name,
+        propertyName: \`\${propNamePrefix}name\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    maxLengthValidator({
-      property: data?.name,
-      propertyName: \`\${propNamePrefix}name\`,
-      data,
-      optional: false,
-      config,
-      context,
+        threshold: 20
+      }),
 
-      threshold: 20
-    });
+    () =>
+      typeValidator({
+        property: data?.age,
+        propertyName: \`\${propNamePrefix}age\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.age,
-      propertyName: \`\${propNamePrefix}age\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.number
+      }),
 
-      type: ValidationType.number
-    });
+    () =>
+      minValidator({
+        property: data?.age,
+        propertyName: \`\${propNamePrefix}age\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    minValidator({
-      property: data?.age,
-      propertyName: \`\${propNamePrefix}age\`,
-      data,
-      optional: false,
-      config,
-      context,
+        threshold: 2,
 
-      threshold: 2,
+        customMessage: 'only dogs over 2 years old are accepted'
+      }),
 
-      customMessage: 'only dogs over 2 years old are accepted'
-    });
+    () =>
+      maxValidator({
+        property: data?.age,
+        propertyName: \`\${propNamePrefix}age\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    maxValidator({
-      property: data?.age,
-      propertyName: \`\${propNamePrefix}age\`,
-      data,
-      optional: false,
-      config,
-      context,
+        threshold: 16,
 
-      threshold: 16,
+        customMessage: \\"dogs can't live that long\\"
+      }),
 
-      customMessage: \\"dogs can't live that long\\"
-    });
+    () =>
+      integerValidator({
+        property: data?.age,
+        propertyName: \`\${propNamePrefix}age\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    integerValidator({
-      property: data?.age,
-      propertyName: \`\${propNamePrefix}age\`,
-      data,
-      optional: false,
-      config,
-      context,
+        customMessage: 'age must be an integer value'
+      }),
 
-      customMessage: 'age must be an integer value'
-    });
+    () =>
+      typeValidator({
+        property: data?.ownedYears,
+        propertyName: \`\${propNamePrefix}ownedYears\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.ownedYears,
-      propertyName: \`\${propNamePrefix}ownedYears\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.number
+      }),
 
-      type: ValidationType.number
-    });
+    () =>
+      lessThanValidator({
+        property: data?.ownedYears,
+        propertyName: \`\${propNamePrefix}ownedYears\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    lessThanValidator({
-      property: data?.ownedYears,
-      propertyName: \`\${propNamePrefix}ownedYears\`,
-      data,
-      optional: false,
-      config,
-      context,
+        targetPropertyName: 'age',
 
-      targetPropertyName: 'age',
+        allowUndefined: false,
 
-      allowUndefined: false,
+        customMessage: \\"dog can't be owned by anyone longer than his age\\"
+      }),
 
-      customMessage: \\"dog can't be owned by anyone longer than his age\\"
-    });
+    () =>
+      typeValidator({
+        property: data?.owner,
+        propertyName: \`\${propNamePrefix}owner\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.owner,
-      propertyName: \`\${propNamePrefix}owner\`,
-      data,
-      optional: true,
-      config,
-      context,
+        typeDescription: userValidator,
 
-      typeDescription: userValidator,
+        type: ValidationType.nested
+      })
+  ];
 
-      type: ValidationType.nested
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
+  validationChain.forEach((validation) => {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
+
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
+
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
-
-    errors.push(err);
-
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
-    }
-  }
+  });
 
   if (errors.length) {
     throw new ValidationException(errors);
@@ -206,40 +229,55 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.name,
+        propertyName: \`\${propNamePrefix}name\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.name,
-      propertyName: \`\${propNamePrefix}name\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.string
+      }),
 
-      type: ValidationType.string
-    });
+    () =>
+      typeValidator({
+        property: data?.surname,
+        propertyName: \`\${propNamePrefix}surname\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.surname,
-      propertyName: \`\${propNamePrefix}surname\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.string
+      })
+  ];
 
-      type: ValidationType.string
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
+  validationChain.forEach((validation) => {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
+
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
+
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
-
-    errors.push(err);
-
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
-    }
-  }
+  });
 
   if (errors.length) {
     throw new ValidationException(errors);

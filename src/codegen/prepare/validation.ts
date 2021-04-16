@@ -64,7 +64,7 @@ export const buildValidationFromClassMetadata = ({
 
       addImport(pkg.name, requiredOneOfValidator.name, true);
       items.push({
-        propertyName: fields[0],
+        propertyName: '',
         validatorName: requiredOneOfValidator.name,
         validatorPayload
       });

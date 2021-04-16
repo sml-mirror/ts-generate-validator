@@ -47,371 +47,417 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      requiredOneOfValidator({
+        property: null,
+        propertyName: \`\${propNamePrefix}\`,
+        data,
 
-  try {
-    requiredOneOfValidator({
-      property: data?.email,
-      propertyName: \`\${propNamePrefix}email\`,
-      data,
+        config,
+        context,
 
-      config,
-      context,
+        fields: ['email', 'phone']
+      }),
 
-      fields: ['email', 'phone']
-    });
+    () =>
+      typeValidator({
+        property: data?.name,
+        propertyName: \`\${propNamePrefix}name\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.name,
-      propertyName: \`\${propNamePrefix}name\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.string
+      }),
 
-      type: ValidationType.string
-    });
+    () =>
+      minLengthValidator({
+        property: data?.name,
+        propertyName: \`\${propNamePrefix}name\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    minLengthValidator({
-      property: data?.name,
-      propertyName: \`\${propNamePrefix}name\`,
-      data,
-      optional: false,
-      config,
-      context,
+        threshold: 2
+      }),
 
-      threshold: 2
-    });
+    () =>
+      maxLengthValidator({
+        property: data?.name,
+        propertyName: \`\${propNamePrefix}name\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    maxLengthValidator({
-      property: data?.name,
-      propertyName: \`\${propNamePrefix}name\`,
-      data,
-      optional: false,
-      config,
-      context,
+        threshold: 50
+      }),
 
-      threshold: 50
-    });
+    () =>
+      trimValidator({
+        property: data?.name,
+        propertyName: \`\${propNamePrefix}name\`,
+        data,
+        optional: false,
+        config,
+        context
+      }),
 
-    trimValidator({
-      property: data?.name,
-      propertyName: \`\${propNamePrefix}name\`,
-      data,
-      optional: false,
-      config,
-      context
-    });
+    () =>
+      typeValidator({
+        property: data?.surname,
+        propertyName: \`\${propNamePrefix}surname\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.surname,
-      propertyName: \`\${propNamePrefix}surname\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.string
+      }),
 
-      type: ValidationType.string
-    });
+    () =>
+      minLengthValidator({
+        property: data?.surname,
+        propertyName: \`\${propNamePrefix}surname\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    minLengthValidator({
-      property: data?.surname,
-      propertyName: \`\${propNamePrefix}surname\`,
-      data,
-      optional: false,
-      config,
-      context,
+        threshold: 2,
 
-      threshold: 2,
+        customMessage: 'surname length must be more then 2 letters'
+      }),
 
-      customMessage: 'surname length must be more then 2 letters'
-    });
+    () =>
+      maxLengthValidator({
+        property: data?.surname,
+        propertyName: \`\${propNamePrefix}surname\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    maxLengthValidator({
-      property: data?.surname,
-      propertyName: \`\${propNamePrefix}surname\`,
-      data,
-      optional: false,
-      config,
-      context,
+        threshold: 50,
 
-      threshold: 50,
+        customMessage: 'surname length must be less then 50 letters'
+      }),
 
-      customMessage: 'surname length must be less then 50 letters'
-    });
+    () =>
+      trimValidator({
+        property: data?.surname,
+        propertyName: \`\${propNamePrefix}surname\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    trimValidator({
-      property: data?.surname,
-      propertyName: \`\${propNamePrefix}surname\`,
-      data,
-      optional: false,
-      config,
-      context,
+        customMessage: 'there should be no spaces at the beginning and at the end of surname'
+      }),
 
-      customMessage: 'there should be no spaces at the beginning and at the end of surname'
-    });
+    () =>
+      typeValidator({
+        property: data?.age,
+        propertyName: \`\${propNamePrefix}age\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.age,
-      propertyName: \`\${propNamePrefix}age\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.number
+      }),
 
-      type: ValidationType.number
-    });
+    () =>
+      minValidator({
+        property: data?.age,
+        propertyName: \`\${propNamePrefix}age\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    minValidator({
-      property: data?.age,
-      propertyName: \`\${propNamePrefix}age\`,
-      data,
-      optional: false,
-      config,
-      context,
+        threshold: 18
+      }),
 
-      threshold: 18
-    });
+    () =>
+      maxValidator({
+        property: data?.age,
+        propertyName: \`\${propNamePrefix}age\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    maxValidator({
-      property: data?.age,
-      propertyName: \`\${propNamePrefix}age\`,
-      data,
-      optional: false,
-      config,
-      context,
+        threshold: 60
+      }),
 
-      threshold: 60
-    });
+    () =>
+      integerValidator({
+        property: data?.age,
+        propertyName: \`\${propNamePrefix}age\`,
+        data,
+        optional: false,
+        config,
+        context
+      }),
 
-    integerValidator({
-      property: data?.age,
-      propertyName: \`\${propNamePrefix}age\`,
-      data,
-      optional: false,
-      config,
-      context
-    });
+    () =>
+      typeValidator({
+        property: data?.workExperience,
+        propertyName: \`\${propNamePrefix}workExperience\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.workExperience,
-      propertyName: \`\${propNamePrefix}workExperience\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.number
+      }),
 
-      type: ValidationType.number
-    });
+    () =>
+      lessThanValidator({
+        property: data?.workExperience,
+        propertyName: \`\${propNamePrefix}workExperience\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    lessThanValidator({
-      property: data?.workExperience,
-      propertyName: \`\${propNamePrefix}workExperience\`,
-      data,
-      optional: false,
-      config,
-      context,
+        targetPropertyName: 'age'
+      }),
 
-      targetPropertyName: 'age'
-    });
+    () =>
+      positiveValidator({
+        property: data?.workExperience,
+        propertyName: \`\${propNamePrefix}workExperience\`,
+        data,
+        optional: false,
+        config,
+        context
+      }),
 
-    positiveValidator({
-      property: data?.workExperience,
-      propertyName: \`\${propNamePrefix}workExperience\`,
-      data,
-      optional: false,
-      config,
-      context
-    });
+    () =>
+      typeValidator({
+        property: data?.isActive,
+        propertyName: \`\${propNamePrefix}isActive\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.isActive,
-      propertyName: \`\${propNamePrefix}isActive\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.boolean
+      }),
 
-      type: ValidationType.boolean
-    });
+    () =>
+      equalValidator({
+        property: data?.isActive,
+        propertyName: \`\${propNamePrefix}isActive\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    equalValidator({
-      property: data?.isActive,
-      propertyName: \`\${propNamePrefix}isActive\`,
-      data,
-      optional: false,
-      config,
-      context,
+        value: true
+      }),
 
-      value: true
-    });
+    () =>
+      typeValidator({
+        property: data?.email,
+        propertyName: \`\${propNamePrefix}email\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.email,
-      propertyName: \`\${propNamePrefix}email\`,
-      data,
-      optional: true,
-      config,
-      context,
+        type: ValidationType.string
+      }),
 
-      type: ValidationType.string
-    });
+    () =>
+      emailValidator({
+        property: data?.email,
+        propertyName: \`\${propNamePrefix}email\`,
+        data,
+        optional: true,
+        config,
+        context
+      }),
 
-    emailValidator({
-      property: data?.email,
-      propertyName: \`\${propNamePrefix}email\`,
-      data,
-      optional: true,
-      config,
-      context
-    });
+    () =>
+      typeValidator({
+        property: data?.phone,
+        propertyName: \`\${propNamePrefix}phone\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.phone,
-      propertyName: \`\${propNamePrefix}phone\`,
-      data,
-      optional: true,
-      config,
-      context,
+        type: ValidationType.string
+      }),
 
-      type: ValidationType.string
-    });
+    () =>
+      matchValidator({
+        property: data?.phone,
+        propertyName: \`\${propNamePrefix}phone\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-    matchValidator({
-      property: data?.phone,
-      propertyName: \`\${propNamePrefix}phone\`,
-      data,
-      optional: true,
-      config,
-      context,
+        regexp: /^\\\\d{10}$/
+      }),
 
-      regexp: /^\\\\d{10}$/
-    });
+    () =>
+      typeValidator({
+        property: data?.website,
+        propertyName: \`\${propNamePrefix}website\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.website,
-      propertyName: \`\${propNamePrefix}website\`,
-      data,
-      optional: true,
-      config,
-      context,
+        type: ValidationType.string
+      }),
 
-      type: ValidationType.string
-    });
+    () =>
+      urlValidator({
+        property: data?.website,
+        propertyName: \`\${propNamePrefix}website\`,
+        data,
+        optional: true,
+        config,
+        context
+      }),
 
-    urlValidator({
-      property: data?.website,
-      propertyName: \`\${propNamePrefix}website\`,
-      data,
-      optional: true,
-      config,
-      context
-    });
+    () =>
+      typeValidator({
+        property: data?.nickname,
+        propertyName: \`\${propNamePrefix}nickname\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.nickname,
-      propertyName: \`\${propNamePrefix}nickname\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.string
+      }),
 
-      type: ValidationType.string
-    });
+    () =>
+      lowercaseValidator({
+        property: data?.nickname,
+        propertyName: \`\${propNamePrefix}nickname\`,
+        data,
+        optional: false,
+        config,
+        context
+      }),
 
-    lowercaseValidator({
-      property: data?.nickname,
-      propertyName: \`\${propNamePrefix}nickname\`,
-      data,
-      optional: false,
-      config,
-      context
-    });
+    () =>
+      minLengthValidator({
+        property: data?.nickname,
+        propertyName: \`\${propNamePrefix}nickname\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    minLengthValidator({
-      property: data?.nickname,
-      propertyName: \`\${propNamePrefix}nickname\`,
-      data,
-      optional: false,
-      config,
-      context,
+        threshold: 5
+      }),
 
-      threshold: 5
-    });
+    () =>
+      maxLengthValidator({
+        property: data?.nickname,
+        propertyName: \`\${propNamePrefix}nickname\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    maxLengthValidator({
-      property: data?.nickname,
-      propertyName: \`\${propNamePrefix}nickname\`,
-      data,
-      optional: false,
-      config,
-      context,
+        threshold: 20
+      }),
 
-      threshold: 20
-    });
+    () =>
+      typeValidator({
+        property: data?.cardHolderName,
+        propertyName: \`\${propNamePrefix}cardHolderName\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.cardHolderName,
-      propertyName: \`\${propNamePrefix}cardHolderName\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.string
+      }),
 
-      type: ValidationType.string
-    });
+    () =>
+      uppercaseValidator({
+        property: data?.cardHolderName,
+        propertyName: \`\${propNamePrefix}cardHolderName\`,
+        data,
+        optional: false,
+        config,
+        context
+      }),
 
-    uppercaseValidator({
-      property: data?.cardHolderName,
-      propertyName: \`\${propNamePrefix}cardHolderName\`,
-      data,
-      optional: false,
-      config,
-      context
-    });
+    () =>
+      typeValidator({
+        property: data?.insuranceRatio,
+        propertyName: \`\${propNamePrefix}insuranceRatio\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.insuranceRatio,
-      propertyName: \`\${propNamePrefix}insuranceRatio\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.number
+      }),
 
-      type: ValidationType.number
-    });
+    () =>
+      floatValidator({
+        property: data?.insuranceRatio,
+        propertyName: \`\${propNamePrefix}insuranceRatio\`,
+        data,
+        optional: false,
+        config,
+        context
+      }),
 
-    floatValidator({
-      property: data?.insuranceRatio,
-      propertyName: \`\${propNamePrefix}insuranceRatio\`,
-      data,
-      optional: false,
-      config,
-      context
-    });
+    () =>
+      typeValidator({
+        property: data?.userType,
+        propertyName: \`\${propNamePrefix}userType\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.userType,
-      propertyName: \`\${propNamePrefix}userType\`,
-      data,
-      optional: true,
-      config,
-      context,
+        typeDescription: UserType,
 
-      typeDescription: UserType,
+        type: ValidationType.enum
+      })
+  ];
 
-      type: ValidationType.enum
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
+  validationChain.forEach((validation) => {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
+
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
+
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
-
-    errors.push(err);
-
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
-    }
-  }
+  });
 
   if (errors.length) {
     throw new ValidationException(errors);
@@ -444,7 +490,7 @@ Array [
         "async": false,
         "items": Array [
           Object {
-            "propertyName": "email",
+            "propertyName": "",
             "validatorName": "requiredOneOfValidator",
             "validatorPayload": Array [
               Object {
