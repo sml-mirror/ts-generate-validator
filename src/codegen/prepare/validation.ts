@@ -322,7 +322,7 @@ export const buildValidationFromClassMetadata = ({
         propertyName: fieldName,
         validatorName,
         optional,
-        async,
+        async: isAsync,
         validatorPayload: args.map((arg, index) => {
           const property = validatorArgumentNames[index];
           let type = '';
