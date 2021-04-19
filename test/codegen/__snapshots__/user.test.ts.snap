@@ -435,7 +435,7 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
       })
   ];
 
-  validationChain.forEach((validation) => {
+  for (const validation of validationChain) {
     try {
       validation();
     } catch (err) {
@@ -457,7 +457,7 @@ export const userValidator: GeneratedValidation = <D extends Data = typeof User,
         }
       }
     }
-  });
+  }
 
   if (errors.length) {
     throw new ValidationException(errors);

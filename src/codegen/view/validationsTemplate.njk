@@ -20,7 +20,7 @@ export const {{ validation.name }}: GeneratedValidation = {% if validation.async
   const errors: ValidationError[] = [];
   const validationChain = [
     {% for item in validation.items %}
-    () => {% if item.async %}await {% endif %}{{ item.validatorName }}({
+    {% if item.async %}async {% endif %}() => {{ item.validatorName }}({
       property: {% if item.propertyName %}data?.{{ item.propertyName }}{% else %}null{% endif %},
       propertyName: `${propNamePrefix}{{ item.propertyName }}`,
       data,
@@ -34,9 +34,9 @@ export const {{ validation.name }}: GeneratedValidation = {% if validation.async
     {% endfor %}
   ];
 
-  validationChain.forEach((validation) => {
+  for (const validation of validationChain) {
     try {
-      validation();
+      {% if validation.async %}await {% endif %}validation();
     } catch (err) {
       if (err instanceof ValidationException) {
         if (config.stopAtFirstError) {
@@ -56,8 +56,7 @@ export const {{ validation.name }}: GeneratedValidation = {% if validation.async
         }
       }
     }
-  });
-  
+  }
 
   if (errors.length) {
     throw new ValidationException(errors);

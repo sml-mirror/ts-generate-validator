@@ -38,7 +38,7 @@ export const classWithNonPrimitivePropertyValidator: GeneratedValidation = <
   const errors: ValidationError[] = [];
   const validationChain = [];
 
-  validationChain.forEach((validation) => {
+  for (const validation of validationChain) {
     try {
       validation();
     } catch (err) {
@@ -60,7 +60,7 @@ export const classWithNonPrimitivePropertyValidator: GeneratedValidation = <
         }
       }
     }
-  });
+  }
 
   if (errors.length) {
     throw new ValidationException(errors);
@@ -94,7 +94,7 @@ export const classWithEnumPropertyValidator: GeneratedValidation = <
       })
   ];
 
-  validationChain.forEach((validation) => {
+  for (const validation of validationChain) {
     try {
       validation();
     } catch (err) {
@@ -116,7 +116,7 @@ export const classWithEnumPropertyValidator: GeneratedValidation = <
         }
       }
     }
-  });
+  }
 
   if (errors.length) {
     throw new ValidationException(errors);

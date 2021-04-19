@@ -1,3 +1,4 @@
+import { promiseAny } from './../utils/promise';
 import { ValidationError } from './../codegen/utils/error';
 import { AllowedCommonValidators } from './../localization/model';
 import { PartialValidationConfig } from '../../src/config/model';
@@ -69,23 +70,37 @@ export const typeValidator: TypeValidator = ({
       );
     }
 
-    for (const unionTypeDesc of typeDescription) {
-      try {
-        typeValidator({
-          property,
-          propertyName,
-          type: unionTypeDesc.type,
-          typeDescription: unionTypeDesc.typeDescription,
-          context,
-          customMessage,
-          config,
-          ...rest
-        } as Parameters<TypeValidator>[0]);
-        // If validation succeed -> return
-        return;
-      } catch (err) {
-        // Do nothing
-      }
+    let isAnyTypeCheckSucceed = false;
+    const promises: Promise<ReturnType<TypeValidator>>[] = typeDescription
+      .map((unionTypeDesc) => {
+        try {
+          const result = typeValidator({
+            property,
+            propertyName,
+            type: unionTypeDesc.type,
+            typeDescription: unionTypeDesc.typeDescription,
+            context,
+            customMessage,
+            config,
+            ...rest
+          } as Parameters<TypeValidator>[0]);
+
+          isAnyTypeCheckSucceed = true;
+
+          return result;
+        } catch (err) {
+          // Do nothing
+        }
+      })
+      .filter((r) => r instanceof Promise) as Promise<ReturnType<TypeValidator>>[];
+
+    if (promises.length) {
+      return promiseAny(promises);
+    }
+
+    // If validation succeed -> return
+    if (isAnyTypeCheckSucceed) {
+      return;
     }
 
     const defaultMessage = `Must be one of the following types: ${typeDescription
@@ -100,18 +115,26 @@ export const typeValidator: TypeValidator = ({
       throw new ValidationError(propertyName, customMessage ?? msgFromConfig ?? defaultMessage);
     }
 
-    return property.forEach((item, index) =>
-      typeValidator({
-        property: item,
-        propertyName: `${propertyName}[${index}]`,
-        type: (typeDescription as TypeValidatorPayload).type,
-        typeDescription: (typeDescription as TypeValidatorPayload).typeDescription,
-        context,
-        customMessage,
-        config,
-        ...rest
-      } as Parameters<TypeValidator>[0])
-    );
+    const promises: Promise<ReturnType<TypeValidator>>[] = property
+      .map((item, index) => {
+        return typeValidator({
+          property: item,
+          propertyName: `${propertyName}[${index}]`,
+          type: (typeDescription as TypeValidatorPayload).type,
+          typeDescription: (typeDescription as TypeValidatorPayload).typeDescription,
+          context,
+          customMessage,
+          config,
+          ...rest
+        } as Parameters<TypeValidator>[0]);
+      })
+      .filter((r) => r instanceof Promise) as Promise<ReturnType<TypeValidator>>[];
+
+    if (promises.length) {
+      return Promise.all(promises);
+    }
+
+    return;
   }
 
   if (type === ValidationType.enum) {
@@ -134,8 +157,7 @@ export const typeValidator: TypeValidator = ({
       throw new IssueError(`Type description for "${type}" type not provided.`);
     }
 
-    typeDescription(property, config, context, `${propertyName}.`);
-    return;
+    return typeDescription(property, config, context, `${propertyName}.`);
   }
 
   if (!primitiveValidationTypes.includes(type as any)) {
@@ -167,7 +189,7 @@ export const customValidator: CustomValidator = ({ customValidationFunction, ...
     return;
   }
 
-  customValidationFunction({ ...rest });
+  return customValidationFunction({ ...rest });
 };
 
 export const equalValidator: EqualValidator = (payload) => {
