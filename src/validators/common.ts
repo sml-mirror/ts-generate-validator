@@ -70,28 +70,32 @@ export const typeValidator: TypeValidator = ({
       );
     }
 
-    let nestedTypeCountInUnion = 0;
-    let nestedTypeErrors: ValidationError[] | undefined;
+    let complexTypeCountInUnion = 0;
+    let complexTypeErrors: ValidationError[] | undefined;
     let isAnyTypeCheckSucceed: boolean = false;
 
     const promises: Promise<ReturnType<TypeValidator>>[] = typeDescription
       .map((unionTypeDesc) => {
+        const isComplexType = (type: ValidationType): boolean => {
+          return [ValidationType.array, ValidationType.nested].includes(type);
+        };
+
         const handleTypeValidationError = (err: any) => {
           let errors: ValidationError[] | undefined;
 
           if (err instanceof ValidationException) {
             errors = err.errors;
           } else if (err instanceof ValidationError) {
-            errors = [err];
+            // There are no complex type validation details -> do nothing
           } else throw err;
 
-          if (unionTypeDesc.type === ValidationType.nested && !nestedTypeErrors) {
-            nestedTypeErrors = errors;
+          if (isComplexType(unionTypeDesc.type) && errors && !complexTypeErrors) {
+            complexTypeErrors = errors;
           }
         };
 
-        if (unionTypeDesc.type === ValidationType.nested) {
-          nestedTypeCountInUnion++;
+        if (isComplexType(unionTypeDesc.type)) {
+          complexTypeCountInUnion++;
         }
 
         try {
@@ -124,8 +128,8 @@ export const typeValidator: TypeValidator = ({
       .filter((result) => result instanceof Promise) as Promise<ReturnType<TypeValidator>>[];
 
     const handleUnionValidationFail = () => {
-      if (nestedTypeCountInUnion === 1 && nestedTypeErrors) {
-        throw new ValidationException(nestedTypeErrors);
+      if (complexTypeCountInUnion === 1 && complexTypeErrors) {
+        throw new ValidationException(complexTypeErrors);
       }
 
       const defaultMessage = `Must be one of the following types: ${typeDescription

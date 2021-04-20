@@ -226,6 +226,39 @@ describe('common validators', () => {
     ).toThrowError(
       new ValidationException([new ValidationError('test1', 'test'), new ValidationError('test2', 'test')])
     );
+    expect(
+      jest.fn(() => {
+        typeValidator({
+          property: [null],
+          type: ValidationType.union,
+          typeDescription: [
+            {
+              type: ValidationType.string
+            },
+            {
+              type: ValidationType.number
+            },
+            {
+              type: ValidationType.array,
+              typeDescription: {
+                type: ValidationType.nested,
+                typeDescription: () => {
+                  throw new ValidationException([
+                    new ValidationError('test1', 'test'),
+                    new ValidationError('test2', 'test')
+                  ]);
+                }
+              }
+            }
+          ],
+          config,
+          data: { testComplexArrayInsideUnion: [null] },
+          propertyName: 'testComplexArrayInsideUnion'
+        });
+      })
+    ).toThrowError(
+      new ValidationException([new ValidationError('test1', 'test'), new ValidationError('test2', 'test')])
+    );
   });
 
   test('equal validator', () => {
