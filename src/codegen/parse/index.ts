@@ -1,6 +1,6 @@
 import { cutFileExt, hasFileExt, isPackagePath, normalizeFileExt, normalizePath } from './../../utils/path';
 import { IgnoreValidation } from './../../decorators/index';
-import { IssueError, ErrorInFile } from './../utils/error';
+import { IssueError, ErrorInFile, outWarning } from './../utils/error';
 import { ValidationType } from './../../validators/model';
 import { buildClassesMetadata } from './classes';
 import { parseStruct, ImportNode } from 'ts-file-parser';
@@ -30,7 +30,14 @@ export const parseInputFiles = (files: string[]): InputFileMetadata[] => {
       break;
     }
 
-    const content = fs.readFileSync(path.resolve(process.cwd(), normalizeFileExt(inputFileDesc.path)), 'utf-8');
+    const inputFilePath = path.resolve(process.cwd(), normalizeFileExt(inputFileDesc.path));
+    let content: string;
+    try {
+      content = fs.readFileSync(inputFilePath, 'utf-8');
+    } catch (err) {
+      outWarning(`Failed to read input file "${inputFilePath}" -> skip (${err.message})`);
+      continue;
+    }
     const structure = parseStruct(content, {}, inputFileDesc.path);
 
     if (structure.enumDeclarations.length) {
