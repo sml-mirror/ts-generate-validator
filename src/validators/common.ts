@@ -74,12 +74,12 @@ export const typeValidator: TypeValidator = ({
     let complexTypeErrors: ValidationError[] | undefined;
     let isAnyTypeCheckSucceed: boolean = false;
 
+    const isComplexType = (type: ValidationType): boolean => {
+      return [ValidationType.array, ValidationType.nested].includes(type);
+    };
+
     const promises: Promise<ReturnType<TypeValidator>>[] = typeDescription
       .map((unionTypeDesc) => {
-        const isComplexType = (type: ValidationType): boolean => {
-          return [ValidationType.array, ValidationType.nested].includes(type);
-        };
-
         const handleTypeValidationError = (err: any) => {
           let errors: ValidationError[] | undefined;
 
