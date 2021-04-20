@@ -1,3 +1,4 @@
+import { ValidationError, ValidationException } from './../../src/codegen/utils/error';
 import { equalValidator, equalToValidator } from './../../src/validators/common';
 import { requiredOneOfValidator, typeValidator, ValidationType } from '../../src';
 import { getConfig } from './../../src/config/runtime';
@@ -192,6 +193,39 @@ describe('common validators', () => {
         });
       })
     ).not.toThrowError();
+
+    // Validation error at union type containing one complex
+    // type must return details instead of common message
+    expect(
+      jest.fn(() => {
+        typeValidator({
+          property: null,
+          type: ValidationType.union,
+          typeDescription: [
+            {
+              type: ValidationType.string
+            },
+            {
+              type: ValidationType.number
+            },
+            {
+              type: ValidationType.nested,
+              typeDescription: () => {
+                throw new ValidationException([
+                  new ValidationError('test1', 'test'),
+                  new ValidationError('test2', 'test')
+                ]);
+              }
+            }
+          ],
+          config,
+          data: { test: null },
+          propertyName: 'test'
+        });
+      })
+    ).toThrowError(
+      new ValidationException([new ValidationError('test1', 'test'), new ValidationError('test2', 'test')])
+    );
   });
 
   test('equal validator', () => {

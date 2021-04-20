@@ -1,5 +1,5 @@
 import { promiseAny } from './../utils/promise';
-import { ValidationError } from './../codegen/utils/error';
+import { ValidationError, ValidationException } from './../codegen/utils/error';
 import { AllowedCommonValidators } from './../localization/model';
 import { PartialValidationConfig } from '../../src/config/model';
 import { IssueError } from './../codegen/utils/error';
@@ -70,9 +70,30 @@ export const typeValidator: TypeValidator = ({
       );
     }
 
-    let isAnyTypeCheckSucceed = false;
+    let nestedTypeCountInUnion = 0;
+    let nestedTypeErrors: ValidationError[] | undefined;
+    let isAnyTypeCheckSucceed: boolean = false;
+
     const promises: Promise<ReturnType<TypeValidator>>[] = typeDescription
       .map((unionTypeDesc) => {
+        const handleTypeValidationError = (err: any) => {
+          let errors: ValidationError[] | undefined;
+
+          if (err instanceof ValidationException) {
+            errors = err.errors;
+          } else if (err instanceof ValidationError) {
+            errors = [err];
+          } else throw err;
+
+          if (unionTypeDesc.type === ValidationType.nested && !nestedTypeErrors) {
+            nestedTypeErrors = errors;
+          }
+        };
+
+        if (unionTypeDesc.type === ValidationType.nested) {
+          nestedTypeCountInUnion++;
+        }
+
         try {
           const result = typeValidator({
             property,
@@ -85,28 +106,43 @@ export const typeValidator: TypeValidator = ({
             ...rest
           } as Parameters<TypeValidator>[0]);
 
-          isAnyTypeCheckSucceed = true;
+          if (result instanceof Promise) {
+            result
+              .then(() => {
+                isAnyTypeCheckSucceed = true;
+              })
+              .catch(handleTypeValidationError);
+          } else {
+            isAnyTypeCheckSucceed = true;
+          }
 
           return result;
         } catch (err) {
-          // Do nothing
+          handleTypeValidationError(err);
         }
       })
-      .filter((r) => r instanceof Promise) as Promise<ReturnType<TypeValidator>>[];
+      .filter((result) => result instanceof Promise) as Promise<ReturnType<TypeValidator>>[];
+
+    const handleUnionValidationFail = () => {
+      if (nestedTypeCountInUnion === 1 && nestedTypeErrors) {
+        throw new ValidationException(nestedTypeErrors);
+      }
+
+      const defaultMessage = `Must be one of the following types: ${typeDescription
+        .map((desc) => desc.type)
+        .join(', ')}. But recieved property value is none of them.`;
+      throw new ValidationError(propertyName, customMessage ?? msgFromConfig ?? defaultMessage);
+    };
 
     if (promises.length) {
-      return promiseAny(promises);
+      return promiseAny(promises).catch(handleUnionValidationFail);
     }
 
-    // If validation succeed -> return
     if (isAnyTypeCheckSucceed) {
       return;
     }
 
-    const defaultMessage = `Must be one of the following types: ${typeDescription
-      .map((desc) => desc.type)
-      .join(', ')}. But recieved property value is none of them.`;
-    throw new ValidationError(propertyName, customMessage ?? msgFromConfig ?? defaultMessage);
+    handleUnionValidationFail();
   }
 
   if (type === ValidationType.array) {
