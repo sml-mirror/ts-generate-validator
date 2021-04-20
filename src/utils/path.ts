@@ -57,5 +57,7 @@ export const normalizePath = (rawPath: string): string => {
 };
 
 export const isPackagePath = (rawPath: string): boolean => {
-  return !hasFileExt(rawPath) && rawPath.indexOf(path.sep) < 0 && rawPath.indexOf('/') < 0;
+  return (
+    !hasFileExt(rawPath) && ((rawPath.indexOf(path.sep) < 0 && rawPath.indexOf('/') < 0) || rawPath.startsWith('@'))
+  );
 };
