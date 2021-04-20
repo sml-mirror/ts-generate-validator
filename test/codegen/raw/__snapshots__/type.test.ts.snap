@@ -36,17 +36,29 @@ export const classWithNonPrimitivePropertyValidator: GeneratedValidation = <
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [];
 
-  try {
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -66,29 +78,43 @@ export const classWithEnumPropertyValidator: GeneratedValidation = <
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: true,
-      config,
-      context,
+        typeDescription: SomeEnum,
 
-      typeDescription: SomeEnum,
+        type: ValidationType.enum
+      })
+  ];
 
-      type: ValidationType.enum
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 

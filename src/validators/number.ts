@@ -12,7 +12,7 @@ export const minValidator: ThresholdValidator = (payload) => {
     return property.forEach((p, i) => minValidator({ ...payload, property: p, propertyName: `${propertyName}[${i}]` }));
   }
 
-  const msgFromConfig = config.messages?.number.min;
+  const msgFromConfig = config.messages?.number?.min;
 
   if (property < threshold) {
     const defaultMessage = `The minimum allowed value is "${threshold}", but received is "${property}"`;
@@ -31,7 +31,7 @@ export const maxValidator: ThresholdValidator = (payload) => {
     return property.forEach((p, i) => maxValidator({ ...payload, property: p, propertyName: `${propertyName}[${i}]` }));
   }
 
-  const msgFromConfig = config.messages?.number.max;
+  const msgFromConfig = config.messages?.number?.max;
 
   if (property > threshold) {
     const defaultMessage = `The maximum allowed value is "${threshold}", but received is "${property}"`;
@@ -52,7 +52,7 @@ export const negativeValidator: BaseValidator = (payload) => {
     );
   }
 
-  const msgFromConfig = config.messages?.number.negative;
+  const msgFromConfig = config.messages?.number?.negative;
 
   if (property >= 0) {
     const defaultMessage = `Only negative values are allowed, but received value is "${property}"`;
@@ -73,7 +73,7 @@ export const positiveValidator: BaseValidator = (payload) => {
     );
   }
 
-  const msgFromConfig = config.messages?.number.positive;
+  const msgFromConfig = config.messages?.number?.positive;
 
   if (property < 0) {
     const defaultMessage = `Only positive values are allowed, but received value is "${property}"`;
@@ -94,7 +94,7 @@ export const integerValidator: BaseValidator = (payload) => {
     );
   }
 
-  const msgFromConfig = config.messages?.number.integer;
+  const msgFromConfig = config.messages?.number?.integer;
 
   if (property % 1 !== 0) {
     const defaultMessage = `Only integer values are allowed, but received value is "${property}"`;
@@ -115,7 +115,7 @@ export const floatValidator: BaseValidator = (payload) => {
     );
   }
 
-  const msgFromConfig = config.messages?.number.float;
+  const msgFromConfig = config.messages?.number?.float;
 
   if (property % 1 === 0) {
     const defaultMessage = `Only float values are allowed, but received value is "${property}"`;
@@ -142,7 +142,7 @@ export const lessThanValidator: DependOnValidator = (payload) => {
     );
   }
 
-  const msgFromConfig = config.messages?.number.lessThan;
+  const msgFromConfig = config.messages?.number?.lessThan;
 
   if (property >= data[targetPropertyName] || property === undefined) {
     const defaultMessage = `Must be less than "${targetPropertyName}" property value, but received value "${property}" is more or equal to "${data[targetPropertyName]}"`;
@@ -169,7 +169,7 @@ export const moreThanValidator: DependOnValidator = (payload) => {
     );
   }
 
-  const msgFromConfig = config.messages?.number.moreThan;
+  const msgFromConfig = config.messages?.number?.moreThan;
 
   if (property <= data[targetPropertyName] || property === undefined) {
     const defaultMessage = `Must be more than "${targetPropertyName}" property value, but received value "${property}" is less or equal to "${data[targetPropertyName]}"`;

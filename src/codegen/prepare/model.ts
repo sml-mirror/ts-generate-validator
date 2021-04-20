@@ -36,3 +36,30 @@ export type PreparedDataItem = {
   imports: PreparedImport[];
   validations: PreparedValidation[];
 };
+
+export type AsyncValidationsMap = {
+  [filePath: string]: {
+    validationIndex: number;
+    validationName: string;
+  }[];
+};
+
+export type NestedValidationItemEntry = {
+  dataItemIndex: number;
+  validationName: string;
+  validationIndex: number;
+  validationItemIndex: number;
+  nestedValidations: {
+    name: string;
+    filePath: string;
+  }[];
+};
+
+export type HandleAsyncValidationAdd = (validationName: string) => void;
+
+export type HandleNestedValidationAdd = (payload: {
+  validationName: string;
+  validationItemIndex: number;
+  nestedValidationName: string;
+  nestedValidationFilePath: string;
+}) => void;

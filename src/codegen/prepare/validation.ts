@@ -7,8 +7,13 @@ import { handleError, ErrorInFile, IssueError } from './../utils/error';
 import { ValidationType, primitiveValidationTypes } from './../../validators/model';
 import { requiredOneOfValidator, typeValidator } from './../../validators/common';
 import { RequiredOneOfValidation, CustomValidation, IgnoreValidation, TypeValidation } from './../../decorators/index';
-import { PreparedValidationItem, PreparedValidatorPayloadItem } from './model';
-import { PreparedValidation } from './model';
+import {
+  PreparedValidation,
+  PreparedValidationItem,
+  PreparedValidatorPayloadItem,
+  HandleAsyncValidationAdd,
+  HandleNestedValidationAdd
+} from './model';
 import { ClassMetadata, FunctionMetadata, ClassFieldTypeMetadata, ImportMetadata } from './../parse/model';
 import { CodegenConfig, SeverityLevel } from './../../config/model';
 import * as pkg from '../../../package.json';
@@ -22,7 +27,9 @@ export const buildValidationFromClassMetadata = ({
   inputFileImportsMetadata,
   inputFileFunctionsMetadata,
   inputFilePath,
-  config
+  config,
+  handleAsyncValidationAdd,
+  handleNestedValidationAdd
 }: {
   cls: ClassMetadata;
   clsFileName: string;
@@ -31,6 +38,8 @@ export const buildValidationFromClassMetadata = ({
   inputFileFunctionsMetadata: FunctionMetadata[];
   inputFilePath: string;
   config: CodegenConfig;
+  handleAsyncValidationAdd: HandleAsyncValidationAdd;
+  handleNestedValidationAdd: HandleNestedValidationAdd;
 }): PreparedValidation | undefined => {
   const name = getValidationName(cls.name);
   const items: PreparedValidationItem[] = [];
@@ -64,7 +73,7 @@ export const buildValidationFromClassMetadata = ({
 
       addImport(pkg.name, requiredOneOfValidator.name, true);
       items.push({
-        propertyName: fields[0],
+        propertyName: '',
         validatorName: requiredOneOfValidator.name,
         validatorPayload
       });
@@ -140,6 +149,7 @@ export const buildValidationFromClassMetadata = ({
             } as TypeValidatorPayloadRenderData;
           }
 
+          // Array validation
           if (typeMetadata.validationType === ValidationType.array) {
             return {
               type: ValidationType.array,
@@ -147,6 +157,7 @@ export const buildValidationFromClassMetadata = ({
             };
           }
 
+          // Union validation
           if (typeMetadata.validationType === ValidationType.union) {
             return {
               type: ValidationType.union,
@@ -154,12 +165,14 @@ export const buildValidationFromClassMetadata = ({
             };
           }
 
+          // Boolean, string, number, null validation
           if (primitiveValidationTypes.includes(typeMetadata.validationType as any)) {
             return {
               type: typeMetadata.validationType
             } as TypeValidatorPayloadRenderData;
           }
 
+          // Enum & nested validation
           if (!typeMetadata.referencePath || !typeMetadata.name) {
             throw new IssueError(
               `Failed to create validation for "${cls.name}.${fieldName}" -> "${typeMetadata.validationType}" validation type requires "referencePath" and "name" filled in metadata, but some of them is empty.`
@@ -186,6 +199,15 @@ export const buildValidationFromClassMetadata = ({
               : typeMetadata.name;
 
           addImport(path.resolve(importPath), typeDescription, false);
+
+          if (typeMetadata.validationType === ValidationType.nested) {
+            handleNestedValidationAdd({
+              validationName: name,
+              validationItemIndex: items.length,
+              nestedValidationName: typeDescription,
+              nestedValidationFilePath: importPath
+            });
+          }
 
           return {
             type: typeMetadata.validationType,
@@ -331,6 +353,10 @@ export const buildValidationFromClassMetadata = ({
       });
     });
   });
+
+  if (async) {
+    handleAsyncValidationAdd(name);
+  }
 
   return {
     name,

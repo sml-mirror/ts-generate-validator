@@ -18,11 +18,10 @@ export const {{ validation.name }}: GeneratedValidation = {% if validation.async
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
-
-  try {
+  const validationChain = [
     {% for item in validation.items %}
-    {% if item.async %}await {% endif %}{{ item.validatorName }}({
-      property: data?.{{ item.propertyName }},
+    {% if item.async %}async {% endif %}() => {{ item.validatorName }}({
+      property: {% if item.propertyName %}data?.{{ item.propertyName }}{% else %}null{% endif %},
       propertyName: `${propNamePrefix}{{ item.propertyName }}`,
       data,
       {% if item.optional !== undefined %}optional: {{ item.optional }},{% endif %}
@@ -31,17 +30,31 @@ export const {{ validation.name }}: GeneratedValidation = {% if validation.async
       {% for vArg in item.validatorPayload %}
       {{ vArg.property }}: {% if vArg.type === 'string' %}'{{ vArg.value }}'{% else %}{{ vArg.value | validatorPayloadValueFilter(vArg.property) }}{% endif %},
       {% endfor %}
-    });
+    }),
     {% endfor %}
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
-    
-    errors.push(err);
+  ];
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+  for (const validation of validationChain) {
+    try {
+      {% if validation.async %}await {% endif %}validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
+
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
+
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 

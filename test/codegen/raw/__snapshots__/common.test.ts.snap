@@ -26,6 +26,8 @@ import {
 import {
   TypeValidatorWithCustomMessage,
   TypeValidatorOnNestedPropertyType,
+  TypeValidatorOnAsyncNestedPropertyType,
+  TypeValidatorOnAsyncDeepNestedPropertyType,
   TypeValidatorOnNullPropertyType,
   TypeValidatorOnNullPropertyWithoutType,
   TypeValidatorOnImportedEnumPropertyType,
@@ -66,29 +68,43 @@ export const typeValidatorWithCustomMessageValidator: GeneratedValidation = <
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        customMessage: 'type custom message',
 
-      customMessage: 'type custom message',
+        type: ValidationType.string
+      })
+  ];
 
-      type: ValidationType.string
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -108,31 +124,161 @@ export const typeValidatorOnNestedPropertyTypeValidator: GeneratedValidation = <
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: true,
-      config,
-      context,
+        customMessage: 'type custom message',
 
-      customMessage: 'type custom message',
+        typeDescription: customValidatorSuccessValidator,
 
-      typeDescription: customValidatorSuccessValidator,
+        type: ValidationType.nested
+      })
+  ];
 
-      type: ValidationType.nested
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
+
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
+
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
+  }
 
-    errors.push(err);
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+export const typeValidatorOnAsyncNestedPropertyTypeValidator: GeneratedValidation = async <
+  D extends Data = typeof TypeValidatorOnAsyncNestedPropertyType,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+  const validationChain = [
+    async () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
+
+        customMessage: 'type custom message',
+
+        typeDescription: customValidatorSuccessAsyncValidator,
+
+        type: ValidationType.nested
+      })
+  ];
+
+  for (const validation of validationChain) {
+    try {
+      await validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
+
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
+
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
+
+export const typeValidatorOnAsyncDeepNestedPropertyTypeValidator: GeneratedValidation = async <
+  D extends Data = typeof TypeValidatorOnAsyncDeepNestedPropertyType,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+  const validationChain = [
+    async () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
+
+        customMessage: 'type custom message',
+
+        typeDescription: typeValidatorOnAsyncNestedPropertyTypeValidator,
+
+        type: ValidationType.nested
+      })
+  ];
+
+  for (const validation of validationChain) {
+    try {
+      await validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
+
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
+
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -152,27 +298,41 @@ export const typeValidatorOnNullPropertyTypeValidator: GeneratedValidation = <
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.null
+      })
+  ];
 
-      type: ValidationType.null
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -192,27 +352,41 @@ export const typeValidatorOnNullPropertyWithoutTypeValidator: GeneratedValidatio
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.null
+      })
+  ];
 
-      type: ValidationType.null
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -232,29 +406,43 @@ export const typeValidatorOnImportedEnumPropertyTypeValidator: GeneratedValidati
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: true,
-      config,
-      context,
+        typeDescription: UserType,
 
-      typeDescription: UserType,
+        type: ValidationType.enum
+      })
+  ];
 
-      type: ValidationType.enum
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -274,39 +462,53 @@ export const typeValidatorOnUnionPropertyTypeValidator: GeneratedValidation = <
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        typeDescription: [
+          {
+            type: 'string'
+          },
+          {
+            type: 'number'
+          },
+          {
+            type: 'null'
+          }
+        ] as TypeValidatorPayload[],
 
-      typeDescription: [
-        {
-          type: 'string'
-        },
-        {
-          type: 'number'
-        },
-        {
-          type: 'null'
+        type: ValidationType.union
+      })
+  ];
+
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
         }
-      ] as TypeValidatorPayload[],
 
-      type: ValidationType.union
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(err);
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -326,40 +528,54 @@ export const typeValidatorOnUnionWithNestedPropertyTypeValidator: GeneratedValid
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        typeDescription: [
+          {
+            type: 'nested',
+            typeDescription: customValidatorFailedValidator
+          },
+          {
+            type: 'number'
+          },
+          {
+            type: 'null'
+          }
+        ] as TypeValidatorPayload[],
 
-      typeDescription: [
-        {
-          type: 'nested',
-          typeDescription: customValidatorFailedValidator
-        },
-        {
-          type: 'number'
-        },
-        {
-          type: 'null'
+        type: ValidationType.union
+      })
+  ];
+
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
         }
-      ] as TypeValidatorPayload[],
 
-      type: ValidationType.union
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(err);
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -379,31 +595,45 @@ export const typeValidatorOnArrayPropertyTypeValidator: GeneratedValidation = <
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        typeDescription: {
+          type: 'string'
+        } as TypeValidatorPayload,
 
-      typeDescription: {
-        type: 'string'
-      } as TypeValidatorPayload,
+        type: ValidationType.array
+      })
+  ];
 
-      type: ValidationType.array
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -423,42 +653,56 @@ export const typeValidatorOnUnionWithArrayPropertyTypeValidator: GeneratedValida
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
-
-      typeDescription: [
-        {
-          type: 'null'
-        },
-        {
-          type: 'number'
-        },
-        {
-          type: 'array',
-          typeDescription: {
-            type: 'string'
+        typeDescription: [
+          {
+            type: 'null'
+          },
+          {
+            type: 'number'
+          },
+          {
+            type: 'array',
+            typeDescription: {
+              type: 'string'
+            }
           }
+        ] as TypeValidatorPayload[],
+
+        type: ValidationType.union
+      })
+  ];
+
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
         }
-      ] as TypeValidatorPayload[],
 
-      type: ValidationType.union
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(err);
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -478,32 +722,46 @@ export const typeValidatorOnArrayOfNestedTypePropertyTypeValidator: GeneratedVal
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        typeDescription: {
+          type: 'nested',
+          typeDescription: customValidatorSuccessValidator
+        } as TypeValidatorPayload,
 
-      typeDescription: {
-        type: 'nested',
-        typeDescription: customValidatorSuccessValidator
-      } as TypeValidatorPayload,
+        type: ValidationType.array
+      })
+  ];
 
-      type: ValidationType.array
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -523,40 +781,55 @@ export const customValidatorFailedValidator: GeneratedValidation = <
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: true,
-      config,
-      context,
+        type: ValidationType.number
+      }),
 
-      type: ValidationType.number
-    });
+    () =>
+      customValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-    customValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: true,
-      config,
-      context,
+        customValidationFunction: () => {
+          throw new Error('Failed!');
+        }
+      })
+  ];
 
-      customValidationFunction: () => {
-        throw new Error('Failed!');
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
+
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
+
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
       }
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
-
-    errors.push(err);
-
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
     }
   }
 
@@ -576,38 +849,53 @@ export const customValidatorSuccessValidator: GeneratedValidation = <
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: true,
-      config,
-      context,
+        type: ValidationType.number
+      }),
 
-      type: ValidationType.number
-    });
+    () =>
+      customValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-    customValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: true,
-      config,
-      context,
+        customValidationFunction: () => undefined
+      })
+  ];
 
-      customValidationFunction: () => undefined
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -627,27 +915,41 @@ export const customValidatorOnNonPrimitiveStructureValidator: GeneratedValidatio
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      customValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-  try {
-    customValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: true,
-      config,
-      context,
+        customValidationFunction: () => undefined
+      })
+  ];
 
-      customValidationFunction: () => undefined
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -667,38 +969,53 @@ export const customValidatorSuccessAsyncValidator: GeneratedValidation = async <
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: true,
-      config,
-      context,
+        type: ValidationType.number
+      }),
 
-      type: ValidationType.number
-    });
+    async () =>
+      customValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-    await customValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: true,
-      config,
-      context,
+        customValidationFunction: async (): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), 300))
+      })
+  ];
 
-      customValidationFunction: async (): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), 300))
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      await validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -718,38 +1035,53 @@ export const customValidatorImportedValidator: GeneratedValidation = <
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: true,
-      config,
-      context,
+        type: ValidationType.number
+      }),
 
-      type: ValidationType.number
-    });
+    () =>
+      customValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-    customValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: true,
-      config,
-      context,
+        customValidationFunction: customValidationFuncImported
+      })
+  ];
 
-      customValidationFunction: customValidationFuncImported
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -769,38 +1101,53 @@ export const customValidatorExportedValidator: GeneratedValidation = <
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: true,
-      config,
-      context,
+        type: ValidationType.number
+      }),
 
-      type: ValidationType.number
-    });
+    () =>
+      customValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-    customValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: true,
-      config,
-      context,
+        customValidationFunction: customValidationFuncExported
+      })
+  ];
 
-      customValidationFunction: customValidationFuncExported
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -820,42 +1167,57 @@ export const customValidatorWhichUsesImportedEntityValidator: GeneratedValidatio
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: true,
-      config,
-      context,
+        type: ValidationType.number
+      }),
 
-      type: ValidationType.number
-    });
+    () =>
+      customValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
 
-    customValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: true,
-      config,
-      context,
+        customValidationFunction: ({ property, propertyName }) => {
+          if (property !== someEntityUsedInCustomValidator) {
+            throw new ValidationError(propertyName as string, 'some error message');
+          }
+        }
+      })
+  ];
 
-      customValidationFunction: ({ property, propertyName }) => {
-        if (property !== someEntityUsedInCustomValidator) {
-          throw new ValidationError(propertyName as string, 'some error message');
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
+
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
+
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
         }
       }
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
-
-    errors.push(err);
-
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
     }
   }
 
@@ -875,17 +1237,29 @@ export const ignoreValidationForNonPrimitivePropertyValidator: GeneratedValidati
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [];
 
-  try {
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -905,17 +1279,29 @@ export const ignoreValidationForPrimitivePropertyValidator: GeneratedValidation 
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [];
 
-  try {
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -935,17 +1321,29 @@ export const ignoreValidationForPrimitivePropertyWithOtherDecoratorsValidator: G
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [];
 
-  try {
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -965,38 +1363,53 @@ export const equalValidatorWithDefaultMessageValidator: GeneratedValidation = <
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.string
+      }),
 
-      type: ValidationType.string
-    });
+    () =>
+      equalValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    equalValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        value: 'abcdef'
+      })
+  ];
 
-      value: 'abcdef'
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -1016,40 +1429,55 @@ export const equalValidatorWithCustomMessageValidator: GeneratedValidation = <
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.number
+      }),
 
-      type: ValidationType.number
-    });
+    () =>
+      equalValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    equalValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        value: 245,
 
-      value: 245,
+        customMessage: 'equal custom message'
+      })
+  ];
 
-      customMessage: 'equal custom message'
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -1069,38 +1497,53 @@ export const equalValidatorForBooleanValidator: GeneratedValidation = <
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.boolean
+      }),
 
-      type: ValidationType.boolean
-    });
+    () =>
+      equalValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    equalValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        value: true
+      })
+  ];
 
-      value: true
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -1120,60 +1563,77 @@ export const equalToValidatorWithDefaultMessageValidator: GeneratedValidation = 
 ) => {
   const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
   const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-  try {
-    typeValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.string
+      }),
 
-      type: ValidationType.string
-    });
+    () =>
+      equalToValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    equalToValidator({
-      property: data?.someProperty,
-      propertyName: \`\${propNamePrefix}someProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        targetPropertyName: 'someOtherProperty'
+      }),
 
-      targetPropertyName: 'someOtherProperty'
-    });
+    () =>
+      typeValidator({
+        property: data?.someOtherProperty,
+        propertyName: \`\${propNamePrefix}someOtherProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    typeValidator({
-      property: data?.someOtherProperty,
-      propertyName: \`\${propNamePrefix}someOtherProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        type: ValidationType.string
+      }),
 
-      type: ValidationType.string
-    });
+    () =>
+      equalToValidator({
+        property: data?.someOtherProperty,
+        propertyName: \`\${propNamePrefix}someOtherProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
 
-    equalToValidator({
-      property: data?.someOtherProperty,
-      propertyName: \`\${propNamePrefix}someOtherProperty\`,
-      data,
-      optional: false,
-      config,
-      context,
+        targetPropertyName: 'someProperty'
+      })
+  ];
 
-      targetPropertyName: 'someProperty'
-    });
-  } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      throw err;
-    }
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
 
-    errors.push(err);
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
 
-    if (config.stopAtFirstError) {
-      throw new ValidationException(errors);
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
     }
   }
 
@@ -1195,7 +1655,7 @@ Array [
         "path": "ts-generate-validator",
       },
       Object {
-        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnNestedPropertyType, TypeValidatorOnNullPropertyType, TypeValidatorOnNullPropertyWithoutType, TypeValidatorOnImportedEnumPropertyType, TypeValidatorOnUnionPropertyType, TypeValidatorOnUnionWithNestedPropertyType, TypeValidatorOnArrayPropertyType, TypeValidatorOnUnionWithArrayPropertyType, TypeValidatorOnArrayOfNestedTypePropertyType, CustomValidatorFailed, CustomValidatorSuccess, CustomValidatorOnNonPrimitiveStructure, CustomValidatorSuccessAsync, CustomValidatorImported, customValidationFuncExported, CustomValidatorExported, CustomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
+        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnNestedPropertyType, TypeValidatorOnAsyncNestedPropertyType, TypeValidatorOnAsyncDeepNestedPropertyType, TypeValidatorOnNullPropertyType, TypeValidatorOnNullPropertyWithoutType, TypeValidatorOnImportedEnumPropertyType, TypeValidatorOnUnionPropertyType, TypeValidatorOnUnionWithNestedPropertyType, TypeValidatorOnArrayPropertyType, TypeValidatorOnUnionWithArrayPropertyType, TypeValidatorOnArrayOfNestedTypePropertyType, CustomValidatorFailed, CustomValidatorSuccess, CustomValidatorOnNonPrimitiveStructure, CustomValidatorSuccessAsync, CustomValidatorImported, customValidationFuncExported, CustomValidatorExported, CustomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
         "path": "./../../../model",
       },
       Object {
@@ -1260,6 +1720,66 @@ Array [
         ],
         "modelClassName": "TypeValidatorOnNestedPropertyType",
         "name": "typeValidatorOnNestedPropertyTypeValidator",
+      },
+      Object {
+        "async": true,
+        "items": Array [
+          Object {
+            "async": true,
+            "optional": true,
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customMessage",
+                "type": "string",
+                "value": "type custom message",
+              },
+              Object {
+                "property": "typeDescription",
+                "type": "object",
+                "value": "customValidatorSuccessAsyncValidator",
+              },
+              Object {
+                "property": "type",
+                "type": "object",
+                "value": "ValidationType.nested",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "TypeValidatorOnAsyncNestedPropertyType",
+        "name": "typeValidatorOnAsyncNestedPropertyTypeValidator",
+      },
+      Object {
+        "async": true,
+        "items": Array [
+          Object {
+            "async": true,
+            "optional": true,
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customMessage",
+                "type": "string",
+                "value": "type custom message",
+              },
+              Object {
+                "property": "typeDescription",
+                "type": "object",
+                "value": "typeValidatorOnAsyncNestedPropertyTypeValidator",
+              },
+              Object {
+                "property": "type",
+                "type": "object",
+                "value": "ValidationType.nested",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "TypeValidatorOnAsyncDeepNestedPropertyType",
+        "name": "typeValidatorOnAsyncDeepNestedPropertyTypeValidator",
       },
       Object {
         "async": false,
@@ -1950,6 +2470,62 @@ Array [
           },
         ],
         "name": "TypeValidatorOnNestedPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "type custom message",
+                ],
+                "name": "TypeValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": true,
+            "type": Object {
+              "name": "CustomValidatorSuccessAsync",
+              "referencePath": "model.ts",
+              "validationType": "nested",
+            },
+          },
+        ],
+        "name": "TypeValidatorOnAsyncNestedPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "type custom message",
+                ],
+                "name": "TypeValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": true,
+            "type": Object {
+              "name": "TypeValidatorOnAsyncNestedPropertyType",
+              "referencePath": "model.ts",
+              "validationType": "nested",
+            },
+          },
+        ],
+        "name": "TypeValidatorOnAsyncDeepNestedPropertyType",
       },
       Object {
         "decorators": Array [

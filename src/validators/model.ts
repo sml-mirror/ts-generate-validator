@@ -98,11 +98,9 @@ export type CustomValidatorPayload = {
   customValidationFunction: CustomValidationFunction;
 };
 
-export type CustomValidator<
-  D extends Data = Data,
-  P extends keyof D = keyof D,
-  C extends UserContext = UserContext
-> = BaseValidator<CustomValidatorPayload, D, P, C>;
+export type CustomValidator<D extends Data = Data, P extends keyof D = keyof D, C extends UserContext = UserContext> = (
+  ...args: Parameters<BaseValidator<CustomValidatorPayload, D, P, C>>
+) => ReturnType<BaseValidator> | Promise<ReturnType<BaseValidator>>;
 
 export type EnumDescription = Record<string, any>;
 
@@ -131,11 +129,9 @@ export type TypeValidatorPayload =
       typeDescription: TypeValidatorPayload[];
     };
 
-export type TypeValidator<
-  D extends Data = Data,
-  P extends keyof D = keyof D,
-  C extends UserContext = UserContext
-> = BaseValidator<TypeValidatorPayload, D, P, C>;
+export type TypeValidator<D extends Data = Data, P extends keyof D = keyof D, C extends UserContext = UserContext> = (
+  ...args: Parameters<BaseValidator<TypeValidatorPayload, D, P, C>>
+) => ReturnType<BaseValidator> | Promise<ReturnType<BaseValidator>>;
 
 export type EqualValidatorPayload<D extends Data> = {
   value: D[keyof D];

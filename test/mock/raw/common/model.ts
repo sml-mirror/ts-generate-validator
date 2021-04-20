@@ -28,6 +28,18 @@ export class TypeValidatorOnNestedPropertyType {
 }
 
 @Validation
+export class TypeValidatorOnAsyncNestedPropertyType {
+  @TypeValidation('type custom message')
+  public someProperty?: CustomValidatorSuccessAsync;
+}
+
+@Validation
+export class TypeValidatorOnAsyncDeepNestedPropertyType {
+  @TypeValidation('type custom message')
+  public someProperty?: TypeValidatorOnAsyncNestedPropertyType;
+}
+
+@Validation
 export class TypeValidatorOnNullPropertyType {
   public someProperty: null = null;
 }
@@ -177,9 +189,9 @@ export class EqualToValidatorWithDefaultMessage {
 }
 
 export class EqualToValidatorWithCustomMessage {
-  @EqualToValidation('someOtherProperty', 'equialTo custom message')
+  @EqualToValidation('someOtherProperty', false, 'equialTo custom message')
   public someProperty = '';
 
-  @EqualToValidation('someProperty', 'equialTo custom message')
+  @EqualToValidation('someProperty', false, 'equialTo custom message')
   public someOtherProperty = '';
 }
