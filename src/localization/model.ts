@@ -21,6 +21,12 @@ export type MessageMap = {
   [ValidationType.null]: {
     [key in AllowedCommonValidators]: Message;
   };
+  [ValidationType.enum]: {
+    [CommonValidator.type]: Message;
+  };
+  [ValidationType.union]: {
+    [CommonValidator.type]: Message;
+  };
 };
 
 export type PartialMessageMap = {

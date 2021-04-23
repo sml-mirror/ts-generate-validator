@@ -1,6 +1,6 @@
 import { promiseAny } from './../utils/promise';
 import { ValidationError, ValidationException } from './../codegen/utils/error';
-import { AllowedCommonValidators } from './../localization/model';
+import { AllowedCommonValidators, MessageMap } from './../localization/model';
 import { PartialValidationConfig } from '../../src/config/model';
 import { IssueError } from './../codegen/utils/error';
 import { getEnumValues } from './../utils/enum';
@@ -21,13 +21,15 @@ const getMessageFromConfig = (
   validatorName: AllowedCommonValidators,
   config: PartialValidationConfig
 ): string | undefined => {
-  const messageMapSection = primitiveValidationTypes.find((t) => t === type);
+  const messageMapSection =
+    [...primitiveValidationTypes, ValidationType.enum as const, ValidationType.union as const].find(
+      (t) => t === type
+    ) ?? ('common' as const);
 
-  if (!messageMapSection) {
-    return undefined;
-  }
-
-  return config?.messages?.[messageMapSection]?.[validatorName] ?? config?.messages?.common?.[validatorName];
+  return (
+    config?.messages?.[messageMapSection]?.[validatorName as keyof MessageMap[keyof MessageMap]] ??
+    config?.messages?.common?.[validatorName as keyof MessageMap[keyof MessageMap]]
+  );
 };
 
 export const requiredOneOfValidator: RequiredOneOfValidator = ({
