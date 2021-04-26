@@ -367,7 +367,7 @@ export const buildValidationFromClassMetadata = ({
 };
 
 const getValidationName = (className: string): string => {
-  return `${className[0].toLocaleLowerCase()}${className.slice(1)}Validator`;
+  return `validate${className[0].toLocaleUpperCase()}${className.slice(1)}`;
 };
 
 const addImportsForCustomValidator = ({
