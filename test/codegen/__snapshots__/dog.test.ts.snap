@@ -25,11 +25,11 @@ import {
   lessThanValidator
 } from 'ts-generate-validator';
 
-import { userValidator } from './nestedModel.model';
+import { validateUser } from './nestedModel.model';
 
 import { Dog } from './../../../model';
 
-export const dogValidator: GeneratedValidation = <D extends Data = typeof Dog, C extends UserContext = UserContext>(
+export const validateDog: GeneratedValidation = <D extends Data = typeof Dog, C extends UserContext = UserContext>(
   data: D,
   configArg?: PartialValidationConfig,
   context?: C,
@@ -163,7 +163,7 @@ export const dogValidator: GeneratedValidation = <D extends Data = typeof Dog, C
         config,
         context,
 
-        typeDescription: userValidator,
+        typeDescription: validateUser,
 
         type: ValidationType.nested
       })
@@ -221,7 +221,7 @@ import {
 
 import { User } from './../../../nestedModel/model';
 
-export const userValidator: GeneratedValidation = <D extends Data = typeof User, C extends UserContext = UserContext>(
+export const validateUser: GeneratedValidation = <D extends Data = typeof User, C extends UserContext = UserContext>(
   data: D,
   configArg?: PartialValidationConfig,
   context?: C,
@@ -297,7 +297,7 @@ Array [
         "path": "ts-generate-validator",
       },
       Object {
-        "clauses": "userValidator",
+        "clauses": "validateUser",
         "path": "./nestedModel.model",
       },
       Object {
@@ -451,7 +451,7 @@ Array [
               Object {
                 "property": "typeDescription",
                 "type": "object",
-                "value": "userValidator",
+                "value": "validateUser",
               },
               Object {
                 "property": "type",
@@ -462,7 +462,7 @@ Array [
           },
         ],
         "modelClassName": "Dog",
-        "name": "dogValidator",
+        "name": "validateDog",
       },
     ],
   },
@@ -509,7 +509,7 @@ Array [
           },
         ],
         "modelClassName": "User",
-        "name": "userValidator",
+        "name": "validateUser",
       },
     ],
   },

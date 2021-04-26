@@ -25,7 +25,7 @@ import {
   ClassWithEnumProperty
 } from './../../../subfolder #1/subfolder #2/model';
 
-export const classWithNonPrimitivePropertyValidator: GeneratedValidation = <
+export const validateClassWithNonPrimitiveProperty: GeneratedValidation = <
   D extends Data = typeof ClassWithNonPrimitiveProperty,
   C extends UserContext = UserContext
 >(
@@ -67,7 +67,7 @@ export const classWithNonPrimitivePropertyValidator: GeneratedValidation = <
   }
 };
 
-export const classWithEnumPropertyValidator: GeneratedValidation = <
+export const validateClassWithEnumProperty: GeneratedValidation = <
   D extends Data = typeof ClassWithEnumProperty,
   C extends UserContext = UserContext
 >(
@@ -145,7 +145,7 @@ Array [
         "async": false,
         "items": Array [],
         "modelClassName": "ClassWithNonPrimitiveProperty",
-        "name": "classWithNonPrimitivePropertyValidator",
+        "name": "validateClassWithNonPrimitiveProperty",
       },
       Object {
         "async": false,
@@ -169,7 +169,7 @@ Array [
           },
         ],
         "modelClassName": "ClassWithEnumProperty",
-        "name": "classWithEnumPropertyValidator",
+        "name": "validateClassWithEnumProperty",
       },
     ],
   },

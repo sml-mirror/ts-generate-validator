@@ -39,7 +39,7 @@ import { UserType } from './../../../type/model';
 
 import { User } from './../../../model';
 
-export const userValidator: GeneratedValidation = <D extends Data = typeof User, C extends UserContext = UserContext>(
+export const validateUser: GeneratedValidation = <D extends Data = typeof User, C extends UserContext = UserContext>(
   data: D,
   configArg?: PartialValidationConfig,
   context?: C,
@@ -873,7 +873,7 @@ Array [
           },
         ],
         "modelClassName": "User",
-        "name": "userValidator",
+        "name": "validateUser",
       },
     ],
   },

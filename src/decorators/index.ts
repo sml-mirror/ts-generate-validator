@@ -2,7 +2,8 @@ import { CustomValidationFunction } from './../validators/model';
 import { Data } from '../codegen/model';
 import { Message } from '../localization/model';
 
-const emptyDecorator = (...args: any[]) => args[0];
+// @ts-ignore
+const emptyDecorator = (...args: any[]): void => null;
 
 /*
  *********************
@@ -61,7 +62,7 @@ export const CustomValidation = (validator: CustomValidationFunction) => emptyDe
  * Marks a property as ignored in a validation function - it will not be checked against type, and any other decorators applied will be ignored
  */
 // @ts-ignore
-export const IgnoreValidation = (...args: any[]) => args[0];
+export const IgnoreValidation = (...args: any[]): void => null;
 
 type EqualToValue = string | number | boolean | null | EqualToValue[];
 /**
