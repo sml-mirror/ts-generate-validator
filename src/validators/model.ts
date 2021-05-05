@@ -110,22 +110,27 @@ export type TypeValidatorPayload =
         ValidationType,
         ValidationType.enum | ValidationType.nested | ValidationType.array | ValidationType.union
       >;
+      typeName?: string;
       typeDescription?: undefined;
     }
   | {
       type: ValidationType.enum;
+      typeName?: string;
       typeDescription: EnumDescription;
     }
   | {
       type: ValidationType.nested;
+      typeName?: string;
       typeDescription: GeneratedValidation;
     }
   | {
       type: ValidationType.array;
+      typeName?: string;
       typeDescription: TypeValidatorPayload;
     }
   | {
       type: ValidationType.union;
+      typeName?: string;
       typeDescription: TypeValidatorPayload[];
     };
 

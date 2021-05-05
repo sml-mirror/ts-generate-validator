@@ -51,6 +51,7 @@ export const typeValidator: TypeValidator = ({
   property,
   propertyName,
   type,
+  typeName,
   typeDescription,
   optional,
   context,
@@ -134,9 +135,7 @@ export const typeValidator: TypeValidator = ({
         throw new ValidationException(complexTypeErrors);
       }
 
-      const defaultMessage = `Must be one of the following types: ${typeDescription
-        .map((desc) => desc.type)
-        .join(', ')}. But recieved property value is none of them.`;
+      const defaultMessage = `Must be one of the following types: ${typeName}. But recieved property value is none of them.`;
       throw new ValidationError(propertyName, customMessage ?? msgFromConfig ?? defaultMessage);
     };
 

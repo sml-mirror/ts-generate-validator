@@ -82,7 +82,9 @@ export const validateTypeValidatorWithCustomMessage: GeneratedValidation = <
 
         customMessage: 'type custom message',
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       })
   ];
 
@@ -140,7 +142,9 @@ export const validateTypeValidatorOnNestedPropertyType: GeneratedValidation = <
 
         typeDescription: validateCustomValidatorSuccess,
 
-        type: ValidationType.nested
+        type: ValidationType.nested,
+
+        typeName: 'CustomValidatorSuccess'
       })
   ];
 
@@ -198,7 +202,9 @@ export const validateTypeValidatorOnAsyncNestedPropertyType: GeneratedValidation
 
         typeDescription: validateCustomValidatorSuccessAsync,
 
-        type: ValidationType.nested
+        type: ValidationType.nested,
+
+        typeName: 'CustomValidatorSuccessAsync'
       })
   ];
 
@@ -256,7 +262,9 @@ export const validateTypeValidatorOnAsyncDeepNestedPropertyType: GeneratedValida
 
         typeDescription: validateTypeValidatorOnAsyncNestedPropertyType,
 
-        type: ValidationType.nested
+        type: ValidationType.nested,
+
+        typeName: 'TypeValidatorOnAsyncNestedPropertyType'
       })
   ];
 
@@ -310,7 +318,9 @@ export const validateTypeValidatorOnNullPropertyType: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.null
+        type: ValidationType.null,
+
+        typeName: 'null'
       })
   ];
 
@@ -364,7 +374,9 @@ export const validateTypeValidatorOnNullPropertyWithoutType: GeneratedValidation
         config,
         context,
 
-        type: ValidationType.null
+        type: ValidationType.null,
+
+        typeName: 'null'
       })
   ];
 
@@ -420,7 +432,9 @@ export const validateTypeValidatorOnImportedEnumPropertyType: GeneratedValidatio
 
         typeDescription: UserType,
 
-        type: ValidationType.enum
+        type: ValidationType.enum,
+
+        typeName: 'UserType'
       })
   ];
 
@@ -486,7 +500,9 @@ export const validateTypeValidatorOnUnionPropertyType: GeneratedValidation = <
           }
         ] as TypeValidatorPayload[],
 
-        type: ValidationType.union
+        type: ValidationType.union,
+
+        typeName: 'string | number | null'
       })
   ];
 
@@ -553,7 +569,9 @@ export const validateTypeValidatorOnUnionWithNestedPropertyType: GeneratedValida
           }
         ] as TypeValidatorPayload[],
 
-        type: ValidationType.union
+        type: ValidationType.union,
+
+        typeName: 'CustomValidatorFailed | number | null'
       })
   ];
 
@@ -611,7 +629,9 @@ export const validateTypeValidatorOnArrayPropertyType: GeneratedValidation = <
           type: 'string'
         } as TypeValidatorPayload,
 
-        type: ValidationType.array
+        type: ValidationType.array,
+
+        typeName: 'string[]'
       })
   ];
 
@@ -680,7 +700,9 @@ export const validateTypeValidatorOnUnionWithArrayPropertyType: GeneratedValidat
           }
         ] as TypeValidatorPayload[],
 
-        type: ValidationType.union
+        type: ValidationType.union,
+
+        typeName: 'null | number | string[]'
       })
   ];
 
@@ -739,7 +761,9 @@ export const validateTypeValidatorOnArrayOfNestedTypePropertyType: GeneratedVali
           typeDescription: validateCustomValidatorSuccess
         } as TypeValidatorPayload,
 
-        type: ValidationType.array
+        type: ValidationType.array,
+
+        typeName: 'CustomValidatorSuccess[]'
       })
   ];
 
@@ -793,7 +817,9 @@ export const validateCustomValidatorFailed: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -861,7 +887,9 @@ export const validateCustomValidatorSuccess: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -981,7 +1009,9 @@ export const validateCustomValidatorSuccessAsync: GeneratedValidation = async <
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     async () =>
@@ -1047,7 +1077,9 @@ export const validateCustomValidatorExportedSuccessAsync: GeneratedValidation = 
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     async () =>
@@ -1113,7 +1145,9 @@ export const validateCustomValidatorImported: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -1179,7 +1213,9 @@ export const validateCustomValidatorExported: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -1245,7 +1281,9 @@ export const validateCustomValidatorWhichUsesImportedEntity: GeneratedValidation
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -1441,7 +1479,9 @@ export const validateEqualValidatorWithDefaultMessage: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       }),
 
     () =>
@@ -1507,7 +1547,9 @@ export const validateEqualValidatorWithCustomMessage: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -1575,7 +1617,9 @@ export const validateEqualValidatorForBoolean: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.boolean
+        type: ValidationType.boolean,
+
+        typeName: 'boolean'
       }),
 
     () =>
@@ -1641,7 +1685,9 @@ export const validateEqualToValidatorWithDefaultMessage: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       }),
 
     () =>
@@ -1665,7 +1711,9 @@ export const validateEqualToValidatorWithDefaultMessage: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       }),
 
     () =>
@@ -1754,6 +1802,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.string",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
+              },
             ],
           },
         ],
@@ -1782,6 +1835,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.nested",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "CustomValidatorSuccess",
               },
             ],
           },
@@ -1813,6 +1871,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.nested",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "CustomValidatorSuccessAsync",
+              },
             ],
           },
         ],
@@ -1843,6 +1906,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.nested",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "TypeValidatorOnAsyncNestedPropertyType",
+              },
             ],
           },
         ],
@@ -1862,6 +1930,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.null",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "null",
+              },
             ],
           },
         ],
@@ -1880,6 +1953,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.null",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "null",
               },
             ],
           },
@@ -1904,6 +1982,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.enum",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "UserType",
               },
             ],
           },
@@ -1938,6 +2021,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.union",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string | number | null",
               },
             ],
           },
@@ -1974,6 +2062,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.union",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "CustomValidatorFailed | number | null",
+              },
             ],
           },
         ],
@@ -1999,6 +2092,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.array",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string[]",
               },
             ],
           },
@@ -2037,6 +2135,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.union",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "null | number | string[]",
+              },
             ],
           },
         ],
@@ -2064,6 +2167,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.array",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "CustomValidatorSuccess[]",
+              },
             ],
           },
         ],
@@ -2082,6 +2190,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.number",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
               },
             ],
           },
@@ -2116,6 +2229,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.number",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
               },
             ],
           },
@@ -2169,6 +2287,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.number",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
+              },
             ],
           },
           Object {
@@ -2200,6 +2323,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.number",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
               },
             ],
           },
@@ -2233,6 +2361,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.number",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
+              },
             ],
           },
           Object {
@@ -2265,6 +2398,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.number",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
+              },
             ],
           },
           Object {
@@ -2296,6 +2434,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.number",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
               },
             ],
           },
@@ -2351,6 +2494,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.string",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
+              },
             ],
           },
           Object {
@@ -2382,6 +2530,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.number",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
               },
             ],
           },
@@ -2420,6 +2573,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.boolean",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "boolean",
+              },
             ],
           },
           Object {
@@ -2452,6 +2610,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.string",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
+              },
             ],
           },
           Object {
@@ -2476,6 +2639,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.string",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
               },
             ],
           },

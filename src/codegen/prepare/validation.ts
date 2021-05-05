@@ -241,6 +241,11 @@ export const buildValidationFromClassMetadata = ({
         value: `ValidationType.${typeMetadata.validationType}`,
         type: 'object'
       });
+      validatorPayload.push({
+        property: 'typeName',
+        value: getTypeNameByTypeMeta(typeMetadata),
+        type: 'string'
+      });
 
       addImport(pkg.name, typeValidator.name, true);
 
@@ -442,4 +447,16 @@ const isExportedFunctionAsync = (
 ): boolean => {
   const foundFunctionMeta = map[functionPathAbs]?.find((meta) => meta.functionName === functionName);
   return foundFunctionMeta?.isAsync ?? false;
+};
+
+const getTypeNameByTypeMeta = (meta: ClassFieldTypeMetadata): string => {
+  if (meta.validationType === ValidationType.array) {
+    return `${getTypeNameByTypeMeta(meta.arrayOf)}[]`;
+  }
+
+  if (meta.validationType === ValidationType.union) {
+    return meta.unionTypes.map(getTypeNameByTypeMeta).join(' | ');
+  }
+
+  return meta.name ?? meta.validationType;
 };
