@@ -55,7 +55,7 @@ export const getCodegenConfig = (): CodegenConfig => {
 
   if (sanitizedConfig.hasOwnProperty('unknownPropertySeverityLevel')) {
     const possibleValues = getEnumValues(SeverityLevel);
-    if (!possibleValues.includes(String(sanitizedConfig.unknownPropertySeverityLevel))) {
+    if (!possibleValues.includes(sanitizedConfig.unknownPropertySeverityLevel as never)) {
       outWarning(
         `File "${configFileName}" has wrong configuration. Property "unknownPropertySeverityLevel" must be one of "${possibleValues.join(
           ', '

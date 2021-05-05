@@ -185,7 +185,7 @@ export const typeValidator: TypeValidator = ({
     }
 
     const possibleValues = getEnumValues(typeDescription);
-    if (!possibleValues.includes(String(property))) {
+    if (!possibleValues.includes(property as never)) {
       const defaultMessage = `Must be a "${type}" member. Received value is "${property}" (expected one of: ${possibleValues.join(
         ', '
       )})`;
