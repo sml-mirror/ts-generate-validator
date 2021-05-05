@@ -546,19 +546,6 @@ describe('number validators', () => {
         lessThanValidator({
           property: undefined,
           targetPropertyName: 'b',
-          optional: true,
-          config,
-          data: { a: undefined, b: 5 },
-          propertyName: 'a'
-        });
-      })
-    ).toThrowError();
-
-    expect(
-      jest.fn(() => {
-        lessThanValidator({
-          property: undefined,
-          targetPropertyName: 'b',
           allowUndefined: true,
           config,
           data: { a: undefined, b: 5 },
@@ -616,32 +603,6 @@ describe('number validators', () => {
         });
       })
     ).toThrowError();
-
-    expect(
-      jest.fn(() => {
-        moreThanValidator({
-          property: undefined,
-          targetPropertyName: 'b',
-          optional: true,
-          config,
-          data: { a: undefined, b: 5 },
-          propertyName: 'a'
-        });
-      })
-    ).toThrowError();
-
-    expect(
-      jest.fn(() => {
-        moreThanValidator({
-          property: undefined,
-          targetPropertyName: 'b',
-          allowUndefined: true,
-          config,
-          data: { a: undefined, b: 5 },
-          propertyName: 'a'
-        });
-      })
-    ).not.toThrowError();
 
     expect(
       jest.fn(() => {
