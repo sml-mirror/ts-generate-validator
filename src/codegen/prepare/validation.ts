@@ -12,7 +12,8 @@ import {
   PreparedValidationItem,
   PreparedValidatorPayloadItem,
   HandleAsyncValidationAdd,
-  HandleNestedValidationAdd
+  HandleNestedValidationAdd,
+  ExportedFunctionsMap
 } from './model';
 import { ClassMetadata, FunctionMetadata, ClassFieldTypeMetadata, ImportMetadata } from './../parse/model';
 import { CodegenConfig, SeverityLevel } from './../../config/model';
@@ -26,6 +27,7 @@ export const buildValidationFromClassMetadata = ({
   addImport,
   inputFileImportsMetadata,
   inputFileFunctionsMetadata,
+  exportedFunctionsMap,
   inputFilePath,
   config,
   handleAsyncValidationAdd,
@@ -36,6 +38,7 @@ export const buildValidationFromClassMetadata = ({
   addImport: (path: string, clause: string, isPackageName?: boolean) => void;
   inputFileImportsMetadata: ImportMetadata[];
   inputFileFunctionsMetadata: FunctionMetadata[];
+  exportedFunctionsMap: ExportedFunctionsMap;
   inputFilePath: string;
   config: CodegenConfig;
   handleAsyncValidationAdd: HandleAsyncValidationAdd;
@@ -302,19 +305,26 @@ export const buildValidationFromClassMetadata = ({
         );
       }
 
-      const isAsync = decoratorName === CustomValidation.name && Boolean(args[0].toString().match(/^\s*async/));
-      if (isAsync) {
-        async = true;
-      }
+      let isAsync = false;
 
       if (decoratorName === CustomValidation.name) {
-        addImportsForCustomValidator({
+        const customValidatorFunctionMeta = addImportsForCustomValidator({
           inputFileImportsMetadata,
           inputFileFunctionsMetadata,
           inputFilePath,
           decoratorArgs: args,
           onImportAdd: addImport
         });
+
+        if (customValidatorFunctionMeta) {
+          isAsync = isExportedFunctionAsync(exportedFunctionsMap, customValidatorFunctionMeta);
+        } else {
+          isAsync = Boolean(args[0].toString().match(/^\s*async/));
+        }
+      }
+
+      if (isAsync) {
+        async = true;
       }
 
       addImport(pkg.name, validatorName, true);
@@ -382,7 +392,7 @@ const addImportsForCustomValidator = ({
   inputFilePath: string;
   decoratorArgs: (Arg | Arg[])[];
   onImportAdd: (path: string, clause: string, isPackageName?: boolean) => void;
-}): void => {
+}): void | { functionName: string; functionPathAbs: string } => {
   const func = (<string>decoratorArgs[0]).trim();
 
   // Case #1: inline function
@@ -409,6 +419,7 @@ const addImportsForCustomValidator = ({
   if (foundFuncMeta) {
     if (foundFuncMeta.isExported) {
       onImportAdd(path.resolve(inputFilePath), func);
+      return { functionName: func, functionPathAbs: inputFilePath };
     } else {
       throw new ErrorInFile(
         `Custom validation function "${foundFuncMeta.name}" is used, but not exported. Add export keyword to this function or remove it from @CustomValidation decorator.`,
@@ -421,5 +432,14 @@ const addImportsForCustomValidator = ({
   const foundFuncImport = inputFileImportsMetadata.find((m) => m.clauses.some((c) => c === func));
   if (foundFuncImport) {
     onImportAdd(path.resolve(foundFuncImport.absPath), func);
+    return { functionName: func, functionPathAbs: foundFuncImport.absPath };
   }
+};
+
+const isExportedFunctionAsync = (
+  map: ExportedFunctionsMap,
+  { functionName, functionPathAbs }: { functionName: string; functionPathAbs: string }
+): boolean => {
+  const foundFunctionMeta = map[functionPathAbs]?.find((meta) => meta.functionName === functionName);
+  return foundFunctionMeta?.isAsync ?? false;
 };

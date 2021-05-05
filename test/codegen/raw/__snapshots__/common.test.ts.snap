@@ -40,6 +40,8 @@ import {
   CustomValidatorSuccess,
   CustomValidatorOnNonPrimitiveStructure,
   CustomValidatorSuccessAsync,
+  customValidatorFuncExportedAsync,
+  CustomValidatorExportedSuccessAsync,
   CustomValidatorImported,
   customValidationFuncExported,
   CustomValidatorExported,
@@ -1024,6 +1026,72 @@ export const validateCustomValidatorSuccessAsync: GeneratedValidation = async <
   }
 };
 
+export const validateCustomValidatorExportedSuccessAsync: GeneratedValidation = async <
+  D extends Data = typeof CustomValidatorExportedSuccessAsync,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
+
+        type: ValidationType.number
+      }),
+
+    async () =>
+      customValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
+
+        customValidationFunction: customValidatorFuncExportedAsync
+      })
+  ];
+
+  for (const validation of validationChain) {
+    try {
+      await validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
+
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
+
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
+
 export const validateCustomValidatorImported: GeneratedValidation = <
   D extends Data = typeof CustomValidatorImported,
   C extends UserContext = UserContext
@@ -1655,7 +1723,7 @@ Array [
         "path": "ts-generate-validator",
       },
       Object {
-        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnNestedPropertyType, TypeValidatorOnAsyncNestedPropertyType, TypeValidatorOnAsyncDeepNestedPropertyType, TypeValidatorOnNullPropertyType, TypeValidatorOnNullPropertyWithoutType, TypeValidatorOnImportedEnumPropertyType, TypeValidatorOnUnionPropertyType, TypeValidatorOnUnionWithNestedPropertyType, TypeValidatorOnArrayPropertyType, TypeValidatorOnUnionWithArrayPropertyType, TypeValidatorOnArrayOfNestedTypePropertyType, CustomValidatorFailed, CustomValidatorSuccess, CustomValidatorOnNonPrimitiveStructure, CustomValidatorSuccessAsync, CustomValidatorImported, customValidationFuncExported, CustomValidatorExported, CustomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
+        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnNestedPropertyType, TypeValidatorOnAsyncNestedPropertyType, TypeValidatorOnAsyncDeepNestedPropertyType, TypeValidatorOnNullPropertyType, TypeValidatorOnNullPropertyWithoutType, TypeValidatorOnImportedEnumPropertyType, TypeValidatorOnUnionPropertyType, TypeValidatorOnUnionWithNestedPropertyType, TypeValidatorOnArrayPropertyType, TypeValidatorOnUnionWithArrayPropertyType, TypeValidatorOnArrayOfNestedTypePropertyType, CustomValidatorFailed, CustomValidatorSuccess, CustomValidatorOnNonPrimitiveStructure, CustomValidatorSuccessAsync, customValidatorFuncExportedAsync, CustomValidatorExportedSuccessAsync, CustomValidatorImported, customValidationFuncExported, CustomValidatorExported, CustomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
         "path": "./../../../model",
       },
       Object {
@@ -2121,6 +2189,38 @@ Array [
         "name": "validateCustomValidatorSuccessAsync",
       },
       Object {
+        "async": true,
+        "items": Array [
+          Object {
+            "optional": true,
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "object",
+                "value": "ValidationType.number",
+              },
+            ],
+          },
+          Object {
+            "async": true,
+            "optional": true,
+            "propertyName": "someProperty",
+            "validatorName": "customValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customValidationFunction",
+                "type": "",
+                "value": "customValidatorFuncExportedAsync",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "CustomValidatorExportedSuccessAsync",
+        "name": "validateCustomValidatorExportedSuccessAsync",
+      },
+      Object {
         "async": false,
         "items": Array [
           Object {
@@ -2407,6 +2507,7 @@ Array [
     "classes": Array [],
     "functions": Array [
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "customValidationFuncImported",
       },
@@ -2860,6 +2961,33 @@ Array [
             "decorators": Array [
               Object {
                 "arguments": Array [
+                  "customValidatorFuncExportedAsync",
+                ],
+                "name": "CustomValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": true,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "CustomValidatorExportedSuccessAsync",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
                   "customValidationFuncImported",
                 ],
                 "name": "CustomValidation",
@@ -3148,6 +3276,12 @@ Array [
     ],
     "functions": Array [
       Object {
+        "isAsync": true,
+        "isExported": true,
+        "name": "customValidatorFuncExportedAsync",
+      },
+      Object {
+        "isAsync": false,
         "isExported": true,
         "name": "customValidationFuncExported",
       },
@@ -3198,94 +3332,117 @@ Array [
     "classes": Array [],
     "functions": Array [
       Object {
+        "isAsync": false,
         "isExported": false,
         "name": "emptyDecorator",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "RequiredOneOfValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "TypeValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "CustomValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "IgnoreValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EqualValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EqualToValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MinValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MaxValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "NegativeValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "PositiveValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "IntegerValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "FloatValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "LessThanValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MoreThanValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "TrimValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "LowercaseValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "UppercaseValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MinLengthValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MaxLengthValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EmailValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "UrlValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MatchValidation",
       },

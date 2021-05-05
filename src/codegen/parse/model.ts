@@ -48,6 +48,7 @@ export interface ImportMetadata {
 export interface FunctionMetadata {
   name: string;
   isExported: boolean;
+  isAsync: boolean;
 }
 
 export interface InputFileMetadata {

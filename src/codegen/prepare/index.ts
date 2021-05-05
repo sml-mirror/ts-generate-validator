@@ -7,6 +7,7 @@ import {
   PreparedValidation,
   PreparedImportMap,
   PreparedImport,
+  ExportedFunctionsMap,
   AsyncValidationsMap,
   NestedValidationItemEntry,
   HandleAsyncValidationAdd,
@@ -22,6 +23,7 @@ export const prepareDataForRender = (
   config: CodegenConfig
 ): PreparedDataItem[] => {
   const preparedData: PreparedDataItem[] = [];
+  const exportedFunctionsMap: ExportedFunctionsMap = buildExportedFunctionsMap(inputFilesMetadata);
   const asyncValidationsMap: AsyncValidationsMap = {};
   const nestedValidationEntries: NestedValidationItemEntry[] = [];
 
@@ -126,6 +128,7 @@ export const prepareDataForRender = (
         addImport: handleImportAdd,
         inputFileImportsMetadata,
         inputFileFunctionsMetadata,
+        exportedFunctionsMap,
         inputFilePath,
         config,
         handleAsyncValidationAdd,
@@ -232,6 +235,28 @@ export const buildOutputFileName = (inputFileName: string): string => {
       .replace(/\s/g, '_')
       .replace(/[/\\]+/g, '.') + '.ts'
   );
+};
+
+export const buildExportedFunctionsMap = (inputFilesMetadata: InputFileMetadata[]): ExportedFunctionsMap => {
+  const map: ExportedFunctionsMap = {};
+
+  inputFilesMetadata.forEach(({ name, functions }) => {
+    const inputFilePathAbs = cutFileExt(name);
+
+    functions.forEach(({ name, isExported, isAsync }) => {
+      if (isExported) {
+        if (!map[inputFilePathAbs]) {
+          map[inputFilePathAbs] = [];
+        }
+        map[inputFilePathAbs].push({
+          functionName: name,
+          isAsync
+        });
+      }
+    });
+  });
+
+  return map;
 };
 
 const buildBaseImportMap = (): PreparedImportMap => {
