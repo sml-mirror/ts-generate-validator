@@ -69,7 +69,9 @@ export const validateUser: GeneratedValidation = <D extends Data = typeof User, 
         config,
         context,
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       }),
 
     () =>
@@ -115,7 +117,9 @@ export const validateUser: GeneratedValidation = <D extends Data = typeof User, 
         config,
         context,
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       }),
 
     () =>
@@ -167,7 +171,9 @@ export const validateUser: GeneratedValidation = <D extends Data = typeof User, 
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -213,7 +219,9 @@ export const validateUser: GeneratedValidation = <D extends Data = typeof User, 
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -247,7 +255,9 @@ export const validateUser: GeneratedValidation = <D extends Data = typeof User, 
         config,
         context,
 
-        type: ValidationType.boolean
+        type: ValidationType.boolean,
+
+        typeName: 'boolean'
       }),
 
     () =>
@@ -271,7 +281,9 @@ export const validateUser: GeneratedValidation = <D extends Data = typeof User, 
         config,
         context,
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       }),
 
     () =>
@@ -293,7 +305,9 @@ export const validateUser: GeneratedValidation = <D extends Data = typeof User, 
         config,
         context,
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       }),
 
     () =>
@@ -317,7 +331,9 @@ export const validateUser: GeneratedValidation = <D extends Data = typeof User, 
         config,
         context,
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       }),
 
     () =>
@@ -339,7 +355,9 @@ export const validateUser: GeneratedValidation = <D extends Data = typeof User, 
         config,
         context,
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       }),
 
     () =>
@@ -385,7 +403,9 @@ export const validateUser: GeneratedValidation = <D extends Data = typeof User, 
         config,
         context,
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       }),
 
     () =>
@@ -407,7 +427,9 @@ export const validateUser: GeneratedValidation = <D extends Data = typeof User, 
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -431,7 +453,9 @@ export const validateUser: GeneratedValidation = <D extends Data = typeof User, 
 
         typeDescription: UserType,
 
-        type: ValidationType.enum
+        type: ValidationType.enum,
+
+        typeName: 'UserType'
       })
   ];
 
@@ -510,6 +534,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.string",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
+              },
             ],
           },
           Object {
@@ -554,6 +583,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.string",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
               },
             ],
           },
@@ -616,6 +650,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.number",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
+              },
             ],
           },
           Object {
@@ -661,6 +700,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.number",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
+              },
             ],
           },
           Object {
@@ -693,6 +737,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.boolean",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "boolean",
+              },
             ],
           },
           Object {
@@ -718,6 +767,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.string",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
+              },
             ],
           },
           Object {
@@ -736,6 +790,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.string",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
               },
             ],
           },
@@ -762,6 +821,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.string",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
+              },
             ],
           },
           Object {
@@ -780,6 +844,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.string",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
               },
             ],
           },
@@ -826,6 +895,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.string",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
+              },
             ],
           },
           Object {
@@ -844,6 +918,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.number",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
               },
             ],
           },
@@ -868,6 +947,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.enum",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "UserType",
               },
             ],
           },
@@ -1180,94 +1264,117 @@ Array [
     "classes": Array [],
     "functions": Array [
       Object {
+        "isAsync": false,
         "isExported": false,
         "name": "emptyDecorator",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "RequiredOneOfValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "TypeValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "CustomValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "IgnoreValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EqualValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EqualToValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MinValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MaxValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "NegativeValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "PositiveValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "IntegerValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "FloatValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "LessThanValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MoreThanValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "TrimValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "LowercaseValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "UppercaseValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MinLengthValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MaxLengthValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EmailValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "UrlValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MatchValidation",
       },

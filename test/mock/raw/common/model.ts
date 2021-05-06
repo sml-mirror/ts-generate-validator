@@ -108,6 +108,15 @@ export class CustomValidatorSuccessAsync {
   public someProperty?: number;
 }
 
+export const customValidatorFuncExportedAsync = async (): Promise<void> =>
+  new Promise((resolve) => setTimeout(() => resolve(), 300));
+
+@Validation
+export class CustomValidatorExportedSuccessAsync {
+  @CustomValidation(customValidatorFuncExportedAsync)
+  public someProperty?: number;
+}
+
 @Validation
 export class CustomValidatorImported {
   @CustomValidation(customValidationFuncImported)

@@ -37,6 +37,13 @@ export type PreparedDataItem = {
   validations: PreparedValidation[];
 };
 
+export type ExportedFunctionsMap = {
+  [filePath: string]: {
+    functionName: string;
+    isAsync: boolean;
+  }[];
+};
+
 export type AsyncValidationsMap = {
   [filePath: string]: {
     validationIndex: number;

@@ -90,7 +90,9 @@ export const validateClassWithEnumProperty: GeneratedValidation = <
 
         typeDescription: SomeEnum,
 
-        type: ValidationType.enum
+        type: ValidationType.enum,
+
+        typeName: 'SomeEnum'
       })
   ];
 
@@ -164,6 +166,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.enum",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "SomeEnum",
               },
             ],
           },

@@ -40,6 +40,8 @@ import {
   CustomValidatorSuccess,
   CustomValidatorOnNonPrimitiveStructure,
   CustomValidatorSuccessAsync,
+  customValidatorFuncExportedAsync,
+  CustomValidatorExportedSuccessAsync,
   CustomValidatorImported,
   customValidationFuncExported,
   CustomValidatorExported,
@@ -80,7 +82,9 @@ export const validateTypeValidatorWithCustomMessage: GeneratedValidation = <
 
         customMessage: 'type custom message',
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       })
   ];
 
@@ -138,7 +142,9 @@ export const validateTypeValidatorOnNestedPropertyType: GeneratedValidation = <
 
         typeDescription: validateCustomValidatorSuccess,
 
-        type: ValidationType.nested
+        type: ValidationType.nested,
+
+        typeName: 'CustomValidatorSuccess'
       })
   ];
 
@@ -196,7 +202,9 @@ export const validateTypeValidatorOnAsyncNestedPropertyType: GeneratedValidation
 
         typeDescription: validateCustomValidatorSuccessAsync,
 
-        type: ValidationType.nested
+        type: ValidationType.nested,
+
+        typeName: 'CustomValidatorSuccessAsync'
       })
   ];
 
@@ -254,7 +262,9 @@ export const validateTypeValidatorOnAsyncDeepNestedPropertyType: GeneratedValida
 
         typeDescription: validateTypeValidatorOnAsyncNestedPropertyType,
 
-        type: ValidationType.nested
+        type: ValidationType.nested,
+
+        typeName: 'TypeValidatorOnAsyncNestedPropertyType'
       })
   ];
 
@@ -308,7 +318,9 @@ export const validateTypeValidatorOnNullPropertyType: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.null
+        type: ValidationType.null,
+
+        typeName: 'null'
       })
   ];
 
@@ -362,7 +374,9 @@ export const validateTypeValidatorOnNullPropertyWithoutType: GeneratedValidation
         config,
         context,
 
-        type: ValidationType.null
+        type: ValidationType.null,
+
+        typeName: 'null'
       })
   ];
 
@@ -418,7 +432,9 @@ export const validateTypeValidatorOnImportedEnumPropertyType: GeneratedValidatio
 
         typeDescription: UserType,
 
-        type: ValidationType.enum
+        type: ValidationType.enum,
+
+        typeName: 'UserType'
       })
   ];
 
@@ -484,7 +500,9 @@ export const validateTypeValidatorOnUnionPropertyType: GeneratedValidation = <
           }
         ] as TypeValidatorPayload[],
 
-        type: ValidationType.union
+        type: ValidationType.union,
+
+        typeName: 'string | number | null'
       })
   ];
 
@@ -551,7 +569,9 @@ export const validateTypeValidatorOnUnionWithNestedPropertyType: GeneratedValida
           }
         ] as TypeValidatorPayload[],
 
-        type: ValidationType.union
+        type: ValidationType.union,
+
+        typeName: 'CustomValidatorFailed | number | null'
       })
   ];
 
@@ -609,7 +629,9 @@ export const validateTypeValidatorOnArrayPropertyType: GeneratedValidation = <
           type: 'string'
         } as TypeValidatorPayload,
 
-        type: ValidationType.array
+        type: ValidationType.array,
+
+        typeName: 'string[]'
       })
   ];
 
@@ -678,7 +700,9 @@ export const validateTypeValidatorOnUnionWithArrayPropertyType: GeneratedValidat
           }
         ] as TypeValidatorPayload[],
 
-        type: ValidationType.union
+        type: ValidationType.union,
+
+        typeName: 'null | number | string[]'
       })
   ];
 
@@ -737,7 +761,9 @@ export const validateTypeValidatorOnArrayOfNestedTypePropertyType: GeneratedVali
           typeDescription: validateCustomValidatorSuccess
         } as TypeValidatorPayload,
 
-        type: ValidationType.array
+        type: ValidationType.array,
+
+        typeName: 'CustomValidatorSuccess[]'
       })
   ];
 
@@ -791,7 +817,9 @@ export const validateCustomValidatorFailed: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -859,7 +887,9 @@ export const validateCustomValidatorSuccess: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -979,7 +1009,9 @@ export const validateCustomValidatorSuccessAsync: GeneratedValidation = async <
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     async () =>
@@ -992,6 +1024,74 @@ export const validateCustomValidatorSuccessAsync: GeneratedValidation = async <
         context,
 
         customValidationFunction: async (): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), 300))
+      })
+  ];
+
+  for (const validation of validationChain) {
+    try {
+      await validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
+
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
+
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
+
+export const validateCustomValidatorExportedSuccessAsync: GeneratedValidation = async <
+  D extends Data = typeof CustomValidatorExportedSuccessAsync,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
+
+        type: ValidationType.number,
+
+        typeName: 'number'
+      }),
+
+    async () =>
+      customValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: true,
+        config,
+        context,
+
+        customValidationFunction: customValidatorFuncExportedAsync
       })
   ];
 
@@ -1045,7 +1145,9 @@ export const validateCustomValidatorImported: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -1111,7 +1213,9 @@ export const validateCustomValidatorExported: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -1177,7 +1281,9 @@ export const validateCustomValidatorWhichUsesImportedEntity: GeneratedValidation
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -1373,7 +1479,9 @@ export const validateEqualValidatorWithDefaultMessage: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       }),
 
     () =>
@@ -1439,7 +1547,9 @@ export const validateEqualValidatorWithCustomMessage: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -1507,7 +1617,9 @@ export const validateEqualValidatorForBoolean: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.boolean
+        type: ValidationType.boolean,
+
+        typeName: 'boolean'
       }),
 
     () =>
@@ -1573,7 +1685,9 @@ export const validateEqualToValidatorWithDefaultMessage: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       }),
 
     () =>
@@ -1597,7 +1711,9 @@ export const validateEqualToValidatorWithDefaultMessage: GeneratedValidation = <
         config,
         context,
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       }),
 
     () =>
@@ -1655,7 +1771,7 @@ Array [
         "path": "ts-generate-validator",
       },
       Object {
-        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnNestedPropertyType, TypeValidatorOnAsyncNestedPropertyType, TypeValidatorOnAsyncDeepNestedPropertyType, TypeValidatorOnNullPropertyType, TypeValidatorOnNullPropertyWithoutType, TypeValidatorOnImportedEnumPropertyType, TypeValidatorOnUnionPropertyType, TypeValidatorOnUnionWithNestedPropertyType, TypeValidatorOnArrayPropertyType, TypeValidatorOnUnionWithArrayPropertyType, TypeValidatorOnArrayOfNestedTypePropertyType, CustomValidatorFailed, CustomValidatorSuccess, CustomValidatorOnNonPrimitiveStructure, CustomValidatorSuccessAsync, CustomValidatorImported, customValidationFuncExported, CustomValidatorExported, CustomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
+        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnNestedPropertyType, TypeValidatorOnAsyncNestedPropertyType, TypeValidatorOnAsyncDeepNestedPropertyType, TypeValidatorOnNullPropertyType, TypeValidatorOnNullPropertyWithoutType, TypeValidatorOnImportedEnumPropertyType, TypeValidatorOnUnionPropertyType, TypeValidatorOnUnionWithNestedPropertyType, TypeValidatorOnArrayPropertyType, TypeValidatorOnUnionWithArrayPropertyType, TypeValidatorOnArrayOfNestedTypePropertyType, CustomValidatorFailed, CustomValidatorSuccess, CustomValidatorOnNonPrimitiveStructure, CustomValidatorSuccessAsync, customValidatorFuncExportedAsync, CustomValidatorExportedSuccessAsync, CustomValidatorImported, customValidationFuncExported, CustomValidatorExported, CustomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
         "path": "./../../../model",
       },
       Object {
@@ -1686,6 +1802,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.string",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
+              },
             ],
           },
         ],
@@ -1714,6 +1835,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.nested",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "CustomValidatorSuccess",
               },
             ],
           },
@@ -1745,6 +1871,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.nested",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "CustomValidatorSuccessAsync",
+              },
             ],
           },
         ],
@@ -1775,6 +1906,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.nested",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "TypeValidatorOnAsyncNestedPropertyType",
+              },
             ],
           },
         ],
@@ -1794,6 +1930,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.null",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "null",
+              },
             ],
           },
         ],
@@ -1812,6 +1953,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.null",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "null",
               },
             ],
           },
@@ -1836,6 +1982,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.enum",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "UserType",
               },
             ],
           },
@@ -1870,6 +2021,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.union",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string | number | null",
               },
             ],
           },
@@ -1906,6 +2062,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.union",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "CustomValidatorFailed | number | null",
+              },
             ],
           },
         ],
@@ -1931,6 +2092,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.array",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string[]",
               },
             ],
           },
@@ -1969,6 +2135,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.union",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "null | number | string[]",
+              },
             ],
           },
         ],
@@ -1996,6 +2167,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.array",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "CustomValidatorSuccess[]",
+              },
             ],
           },
         ],
@@ -2014,6 +2190,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.number",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
               },
             ],
           },
@@ -2048,6 +2229,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.number",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
               },
             ],
           },
@@ -2101,6 +2287,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.number",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
+              },
             ],
           },
           Object {
@@ -2121,6 +2312,43 @@ Array [
         "name": "validateCustomValidatorSuccessAsync",
       },
       Object {
+        "async": true,
+        "items": Array [
+          Object {
+            "optional": true,
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "object",
+                "value": "ValidationType.number",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
+              },
+            ],
+          },
+          Object {
+            "async": true,
+            "optional": true,
+            "propertyName": "someProperty",
+            "validatorName": "customValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customValidationFunction",
+                "type": "",
+                "value": "customValidatorFuncExportedAsync",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "CustomValidatorExportedSuccessAsync",
+        "name": "validateCustomValidatorExportedSuccessAsync",
+      },
+      Object {
         "async": false,
         "items": Array [
           Object {
@@ -2132,6 +2360,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.number",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
               },
             ],
           },
@@ -2165,6 +2398,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.number",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
+              },
             ],
           },
           Object {
@@ -2196,6 +2434,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.number",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
               },
             ],
           },
@@ -2251,6 +2494,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.string",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
+              },
             ],
           },
           Object {
@@ -2282,6 +2530,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.number",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
               },
             ],
           },
@@ -2320,6 +2573,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.boolean",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "boolean",
+              },
             ],
           },
           Object {
@@ -2352,6 +2610,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.string",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
+              },
             ],
           },
           Object {
@@ -2376,6 +2639,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.string",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
               },
             ],
           },
@@ -2407,6 +2675,7 @@ Array [
     "classes": Array [],
     "functions": Array [
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "customValidationFuncImported",
       },
@@ -2860,6 +3129,33 @@ Array [
             "decorators": Array [
               Object {
                 "arguments": Array [
+                  "customValidatorFuncExportedAsync",
+                ],
+                "name": "CustomValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": true,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "CustomValidatorExportedSuccessAsync",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
                   "customValidationFuncImported",
                 ],
                 "name": "CustomValidation",
@@ -3148,6 +3444,12 @@ Array [
     ],
     "functions": Array [
       Object {
+        "isAsync": true,
+        "isExported": true,
+        "name": "customValidatorFuncExportedAsync",
+      },
+      Object {
+        "isAsync": false,
         "isExported": true,
         "name": "customValidationFuncExported",
       },
@@ -3198,94 +3500,117 @@ Array [
     "classes": Array [],
     "functions": Array [
       Object {
+        "isAsync": false,
         "isExported": false,
         "name": "emptyDecorator",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "RequiredOneOfValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "TypeValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "CustomValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "IgnoreValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EqualValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EqualToValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MinValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MaxValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "NegativeValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "PositiveValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "IntegerValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "FloatValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "LessThanValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MoreThanValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "TrimValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "LowercaseValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "UppercaseValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MinLengthValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MaxLengthValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EmailValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "UrlValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MatchValidation",
       },

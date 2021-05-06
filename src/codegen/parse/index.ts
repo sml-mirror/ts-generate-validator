@@ -65,7 +65,7 @@ export const parseInputFiles = (files: string[]): InputFileMetadata[] => {
       name: structure.name,
       classes,
       imports,
-      functions: structure.functions.map(({ name, isExport }) => ({ name, isExported: isExport }))
+      functions: structure.functions.map(({ name, isExport, isAsync }) => ({ name, isExported: isExport, isAsync }))
     });
   } while (inputFiles.length);
 

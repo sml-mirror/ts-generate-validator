@@ -47,7 +47,9 @@ export const validateDog: GeneratedValidation = <D extends Data = typeof Dog, C 
         config,
         context,
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       }),
 
     () =>
@@ -83,7 +85,9 @@ export const validateDog: GeneratedValidation = <D extends Data = typeof Dog, C 
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -135,7 +139,9 @@ export const validateDog: GeneratedValidation = <D extends Data = typeof Dog, C 
         config,
         context,
 
-        type: ValidationType.number
+        type: ValidationType.number,
+
+        typeName: 'number'
       }),
 
     () =>
@@ -165,7 +171,9 @@ export const validateDog: GeneratedValidation = <D extends Data = typeof Dog, C 
 
         typeDescription: validateUser,
 
-        type: ValidationType.nested
+        type: ValidationType.nested,
+
+        typeName: 'User'
       })
   ];
 
@@ -239,7 +247,9 @@ export const validateUser: GeneratedValidation = <D extends Data = typeof User, 
         config,
         context,
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       }),
 
     () =>
@@ -251,7 +261,9 @@ export const validateUser: GeneratedValidation = <D extends Data = typeof User, 
         config,
         context,
 
-        type: ValidationType.string
+        type: ValidationType.string,
+
+        typeName: 'string'
       })
   ];
 
@@ -319,6 +331,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.string",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
+              },
             ],
           },
           Object {
@@ -356,6 +373,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.number",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
               },
             ],
           },
@@ -418,6 +440,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.number",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "number",
+              },
             ],
           },
           Object {
@@ -458,6 +485,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.nested",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "User",
+              },
             ],
           },
         ],
@@ -493,6 +525,11 @@ Array [
                 "type": "object",
                 "value": "ValidationType.string",
               },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
+              },
             ],
           },
           Object {
@@ -504,6 +541,11 @@ Array [
                 "property": "type",
                 "type": "object",
                 "value": "ValidationType.string",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
               },
             ],
           },
@@ -687,94 +729,117 @@ Array [
     "classes": Array [],
     "functions": Array [
       Object {
+        "isAsync": false,
         "isExported": false,
         "name": "emptyDecorator",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "RequiredOneOfValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "TypeValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "CustomValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "IgnoreValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EqualValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EqualToValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MinValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MaxValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "NegativeValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "PositiveValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "IntegerValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "FloatValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "LessThanValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MoreThanValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "TrimValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "LowercaseValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "UppercaseValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MinLengthValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MaxLengthValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EmailValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "UrlValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MatchValidation",
       },
@@ -818,94 +883,117 @@ Array [
     "classes": Array [],
     "functions": Array [
       Object {
+        "isAsync": false,
         "isExported": false,
         "name": "emptyDecorator",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "RequiredOneOfValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "TypeValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "CustomValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "IgnoreValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EqualValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EqualToValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MinValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MaxValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "NegativeValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "PositiveValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "IntegerValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "FloatValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "LessThanValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MoreThanValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "TrimValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "LowercaseValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "UppercaseValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MinLengthValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MaxLengthValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EmailValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "UrlValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MatchValidation",
       },
@@ -936,94 +1024,117 @@ Array [
     "classes": Array [],
     "functions": Array [
       Object {
+        "isAsync": false,
         "isExported": false,
         "name": "emptyDecorator",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "RequiredOneOfValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "TypeValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "CustomValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "IgnoreValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EqualValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EqualToValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MinValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MaxValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "NegativeValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "PositiveValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "IntegerValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "FloatValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "LessThanValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MoreThanValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "TrimValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "LowercaseValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "UppercaseValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MinLengthValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MaxLengthValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "EmailValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "UrlValidation",
       },
       Object {
+        "isAsync": false,
         "isExported": true,
         "name": "MatchValidation",
       },
