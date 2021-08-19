@@ -20,7 +20,8 @@ import {
   TypeValidatorPayload,
   customValidator,
   equalValidator,
-  equalToValidator
+  equalToValidator,
+  dateValidator
 } from 'ts-generate-validator';
 
 import {
@@ -52,7 +53,8 @@ import {
   EqualValidatorWithDefaultMessage,
   EqualValidatorWithCustomMessage,
   EqualValidatorForBoolean,
-  EqualToValidatorWithDefaultMessage
+  EqualToValidatorWithDefaultMessage,
+  DateValidatorWithDefaultMessage
 } from './../../../model';
 
 import { UserType } from './../../../../../user/type/model';
@@ -1757,6 +1759,100 @@ export const validateEqualToValidatorWithDefaultMessage: GeneratedValidation = <
     throw new ValidationException(errors);
   }
 };
+
+export const validateDateValidatorWithDefaultMessage: GeneratedValidation = <
+  D extends Data = typeof DateValidatorWithDefaultMessage,
+  C extends UserContext = UserContext
+>(
+  data: D,
+  configArg?: PartialValidationConfig,
+  context?: C,
+  propNamePrefix: string = ''
+) => {
+  const config = <ValidationConfig>mergeDeep({}, getConfig(), configArg ?? {});
+  const errors: ValidationError[] = [];
+  const validationChain = [
+    () =>
+      typeValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
+
+        type: ValidationType.string,
+
+        typeName: 'string'
+      }),
+
+    () =>
+      dateValidator({
+        property: data?.someProperty,
+        propertyName: \`\${propNamePrefix}someProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
+
+        customMessage: 'someOtherProperty'
+      }),
+
+    () =>
+      typeValidator({
+        property: data?.someOtherProperty,
+        propertyName: \`\${propNamePrefix}someOtherProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
+
+        type: ValidationType.string,
+
+        typeName: 'string'
+      }),
+
+    () =>
+      dateValidator({
+        property: data?.someOtherProperty,
+        propertyName: \`\${propNamePrefix}someOtherProperty\`,
+        data,
+        optional: false,
+        config,
+        context,
+
+        customMessage: 'someProperty'
+      })
+  ];
+
+  for (const validation of validationChain) {
+    try {
+      validation();
+    } catch (err) {
+      if (err instanceof ValidationException) {
+        if (config.stopAtFirstError) {
+          throw err;
+        }
+
+        errors.push(...err.errors);
+      } else {
+        if (!(err instanceof ValidationError)) {
+          throw err;
+        }
+
+        errors.push(err);
+
+        if (config.stopAtFirstError) {
+          throw new ValidationException(errors);
+        }
+      }
+    }
+  }
+
+  if (errors.length) {
+    throw new ValidationException(errors);
+  }
+};
 "
 `;
 
@@ -1767,11 +1863,11 @@ Array [
     "filePath": "src/generated/validators",
     "imports": Array [
       Object {
-        "clauses": "GeneratedValidation, ValidationConfig, PartialValidationConfig, ValidationError, ValidationException, ValidationType, Data, UserContext, getConfig, mergeDeep, typeValidator, TypeValidatorPayload, customValidator, equalValidator, equalToValidator",
+        "clauses": "GeneratedValidation, ValidationConfig, PartialValidationConfig, ValidationError, ValidationException, ValidationType, Data, UserContext, getConfig, mergeDeep, typeValidator, TypeValidatorPayload, customValidator, equalValidator, equalToValidator, dateValidator",
         "path": "ts-generate-validator",
       },
       Object {
-        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnNestedPropertyType, TypeValidatorOnAsyncNestedPropertyType, TypeValidatorOnAsyncDeepNestedPropertyType, TypeValidatorOnNullPropertyType, TypeValidatorOnNullPropertyWithoutType, TypeValidatorOnImportedEnumPropertyType, TypeValidatorOnUnionPropertyType, TypeValidatorOnUnionWithNestedPropertyType, TypeValidatorOnArrayPropertyType, TypeValidatorOnUnionWithArrayPropertyType, TypeValidatorOnArrayOfNestedTypePropertyType, CustomValidatorFailed, CustomValidatorSuccess, CustomValidatorOnNonPrimitiveStructure, CustomValidatorSuccessAsync, customValidatorFuncExportedAsync, CustomValidatorExportedSuccessAsync, CustomValidatorImported, customValidationFuncExported, CustomValidatorExported, CustomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage",
+        "clauses": "TypeValidatorWithCustomMessage, TypeValidatorOnNestedPropertyType, TypeValidatorOnAsyncNestedPropertyType, TypeValidatorOnAsyncDeepNestedPropertyType, TypeValidatorOnNullPropertyType, TypeValidatorOnNullPropertyWithoutType, TypeValidatorOnImportedEnumPropertyType, TypeValidatorOnUnionPropertyType, TypeValidatorOnUnionWithNestedPropertyType, TypeValidatorOnArrayPropertyType, TypeValidatorOnUnionWithArrayPropertyType, TypeValidatorOnArrayOfNestedTypePropertyType, CustomValidatorFailed, CustomValidatorSuccess, CustomValidatorOnNonPrimitiveStructure, CustomValidatorSuccessAsync, customValidatorFuncExportedAsync, CustomValidatorExportedSuccessAsync, CustomValidatorImported, customValidationFuncExported, CustomValidatorExported, CustomValidatorWhichUsesImportedEntity, IgnoreValidationForNonPrimitiveProperty, IgnoreValidationForPrimitiveProperty, IgnoreValidationForPrimitivePropertyWithOtherDecorators, EqualValidatorWithDefaultMessage, EqualValidatorWithCustomMessage, EqualValidatorForBoolean, EqualToValidatorWithDefaultMessage, DateValidatorWithDefaultMessage",
         "path": "./../../../model",
       },
       Object {
@@ -2664,6 +2760,73 @@ Array [
         "modelClassName": "EqualToValidatorWithDefaultMessage",
         "name": "validateEqualToValidatorWithDefaultMessage",
       },
+      Object {
+        "async": false,
+        "items": Array [
+          Object {
+            "optional": false,
+            "propertyName": "someProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "object",
+                "value": "ValidationType.string",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
+              },
+            ],
+          },
+          Object {
+            "async": false,
+            "optional": false,
+            "propertyName": "someProperty",
+            "validatorName": "dateValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customMessage",
+                "type": "string",
+                "value": "someOtherProperty",
+              },
+            ],
+          },
+          Object {
+            "optional": false,
+            "propertyName": "someOtherProperty",
+            "validatorName": "typeValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "type",
+                "type": "object",
+                "value": "ValidationType.string",
+              },
+              Object {
+                "property": "typeName",
+                "type": "string",
+                "value": "string",
+              },
+            ],
+          },
+          Object {
+            "async": false,
+            "optional": false,
+            "propertyName": "someOtherProperty",
+            "validatorName": "dateValidator",
+            "validatorPayload": Array [
+              Object {
+                "property": "customMessage",
+                "type": "string",
+                "value": "someProperty",
+              },
+            ],
+          },
+        ],
+        "modelClassName": "DateValidatorWithDefaultMessage",
+        "name": "validateDateValidatorWithDefaultMessage",
+      },
     ],
   },
 ]
@@ -3441,6 +3604,49 @@ Array [
         ],
         "name": "EqualToValidatorWithDefaultMessage",
       },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "someOtherProperty",
+                ],
+                "name": "DateValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "someProperty",
+                ],
+                "name": "DateValidation",
+              },
+            ],
+            "name": "someOtherProperty",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+        ],
+        "name": "DateValidatorWithDefaultMessage",
+      },
     ],
     "functions": Array [
       Object {
@@ -3479,6 +3685,7 @@ Array [
           "TypeValidation",
           "MinValidation",
           "MaxValidation",
+          "DateValidation",
         ],
       },
       Object {
@@ -3537,6 +3744,11 @@ Array [
       Object {
         "isAsync": false,
         "isExported": true,
+        "name": "DateValidation",
+      },
+      Object {
+        "isAsync": false,
+        "isExported": true,
         "name": "MinValidation",
       },
       Object {
@@ -3558,6 +3770,16 @@ Array [
         "isAsync": false,
         "isExported": true,
         "name": "IntegerValidation",
+      },
+      Object {
+        "isAsync": false,
+        "isExported": true,
+        "name": "BigIntValidation",
+      },
+      Object {
+        "isAsync": false,
+        "isExported": true,
+        "name": "NotBigIntValidation",
       },
       Object {
         "isAsync": false,

@@ -6,7 +6,9 @@ import {
   integerValidator,
   floatValidator,
   lessThanValidator,
-  moreThanValidator
+  moreThanValidator,
+  bigIntValidator,
+  notBigIntValidator
 } from './../../src/validators/number';
 import { getConfig } from './../../src/config/runtime';
 
@@ -624,6 +626,76 @@ describe('number validators', () => {
           config,
           data: testData,
           propertyName
+        });
+      })
+    ).not.toThrowError();
+  });
+
+  test('bigInt validator', () => {
+    expect(
+      jest.fn(() => {
+        bigIntValidator({
+          property: 5,
+          config,
+          data: { a: 5 },
+          propertyName: 'a'
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        bigIntValidator({
+          property: '5',
+          config,
+          data: { a: '5' },
+          propertyName: 'a'
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        bigIntValidator({
+          property: BigInt(5),
+          config,
+          data: { a: BigInt(5) },
+          propertyName: 'a'
+        });
+      })
+    ).not.toThrowError();
+  });
+
+  test('notBigInt validator', () => {
+    expect(
+      jest.fn(() => {
+        notBigIntValidator({
+          property: BigInt(5),
+          config,
+          data: { a: BigInt(5) },
+          propertyName: 'a'
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        notBigIntValidator({
+          property: '5',
+          config,
+          data: { a: '5' },
+          propertyName: 'a'
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        notBigIntValidator({
+          property: 5,
+          config,
+          data: { a: 5 },
+          propertyName: 'a'
         });
       })
     ).not.toThrowError();

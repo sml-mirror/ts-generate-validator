@@ -2,9 +2,9 @@ import { PartialMessageMap } from '../localization/model';
 import { MessageMap } from '../localization/model';
 
 export enum SeverityLevel {
-  silence = 0,
-  warning = 1,
-  error = 2
+  silence = 'warning',
+  warning = 'warning',
+  error = 'error'
 }
 
 export type UserContext = any;

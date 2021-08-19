@@ -82,6 +82,13 @@ export const EqualValidation = (value: EqualToValue, message?: Message) => empty
 export const EqualToValidation = (propName: string, allowUndefined?: boolean, message?: Message) => emptyDecorator;
 
 /**
+ * Checks if property value is a Date object or a string, which can be converted to a valid Date object
+ * @param message error message
+ */
+// @ts-ignore
+export const DateValidation = (message?: Message) => emptyDecorator;
+
+/**
  * Number
  */
 
@@ -121,6 +128,20 @@ export const PositiveValidation = (message?: Message) => emptyDecorator;
  */
 // @ts-ignore
 export const IntegerValidation = (message?: Message) => emptyDecorator;
+
+/**
+ * Checks if property is BigInt
+ * @param message error message
+ */
+// @ts-ignore
+export const BigIntValidation = (message?: Message) => emptyDecorator;
+
+/**
+ * Checks if property is not BigInt
+ * @param message error message
+ */
+// @ts-ignore
+export const NotBigIntValidation = (message?: Message) => emptyDecorator;
 
 /**
  * Checks if property is float

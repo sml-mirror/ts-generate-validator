@@ -2,6 +2,8 @@ import {
   Validation,
   PositiveValidation,
   IntegerValidation,
+  BigIntValidation,
+  NotBigIntValidation,
   FloatValidation,
   LessThanValidation,
   NegativeValidation,
@@ -116,6 +118,48 @@ export class IntegerValidatorWithCustomMessage {
 }
 
 /**
+ * BigInt
+ */
+@Validation
+export class BigIntValidatorWithDefaultMessage {
+  @BigIntValidation()
+  public someProperty = BigInt(5);
+}
+
+@Validation
+export class BigIntValidatorOnWrongPropertyType {
+  @BigIntValidation()
+  public someProperty = '';
+}
+
+@Validation
+export class BigIntValidatorWithCustomMessage {
+  @BigIntValidation('bigint custom message')
+  public someProperty = BigInt(5);
+}
+
+/**
+ * NotBigInt
+ */
+@Validation
+export class NotBigIntValidatorWithDefaultMessage {
+  @NotBigIntValidation()
+  public someProperty = 5;
+}
+
+@Validation
+export class NotBigIntValidatorOnWrongPropertyType {
+  @NotBigIntValidation()
+  public someProperty = '';
+}
+
+@Validation
+export class NotBigIntValidatorWithCustomMessage {
+  @NotBigIntValidation('bigint custom message')
+  public someProperty = 5;
+}
+
+/**
  * Float
  */
 @Validation
@@ -159,9 +203,9 @@ export class LessThanMoreThanValidatorOnWrongPropertyType {
 
 @Validation
 export class LessThanValidatorWithCustomMessage {
-  @LessThanValidation('someOtherProperty', 'lessThan custom message')
+  @LessThanValidation('someOtherProperty', false, 'lessThan custom message')
   public someProperty = 0;
 
-  @MoreThanValidation('someProperty', 'moreThan custom message')
+  @MoreThanValidation('someProperty', false, 'moreThan custom message')
   public someOtherProperty = 0;
 }
