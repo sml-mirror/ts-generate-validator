@@ -17,9 +17,11 @@ import {
   integerValidator,
   floatValidator,
   lessThanValidator,
-  moreThanValidator
+  moreThanValidator,
+  bigIntValidator,
+  notBigIntValidator
 } from './../../validators/number';
-import { equalValidator, equalToValidator, typeValidator } from './../../validators/common';
+import { equalValidator, equalToValidator, typeValidator, dateValidator } from './../../validators/common';
 import { customValidator } from '../../validators';
 import {
   TypeValidation,
@@ -31,6 +33,8 @@ import {
   NegativeValidation,
   PositiveValidation,
   IntegerValidation,
+  BigIntValidation,
+  NotBigIntValidation,
   FloatValidation,
   LessThanValidation,
   MoreThanValidation,
@@ -41,7 +45,8 @@ import {
   MaxLengthValidation,
   EmailValidation,
   UrlValidation,
-  MatchValidation
+  MatchValidation,
+  DateValidation
 } from './../../decorators/index';
 
 export const decoratorNameToValidationItemData: {
@@ -98,6 +103,19 @@ export const decoratorNameToValidationItemData: {
       ValidationType.union
     ]
   },
+  [DateValidation.name]: {
+    validatorName: dateValidator.name,
+    validatorArgumentNames: ['customMessage'],
+    allowedValidationTypes: [
+      ValidationType.string,
+      ValidationType.enum,
+      ValidationType.nested,
+      ValidationType.array,
+      ValidationType.union,
+      ValidationType.unknown,
+      ValidationType.notSupported
+    ]
+  },
   /**
    * Number
    */
@@ -123,6 +141,16 @@ export const decoratorNameToValidationItemData: {
   },
   [IntegerValidation.name]: {
     validatorName: integerValidator.name,
+    validatorArgumentNames: ['customMessage'],
+    allowedValidationTypes: [ValidationType.number, ValidationType.array]
+  },
+  [BigIntValidation.name]: {
+    validatorName: bigIntValidator.name,
+    validatorArgumentNames: ['customMessage'],
+    allowedValidationTypes: [ValidationType.number, ValidationType.array]
+  },
+  [NotBigIntValidation.name]: {
+    validatorName: notBigIntValidator.name,
     validatorArgumentNames: ['customMessage'],
     allowedValidationTypes: [ValidationType.number, ValidationType.array]
   },

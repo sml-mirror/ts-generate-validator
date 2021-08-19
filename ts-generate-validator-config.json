@@ -1,6 +1,6 @@
 {
   "inputPath": "test/mock/user",
   "outputPath": "generated/validators",
-  "unknownPropertySeverityLevel": 1,
+  "unknownPropertySeverityLevel": "warning",
   "stopAtFirstError": false
 }

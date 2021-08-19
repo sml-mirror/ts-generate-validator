@@ -5,6 +5,7 @@ import { Data } from '../codegen/model';
 
 export enum ValidationType {
   number = 'number',
+  bigInt = 'bigint',
   string = 'string',
   boolean = 'boolean',
   null = 'null',
@@ -29,7 +30,8 @@ export enum CommonValidator {
   custom = 'custom',
   equal = 'equal',
   equalTo = 'equalTo',
-  requiredOneOf = 'requiredOneOf'
+  requiredOneOf = 'requiredOneOf',
+  date = 'date'
 }
 
 export enum NumberValidator {
@@ -38,6 +40,8 @@ export enum NumberValidator {
   negative = 'negative',
   positive = 'positive',
   integer = 'integer',
+  bigInt = 'bigInt',
+  notBigInt = 'notBigInt',
   float = 'float',
   lessThan = 'lessThan',
   moreThan = 'moreThan'

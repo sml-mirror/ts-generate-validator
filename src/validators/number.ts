@@ -102,6 +102,40 @@ export const integerValidator: BaseValidator = (payload) => {
   }
 };
 
+export const bigIntValidator: BaseValidator = (payload) => {
+  const { property, propertyName, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p, i) =>
+      bigIntValidator({ ...payload, property: p, propertyName: `${propertyName}[${i}]` })
+    );
+  }
+
+  const msgFromConfig = config.messages?.number?.bigInt;
+
+  if (typeof property !== 'bigint') {
+    const defaultMessage = `Only bigint values are allowed, but received value type is "${typeof property}"`;
+    throw new ValidationError(propertyName, customMessage ?? msgFromConfig ?? defaultMessage);
+  }
+};
+
+export const notBigIntValidator: BaseValidator = (payload) => {
+  const { property, propertyName, customMessage, config } = payload;
+
+  if (property && Array.isArray(property)) {
+    return property.forEach((p, i) =>
+      bigIntValidator({ ...payload, property: p, propertyName: `${propertyName}[${i}]` })
+    );
+  }
+
+  const msgFromConfig = config.messages?.number?.notBigInt;
+
+  if (typeof property === 'bigint') {
+    const defaultMessage = `Bigint values are not allowed, but received value type is "${typeof property}"`;
+    throw new ValidationError(propertyName, customMessage ?? msgFromConfig ?? defaultMessage);
+  }
+};
+
 export const floatValidator: BaseValidator = (payload) => {
   const { property, propertyName, customMessage, config } = payload;
 

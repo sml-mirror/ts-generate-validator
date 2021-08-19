@@ -1,5 +1,5 @@
 import { ValidationError, ValidationException } from './../../src/codegen/utils/error';
-import { equalValidator, equalToValidator } from './../../src/validators/common';
+import { equalValidator, equalToValidator, dateValidator } from './../../src/validators/common';
 import { requiredOneOfValidator, typeValidator, ValidationType } from '../../src';
 import { getConfig } from './../../src/config/runtime';
 
@@ -399,6 +399,63 @@ describe('common validators', () => {
           config,
           data: { abc: [24] },
           propertyName
+        });
+      })
+    ).not.toThrowError();
+  });
+
+  test('date validator', () => {
+    expect(
+      jest.fn(() => {
+        dateValidator({
+          property: 5,
+          config,
+          data: { a: 5 },
+          propertyName: 'a'
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        dateValidator({
+          property: 'abc',
+          config,
+          data: { a: 'abc' },
+          propertyName: 'a'
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        dateValidator({
+          property: new Date('abc'),
+          config,
+          data: { a: new Date('abc') },
+          propertyName: 'a'
+        });
+      })
+    ).toThrowError();
+
+    expect(
+      jest.fn(() => {
+        dateValidator({
+          property: new Date(),
+          config,
+          data: { a: new Date() },
+          propertyName: 'a'
+        });
+      })
+    ).not.toThrowError();
+
+    expect(
+      jest.fn(() => {
+        dateValidator({
+          property: '1900-01-01 00:00',
+          config,
+          data: { a: '1900-01-01 00:00' },
+          propertyName: 'a'
         });
       })
     ).not.toThrowError();

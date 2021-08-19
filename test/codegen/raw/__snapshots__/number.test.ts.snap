@@ -411,6 +411,160 @@ Array [
             "decorators": Array [
               Object {
                 "arguments": Array [],
+                "name": "BigIntValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "function",
+              "validationType": "notSupported",
+            },
+          },
+        ],
+        "name": "BigIntValidatorWithDefaultMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [],
+                "name": "BigIntValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+        ],
+        "name": "BigIntValidatorOnWrongPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "bigint custom message",
+                ],
+                "name": "BigIntValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "function",
+              "validationType": "notSupported",
+            },
+          },
+        ],
+        "name": "BigIntValidatorWithCustomMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [],
+                "name": "NotBigIntValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "NotBigIntValidatorWithDefaultMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [],
+                "name": "NotBigIntValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "string",
+              "validationType": "string",
+            },
+          },
+        ],
+        "name": "NotBigIntValidatorOnWrongPropertyType",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [
+                  "bigint custom message",
+                ],
+                "name": "NotBigIntValidation",
+              },
+            ],
+            "name": "someProperty",
+            "optional": false,
+            "type": Object {
+              "name": "number",
+              "validationType": "number",
+            },
+          },
+        ],
+        "name": "NotBigIntValidatorWithCustomMessage",
+      },
+      Object {
+        "decorators": Array [
+          Object {
+            "arguments": Array [],
+            "name": "Validation",
+          },
+        ],
+        "fields": Array [
+          Object {
+            "decorators": Array [
+              Object {
+                "arguments": Array [],
                 "name": "FloatValidation",
               },
             ],
@@ -575,6 +729,7 @@ Array [
               Object {
                 "arguments": Array [
                   "someOtherProperty",
+                  false,
                   "lessThan custom message",
                 ],
                 "name": "LessThanValidation",
@@ -592,6 +747,7 @@ Array [
               Object {
                 "arguments": Array [
                   "someProperty",
+                  false,
                   "moreThan custom message",
                 ],
                 "name": "MoreThanValidation",
@@ -616,6 +772,8 @@ Array [
           "Validation",
           "PositiveValidation",
           "IntegerValidation",
+          "BigIntValidation",
+          "NotBigIntValidation",
           "FloatValidation",
           "LessThanValidation",
           "NegativeValidation",
@@ -668,6 +826,11 @@ Array [
       Object {
         "isAsync": false,
         "isExported": true,
+        "name": "DateValidation",
+      },
+      Object {
+        "isAsync": false,
+        "isExported": true,
         "name": "MinValidation",
       },
       Object {
@@ -689,6 +852,16 @@ Array [
         "isAsync": false,
         "isExported": true,
         "name": "IntegerValidation",
+      },
+      Object {
+        "isAsync": false,
+        "isExported": true,
+        "name": "BigIntValidation",
+      },
+      Object {
+        "isAsync": false,
+        "isExported": true,
+        "name": "NotBigIntValidation",
       },
       Object {
         "isAsync": false,

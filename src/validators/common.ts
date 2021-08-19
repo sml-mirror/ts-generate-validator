@@ -13,7 +13,8 @@ import {
   DependOnValidator,
   ValidationType,
   RequiredOneOfValidator,
-  CommonValidator
+  CommonValidator,
+  BaseValidator
 } from './model';
 
 const getMessageFromConfig = (
@@ -201,7 +202,13 @@ export const typeValidator: TypeValidator = ({
     return typeDescription(property, config, context, `${propertyName}.`);
   }
 
-  if (!primitiveValidationTypes.includes(type as any)) {
+  let skipTypeCheck = false;
+
+  if (type === 'number' && propertyType === 'bigint') {
+    skipTypeCheck = true;
+  }
+
+  if (!skipTypeCheck && !primitiveValidationTypes.includes(type as any)) {
     throw new IssueError(
       `Unexpected type to check - "${type}" (expected one of: ${[
         ...primitiveValidationTypes,
@@ -214,7 +221,7 @@ export const typeValidator: TypeValidator = ({
     );
   }
 
-  if (type !== propertyType) {
+  if (!skipTypeCheck && type !== propertyType) {
     const defaultMessage = `Must be a "${type}", but received a "${propertyType}"`;
     throw new ValidationError(propertyName, customMessage ?? msgFromConfig ?? defaultMessage);
   }
@@ -283,6 +290,35 @@ export const equalToValidator: DependOnValidator = (payload) => {
 
   if (property !== data[targetPropertyName]) {
     const defaultMessage = `Must be equal to a property "${targetPropertyName}" (expected: "${data[targetPropertyName]}", received: "${property}")`;
+    throw new ValidationError(propertyName, customMessage ?? msgFromConfig ?? defaultMessage);
+  }
+};
+
+export const dateValidator: BaseValidator = (payload) => {
+  const { property, propertyName, customMessage, config, optional } = payload;
+
+  if (optional && property === undefined) {
+    return;
+  }
+
+  const msgFromConfig = getMessageFromConfig(typeof property, CommonValidator.date, config);
+
+  let isValid = true;
+
+  if (!property) {
+    isValid = false;
+  }
+
+  if (isValid && !(property instanceof Date) && typeof property !== 'string') {
+    isValid = false;
+  }
+
+  if (isValid && !new Date(property).getTime()) {
+    isValid = false;
+  }
+
+  if (!isValid) {
+    const defaultMessage = `Must be a date, but received "${property}"`;
     throw new ValidationError(propertyName, customMessage ?? msgFromConfig ?? defaultMessage);
   }
 };

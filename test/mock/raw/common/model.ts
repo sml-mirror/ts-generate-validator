@@ -8,7 +8,8 @@ import {
   IgnoreValidation,
   TypeValidation,
   MinValidation,
-  MaxValidation
+  MaxValidation,
+  DateValidation
 } from '../../../../src/decorators';
 import { ValidationError } from '../../../../src';
 
@@ -203,4 +204,24 @@ export class EqualToValidatorWithCustomMessage {
 
   @EqualToValidation('someProperty', false, 'equialTo custom message')
   public someOtherProperty = '';
+}
+
+/**
+ * Date
+ */
+@Validation
+export class DateValidatorWithDefaultMessage {
+  @DateValidation('someOtherProperty')
+  public someProperty = '1900-01-01 00:00';
+
+  @DateValidation('someProperty')
+  public someOtherProperty = '1900-01-01 00:00';
+}
+
+export class DateValidatorOnWrongType {
+  @DateValidation()
+  public someProperty = 5;
+
+  @DateValidation()
+  public someOtherProperty = true;
 }

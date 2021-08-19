@@ -1301,6 +1301,11 @@ Array [
       Object {
         "isAsync": false,
         "isExported": true,
+        "name": "DateValidation",
+      },
+      Object {
+        "isAsync": false,
+        "isExported": true,
         "name": "MinValidation",
       },
       Object {
@@ -1322,6 +1327,16 @@ Array [
         "isAsync": false,
         "isExported": true,
         "name": "IntegerValidation",
+      },
+      Object {
+        "isAsync": false,
+        "isExported": true,
+        "name": "BigIntValidation",
+      },
+      Object {
+        "isAsync": false,
+        "isExported": true,
+        "name": "NotBigIntValidation",
       },
       Object {
         "isAsync": false,
